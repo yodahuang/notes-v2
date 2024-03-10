@@ -17,7 +17,7 @@ L_{BT} = \sum_i (1 - C_{ii})^2 + \lambda \sum_i\sum_{j \ne i}C_{ij}^2
 $$
 The first part is invariance term, and the second part is the redundancy reduction term. $C$ is the cross-correlation matrix computed between the outputs of the two identical networks along the batch dimension.
 
-So intuitively we want embedding from the same pair has a high correlation, and the ones from different pair does not have much correlation. Note that's not the same as the [[INFONCE loss|INFONCE loss]] commonly used in contrastive learning method. That one focus on the pair wise distance, or, cosine similarity between the embeddings, but not the overall correlation. In that sense, Barlow twins is more flexible since the distance can be large, as long as the produced embedidings are highly corrlelated. For a more detailed explanation, see [[pdf/barlow_twins.pdf#page=7|The discussion in the paper]].
+So intuitively we want embedding from the same pair has a high correlation, and the ones from different pair does not have much correlation. Note that's not the same as the [[INFONCE loss|INFONCE loss]] commonly used in contrastive learning method. That one focus on the pair wise distance, or, cosine similarity between the embeddings, but not the overall correlation. In that sense, Barlow twins is more flexible since the distance can be large, as long as the produced embedding are highly correlated. For a more detailed explanation, see [[pdf/barlow_twins.pdf#page=7|The discussion in the paper]].
 
 Now let's come back and write out what's in $C$.
 $$
