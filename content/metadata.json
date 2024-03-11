@@ -1,0 +1,819 @@
+[
+  {
+    "fileName": "zero shot learning",
+    "relativePath": "ML/zero shot learning.md",
+    "links": [
+      {
+        "link": "CLIP",
+        "relativePath": "ML/papers/CLIP.md"
+      },
+      {
+        "link": "Contrastive learning",
+        "relativePath": "ML/Contrastive learning.md"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "CLIP",
+        "link": "zero shot learning",
+        "relativePath": "ML/papers/CLIP.md"
+      },
+      {
+        "fileName": "CLIP",
+        "link": "zero shot learning",
+        "relativePath": "ML/papers/CLIP.md"
+      }
+    ]
+  },
+  {
+    "fileName": "mixup",
+    "relativePath": "ML/papers/mixup.md",
+    "backlinks": [
+      {
+        "fileName": "Papers Kanban",
+        "link": "mixup",
+        "relativePath": "ML/papers/Papers Kanban.md"
+      }
+    ]
+  },
+  {
+    "fileName": "e-OSVOS",
+    "relativePath": "ML/papers/e-OSVOS.md",
+    "headings": [
+      {
+        "heading": "Use [[Mask R-CNN]]",
+        "level": 2
+      },
+      {
+        "heading": "[[Meta Learning]]",
+        "level": 2
+      },
+      {
+        "heading": "Other stuff",
+        "level": 2
+      },
+      {
+        "heading": "Ablation study everyone is waiting for",
+        "level": 2
+      }
+    ],
+    "links": [
+      {
+        "link": "OSVOS"
+      },
+      {
+        "link": "Video Object Segmentation",
+        "relativePath": "ML/Video Object Segmentation.md"
+      },
+      {
+        "link": "Mask R-CNN"
+      },
+      {
+        "link": "OSVOS"
+      },
+      {
+        "link": "Mask R-CNN"
+      },
+      {
+        "link": "Lovász-Softmax loss"
+      },
+      {
+        "link": "group normalization"
+      },
+      {
+        "link": "Meta Learning",
+        "relativePath": "ML/Meta Learning.md"
+      },
+      {
+        "link": "OSVOS"
+      },
+      {
+        "link": "Meta Learning",
+        "relativePath": "ML/Meta Learning.md"
+      },
+      {
+        "link": "How to train your MAML"
+      },
+      {
+        "link": "MAML",
+        "relativePath": "ML/papers/MAML.md"
+      },
+      {
+        "link": "Tractor"
+      },
+      {
+        "link": "MaskTrack"
+      },
+      {
+        "link": "Online adaption"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "Papers Kanban",
+        "link": "e-OSVOS",
+        "relativePath": "ML/papers/Papers Kanban.md"
+      }
+    ]
+  },
+  {
+    "fileName": "Vision Transformer (ViT)",
+    "relativePath": "ML/papers/Vision Transformer (ViT).md",
+    "frontmatter": {
+      "position": {
+        "start": {
+          "line": 0,
+          "col": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 2,
+          "col": 3,
+          "offset": 22
+        }
+      }
+    },
+    "aliases": [
+      "ViT"
+    ],
+    "backlinks": [
+      {
+        "fileName": "Papers Kanban",
+        "link": "Vision Transformer (ViT)",
+        "relativePath": "ML/papers/Papers Kanban.md",
+        "displayText": "ViT"
+      },
+      {
+        "fileName": "CLIP",
+        "link": "Vision Transformer (ViT)",
+        "relativePath": "ML/papers/CLIP.md",
+        "displayText": "ViT"
+      }
+    ]
+  },
+  {
+    "fileName": "Uncertainty based learnable weighting",
+    "relativePath": "ML/papers/Uncertainty based learnable weighting.md",
+    "headings": [
+      {
+        "heading": "The formula",
+        "level": 2
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "BEV baseline",
+        "link": "Uncertainty based learnable weighting",
+        "relativePath": "ML/papers/BEV baseline.md"
+      }
+    ]
+  },
+  {
+    "fileName": "Two Step CCA",
+    "relativePath": "ML/papers/Two Step CCA.md",
+    "frontmatter": {
+      "position": {
+        "start": {
+          "line": 0,
+          "col": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 2,
+          "col": 3,
+          "offset": 24
+        }
+      }
+    },
+    "aliases": [
+      "TSCCA"
+    ],
+    "headings": [
+      {
+        "heading": "CCA",
+        "level": 2
+      },
+      {
+        "heading": "OSCCA (One Step CCA)",
+        "level": 2
+      },
+      {
+        "heading": "TSCCA",
+        "level": 2
+      }
+    ]
+  },
+  {
+    "fileName": "SpotNet",
+    "relativePath": "ML/papers/SpotNet.md",
+    "headings": [
+      {
+        "heading": "SpotNet: Self-Attention Multi-Task Network for Object Detection",
+        "level": 1
+      }
+    ],
+    "links": [
+      {
+        "link": "CenterNet",
+        "relativePath": "ML/papers/CenterNet.md"
+      },
+      {
+        "link": "CornerNet",
+        "relativePath": "ML/papers/CornerNet.md"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "Papers Kanban",
+        "link": "SpotNet",
+        "relativePath": "ML/papers/Papers Kanban.md"
+      }
+    ]
+  },
+  {
+    "fileName": "SoDA",
+    "relativePath": "ML/papers/SoDA.md"
+  },
+  {
+    "fileName": "SSD",
+    "relativePath": "ML/papers/SSD.md",
+    "headings": [
+      {
+        "heading": "Core idea",
+        "level": 2
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "Papers Kanban",
+        "link": "SSD",
+        "relativePath": "ML/papers/Papers Kanban.md"
+      },
+      {
+        "fileName": "Feature Pyramid Networks",
+        "link": "SSD",
+        "relativePath": "ML/papers/Feature Pyramid Networks.md"
+      }
+    ]
+  },
+  {
+    "fileName": "Reptile",
+    "relativePath": "ML/papers/Reptile.md",
+    "links": [
+      {
+        "link": "MAML",
+        "relativePath": "ML/papers/MAML.md"
+      },
+      {
+        "link": "MAML",
+        "relativePath": "ML/papers/MAML.md"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "Meta Learning",
+        "link": "Reptile",
+        "relativePath": "ML/Meta Learning.md"
+      }
+    ]
+  },
+  {
+    "fileName": "Papers Kanban",
+    "relativePath": "ML/papers/Papers Kanban.md",
+    "frontmatter": {
+      "kanban-plugin": "basic",
+      "position": {
+        "start": {
+          "line": 0,
+          "col": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 4,
+          "col": 3,
+          "offset": 30
+        }
+      }
+    },
+    "headings": [
+      {
+        "heading": "Finished",
+        "level": 2
+      },
+      {
+        "heading": "Planned",
+        "level": 2
+      },
+      {
+        "heading": "Backlog",
+        "level": 2
+      }
+    ],
+    "links": [
+      {
+        "link": "CLIP",
+        "relativePath": "ML/papers/CLIP.md"
+      },
+      {
+        "link": "CornerNet",
+        "relativePath": "ML/papers/CornerNet.md"
+      },
+      {
+        "link": "Feature Pyramid Networks",
+        "displayText": "FPN",
+        "relativePath": "ML/papers/Feature Pyramid Networks.md"
+      },
+      {
+        "link": "SSD",
+        "relativePath": "ML/papers/SSD.md"
+      },
+      {
+        "link": "Vision Transformer (ViT)",
+        "displayText": "ViT",
+        "relativePath": "ML/papers/Vision Transformer (ViT).md"
+      },
+      {
+        "link": "Focal loss (RetinaNet)",
+        "displayText": "Focal loss",
+        "relativePath": "ML/papers/Focal loss (RetinaNet).md"
+      },
+      {
+        "link": "CenterNet",
+        "relativePath": "ML/papers/CenterNet.md"
+      },
+      {
+        "link": "SpotNet",
+        "relativePath": "ML/papers/SpotNet.md"
+      },
+      {
+        "link": "BEV baseline",
+        "relativePath": "ML/papers/BEV baseline.md"
+      },
+      {
+        "link": "e-OSVOS",
+        "relativePath": "ML/papers/e-OSVOS.md"
+      },
+      {
+        "link": "mixup",
+        "relativePath": "ML/papers/mixup.md"
+      },
+      {
+        "link": "RCNN families"
+      },
+      {
+        "link": "BEVFormer"
+      },
+      {
+        "link": "DETR",
+        "relativePath": "ML/papers/DETR.md"
+      },
+      {
+        "link": "YOLO families"
+      }
+    ]
+  },
+  {
+    "fileName": "MAML",
+    "relativePath": "ML/papers/MAML.md",
+    "links": [
+      {
+        "link": "BPTT"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "e-OSVOS",
+        "link": "MAML",
+        "relativePath": "ML/papers/e-OSVOS.md"
+      },
+      {
+        "fileName": "Reptile",
+        "link": "MAML",
+        "relativePath": "ML/papers/Reptile.md"
+      },
+      {
+        "fileName": "Reptile",
+        "link": "MAML",
+        "relativePath": "ML/papers/Reptile.md"
+      },
+      {
+        "fileName": "Meta Learning",
+        "link": "MAML",
+        "relativePath": "ML/Meta Learning.md"
+      }
+    ]
+  },
+  {
+    "fileName": "Focal loss (RetinaNet)",
+    "relativePath": "ML/papers/Focal loss (RetinaNet).md",
+    "frontmatter": {
+      "position": {
+        "start": {
+          "line": 0,
+          "col": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 2,
+          "col": 3,
+          "offset": 40
+        }
+      }
+    },
+    "aliases": [
+      "Focal loss",
+      "RetinaNet"
+    ],
+    "headings": [
+      {
+        "heading": "Assumptions",
+        "level": 3
+      },
+      {
+        "heading": "Focal Loss",
+        "level": 3
+      },
+      {
+        "heading": "RetinaNet",
+        "level": 3
+      }
+    ],
+    "links": [
+      {
+        "link": "Feature Pyramid Networks",
+        "displayText": "FPN",
+        "relativePath": "ML/papers/Feature Pyramid Networks.md"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "Papers Kanban",
+        "link": "Focal loss (RetinaNet)",
+        "relativePath": "ML/papers/Papers Kanban.md",
+        "displayText": "Focal loss"
+      },
+      {
+        "fileName": "CornerNet",
+        "link": "Focal loss (RetinaNet)",
+        "relativePath": "ML/papers/CornerNet.md"
+      }
+    ]
+  },
+  {
+    "fileName": "Feature Pyramid Networks",
+    "relativePath": "ML/papers/Feature Pyramid Networks.md",
+    "frontmatter": {
+      "position": {
+        "start": {
+          "line": 0,
+          "col": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 2,
+          "col": 3,
+          "offset": 22
+        }
+      }
+    },
+    "aliases": [
+      "FPN"
+    ],
+    "links": [
+      {
+        "link": "SSD",
+        "relativePath": "ML/papers/SSD.md"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "Papers Kanban",
+        "link": "Feature Pyramid Networks",
+        "relativePath": "ML/papers/Papers Kanban.md",
+        "displayText": "FPN"
+      },
+      {
+        "fileName": "Focal loss (RetinaNet)",
+        "link": "Feature Pyramid Networks",
+        "relativePath": "ML/papers/Focal loss (RetinaNet).md",
+        "displayText": "FPN"
+      }
+    ]
+  },
+  {
+    "fileName": "DETR",
+    "relativePath": "ML/papers/DETR.md",
+    "headings": [
+      {
+        "heading": "Object detection set prediction loss",
+        "level": 2
+      },
+      {
+        "heading": "What's transformers doing here?",
+        "level": 2
+      },
+      {
+        "heading": "PyTorch inference code",
+        "level": 2
+      }
+    ],
+    "links": [
+      {
+        "link": "Attention is all you need",
+        "displayText": "OG Transformer",
+        "relativePath": "ML/papers/Attention is all you need.md"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "Papers Kanban",
+        "link": "DETR",
+        "relativePath": "ML/papers/Papers Kanban.md"
+      }
+    ]
+  },
+  {
+    "fileName": "CornerNet",
+    "relativePath": "ML/papers/CornerNet.md",
+    "headings": [
+      {
+        "heading": "Core idea",
+        "level": 2
+      },
+      {
+        "heading": "Corner pooling",
+        "level": 2
+      }
+    ],
+    "links": [
+      {
+        "link": "Hourglass"
+      },
+      {
+        "link": "Focal loss (RetinaNet)",
+        "relativePath": "ML/papers/Focal loss (RetinaNet).md"
+      },
+      {
+        "link": "CenterNet",
+        "relativePath": "ML/papers/CenterNet.md"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "SpotNet",
+        "link": "CornerNet",
+        "relativePath": "ML/papers/SpotNet.md"
+      },
+      {
+        "fileName": "Papers Kanban",
+        "link": "CornerNet",
+        "relativePath": "ML/papers/Papers Kanban.md"
+      },
+      {
+        "fileName": "CenterNet",
+        "link": "CornerNet",
+        "relativePath": "ML/papers/CenterNet.md"
+      },
+      {
+        "fileName": "CenterNet",
+        "link": "CornerNet#Corner pooling",
+        "relativePath": "ML/papers/CenterNet.md",
+        "cleanLink": "CornerNet",
+        "displayText": "CornerNet > Corner pooling"
+      },
+      {
+        "fileName": "CenterNet",
+        "link": "CornerNet",
+        "relativePath": "ML/papers/CenterNet.md"
+      }
+    ]
+  },
+  {
+    "fileName": "CenterNet",
+    "relativePath": "ML/papers/CenterNet.md",
+    "headings": [
+      {
+        "heading": "What is the center point used for",
+        "level": 2
+      },
+      {
+        "heading": "Center pooling and Cascade corner pooling",
+        "level": 2
+      }
+    ],
+    "links": [
+      {
+        "link": "CornerNet",
+        "relativePath": "ML/papers/CornerNet.md"
+      },
+      {
+        "link": "CornerNet#Corner pooling",
+        "cleanLink": "CornerNet",
+        "displayText": "CornerNet > Corner pooling",
+        "relativePath": "ML/papers/CornerNet.md"
+      },
+      {
+        "link": "CornerNet",
+        "relativePath": "ML/papers/CornerNet.md"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "SpotNet",
+        "link": "CenterNet",
+        "relativePath": "ML/papers/SpotNet.md"
+      },
+      {
+        "fileName": "Papers Kanban",
+        "link": "CenterNet",
+        "relativePath": "ML/papers/Papers Kanban.md"
+      },
+      {
+        "fileName": "CornerNet",
+        "link": "CenterNet",
+        "relativePath": "ML/papers/CornerNet.md"
+      }
+    ]
+  },
+  {
+    "fileName": "CLIP",
+    "relativePath": "ML/papers/CLIP.md",
+    "headings": [
+      {
+        "heading": "Learning Transferable Visual Models From Natural Language Supervision",
+        "level": 2
+      },
+      {
+        "heading": "What's special",
+        "level": 2
+      }
+    ],
+    "links": [
+      {
+        "link": "zero shot learning",
+        "relativePath": "ML/zero shot learning.md"
+      },
+      {
+        "link": "zero shot learning",
+        "relativePath": "ML/zero shot learning.md"
+      },
+      {
+        "link": "VirTex"
+      },
+      {
+        "link": "EfficientNet"
+      },
+      {
+        "link": "Vision Transformer (ViT)",
+        "displayText": "ViT",
+        "relativePath": "ML/papers/Vision Transformer (ViT).md"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "zero shot learning",
+        "link": "CLIP",
+        "relativePath": "ML/zero shot learning.md"
+      },
+      {
+        "fileName": "Papers Kanban",
+        "link": "CLIP",
+        "relativePath": "ML/papers/Papers Kanban.md"
+      }
+    ]
+  },
+  {
+    "fileName": "BEV baseline",
+    "relativePath": "ML/papers/BEV baseline.md",
+    "headings": [
+      {
+        "heading": "A Simple Baseline for BEV Perception Without LiDAR",
+        "level": 1
+      },
+      {
+        "heading": "Method",
+        "level": 2
+      },
+      {
+        "heading": "Tricks and ablation study",
+        "level": 2
+      }
+    ],
+    "links": [
+      {
+        "link": "Uncertainty based learnable weighting",
+        "relativePath": "ML/papers/Uncertainty based learnable weighting.md"
+      },
+      {
+        "link": "instance normalization"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "Papers Kanban",
+        "link": "BEV baseline",
+        "relativePath": "ML/papers/Papers Kanban.md"
+      }
+    ]
+  },
+  {
+    "fileName": "Attention is all you need",
+    "relativePath": "ML/papers/Attention is all you need.md",
+    "frontmatter": {
+      "position": {
+        "start": {
+          "line": 0,
+          "col": 0,
+          "offset": 0
+        },
+        "end": {
+          "line": 2,
+          "col": 3,
+          "offset": 33
+        }
+      }
+    },
+    "aliases": [
+      "OG Transformer"
+    ],
+    "backlinks": [
+      {
+        "fileName": "DETR",
+        "link": "Attention is all you need",
+        "relativePath": "ML/papers/DETR.md",
+        "displayText": "OG Transformer"
+      }
+    ]
+  },
+  {
+    "fileName": "Video Object Segmentation",
+    "relativePath": "ML/Video Object Segmentation.md",
+    "headings": [
+      {
+        "heading": "One Shot Video Object Segmentation",
+        "level": 2
+      },
+      {
+        "heading": "MaskTrack",
+        "level": 2
+      }
+    ],
+    "links": [
+      {
+        "link": "MaskTrack"
+      },
+      {
+        "link": "OSVOS"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "e-OSVOS",
+        "link": "Video Object Segmentation",
+        "relativePath": "ML/papers/e-OSVOS.md"
+      }
+    ]
+  },
+  {
+    "fileName": "Meta Learning",
+    "relativePath": "ML/Meta Learning.md",
+    "links": [
+      {
+        "link": "MAML",
+        "relativePath": "ML/papers/MAML.md"
+      },
+      {
+        "link": "Reptile",
+        "relativePath": "ML/papers/Reptile.md"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "e-OSVOS",
+        "link": "Meta Learning",
+        "relativePath": "ML/papers/e-OSVOS.md"
+      },
+      {
+        "fileName": "e-OSVOS",
+        "link": "Meta Learning",
+        "relativePath": "ML/papers/e-OSVOS.md"
+      }
+    ]
+  },
+  {
+    "fileName": "Contrastive learning",
+    "relativePath": "ML/Contrastive learning.md",
+    "links": [
+      {
+        "link": "semi-supervised learning"
+      }
+    ],
+    "backlinks": [
+      {
+        "fileName": "zero shot learning",
+        "link": "Contrastive learning",
+        "relativePath": "ML/zero shot learning.md"
+      }
+    ]
+  }
+]
