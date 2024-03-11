@@ -22,7 +22,7 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for git info
           lfs: true
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: 18.14
       - name: Install Dependencies
@@ -30,7 +30,7 @@ jobs:
       - name: Build Quartz
         run: npx quartz build
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v4
         with:
           path: public
 
