@@ -13,7 +13,14 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: null,
     baseUrl: "notes.yanda.rocks",
-    ignorePatterns: ["private", "_templates", ".obsidian"],
+    ignorePatterns: [
+      "private", 
+      "_templates",
+      ".obsidian", 
+      "**/*Kanban.md", 
+      "*.pdf",
+      "nix"
+    ],
     defaultDateType: "created",
     theme: {
       fontOrigin: "googleFonts",
@@ -51,13 +58,13 @@ const config: QuartzConfig = {
     transformers: [
       Plugin.FrontMatter(),
       Plugin.CreatedModifiedDate({
-        priority: ["frontmatter", "filesystem"],
+        priority: ["frontmatter", "git", "filesystem"],
       }),
       Plugin.Latex({ renderEngine: "katex" }),
       Plugin.SyntaxHighlighting({
         theme: {
-          light: "github-light",
-          dark: "github-dark",
+          light: "catppuccin-latte",
+          dark: "tokyo-night",
         },
         keepBackground: false,
       }),
