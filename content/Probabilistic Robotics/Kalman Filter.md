@@ -31,9 +31,11 @@ Here line 2 and 3 are calculating $\overline{bel}(x)$, while 5 and 6 are calcula
 - $\bar{\Sigma}_t$: The original covariance goes through the linear formula, since the covariance is a quadratic matrix, we must have $A_t$ multiplied twice. Add the $R_t$ term for state transition noise.
 ### On Kalman Gain
 Kalman Gain: Let's write this as 
+
 $$
 K_{t}=\frac{\bar{\Sigma}_tC_t^T}{C_t\bar{\Sigma}_tC^T_t+Q_t}
-$$.  That's strange (and nobody pointed that out), cause obviously to make sense of it we need another $C_{t}$ there on the numerator part. 
+$$
+.  That's strange (and nobody pointed that out), cause obviously to make sense of it we need another $C_{t}$ there on the numerator part. 
 
 Let's just say, $K_t$ is intuitively, $$C_t^{-1}* \text{ratio of covariance}$$. Of course there's no guarantee that $C_t$ is invertible. But let's just keep it that way.
 
