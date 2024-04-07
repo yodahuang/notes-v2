@@ -74,7 +74,89 @@ Think about the following questions:
 - What if we want each token to only attend to stuff before it? (This paper is machine translation so it does not matter)
 - What about that $\sqrt{d_k}$?
 
+Andrej's interpretation:
+- Matrix multiplication is weight aggregation.
+```python
+# toy example illustrating how matrix multiplication can be used for a "weighted aggregation"
+torch.manual_seed(42)
+a = torch.tril(torch.ones(3, 3))
+a = a / torch.sum(a, 1, keepdim=True)
+b = torch.randint(0,10,(3,2)).float()
+c = a @ b
+```
+```
+a= tensor([[1.0000, 0.0000, 0.0000],
+		 . [0.5000, 0.5000, 0.0000],
+           [0.3333, 0.3333, 0.3333]])
+--
+b= tensor([[2., 7.],
+           [6., 4.],
+           [6., 5.]])
+--
+c= tensor([[2.0000, 7.0000], 
+		   [4.0000, 5.5000], 
+		   [4.6667, 5.3333]])
+```
+Here this `c` is "mean of the first n tokens." Assuming the `b` is of size `TxC`, we are basically computing for all context lengths.
+Using softmax there is just convenient way of creating weights between $[0, 1]$ to do this aggregation. Self attention make this weight learnable.
+```python
+# version 4: self-attention!
+torch.manual_seed(1337)
+B,T,C = 4,8,32 # batch, time, channels
+x = torch.randn(B,T,C)
 
+# let's see a single Head perform self-attention
+head_size = 16
+key = nn.Linear(C, head_size, bias=False)
+query = nn.Linear(C, head_size, bias=False)
+value = nn.Linear(C, head_size, bias=False)
+k = key(x)   # (B, T, 16)
+q = query(x) # (B, T, 16)
+wei =  q @ k.transpose(-2, -1) # (B, T, 16) @ (B, 16, T) ---> (B, T, T)
+
+tril = torch.tril(torch.ones(T, T))
+#wei = torch.zeros((T,T))
+wei = wei.masked_fill(tril == 0, float('-inf'))
+wei = F.softmax(wei, dim=-1)
+
+v = value(x)
+out = wei @ v
+#out = wei @ x
+```
+
+For that scaled $\sqrt{d_k}$ part, since we're doing `q@k` there, if the inputs are all unit gaussian, `wei`'s distribution would be $\text{head\_size}^2$, thus making the softmax too sharp, converge to max.
+
+## Multi-head attention
+
+```python
+class MultiHeadAttention(nn.Module):
+    """ multiple heads of self-attention in parallel """
+
+    def __init__(self, num_heads, head_size):
+        super().__init__()
+        self.heads = nn.ModuleList([Head(head_size) for _ in range(num_heads)])
+        self.proj = nn.Linear(n_embd, n_embd)
+        self.dropout = nn.Dropout(dropout)
+
+    def forward(self, x):
+        out = torch.cat([h(x) for h in self.heads], dim=-1)
+        out = self.dropout(self.proj(out))
+        return out
+```
+## Don't forget linear layers
+
+See that feed forward part in the diagrams? They are needed. Attention focus on "getting info from other times", or communication. Feed forward layers mixes up the `C` channel, or think.
+
+## More tricks
+
+- To make the network able to handle large amount of data, we need regularization, which is done by
+	- LayerNorm, which is basically does norm in "input params" instead of in batch. So it doesn't need to distinguish train / eval as there's no running mean. 
+	- Skip connection.
+	- Add dropout
+
+## Encoder / decoder / only
+
+The left part of the diagram is encoder, the other is decoder. If you operate on the same domain for input and output, you can do decoder only.
 ## My original notes for the paper
 
 - The use of self attention inside both encoder and decoder itself, not only encoder-decoder level “normal” attention
