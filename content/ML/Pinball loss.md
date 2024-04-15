@@ -1,6 +1,7 @@
 ---
 aliases:
   - quantile loss
+date: 2024-04-15
 ---
 A loss useful for [quantile regression](https://en.wikipedia.org/wiki/Quantile_regression). Penalize undershoot or overshoot one side than the other side.
 $$

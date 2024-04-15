@@ -1,5 +1,5 @@
 ---
-Created: 2024-04-14T17:08:00
+date: 2024-04-14T17:08:00
 original title: A Gentle Introduction to Conformal Prediction and Distribution-Free Uncertainty Quantification
 Link: https://people.eecs.berkeley.edu/~angelopoulos/blog/posts/gentle-intro/
 pdf: "[[a_tutorial_on_conformal_prediction.pdf]]"
