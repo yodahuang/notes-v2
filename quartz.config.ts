@@ -19,7 +19,6 @@ const config: QuartzConfig = {
       ".obsidian", 
       "**/*Kanban.md", 
       "*.pdf",
-      "nix"
     ],
     defaultDateType: "created",
     theme: {
