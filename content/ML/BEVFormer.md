@@ -1,9 +1,10 @@
 ---
-share: true
+date: 2022-09-05
+Arxiv: https://arxiv.org/abs/2203.17270
+pdf: "[[bevformer.pdf]]"
 ---
 BEVFormer: Learning Bird’s-Eye-View Representation from Multi-Camera Images via Spatiotemporal Transformers
-- [Arxiv link](https://arxiv.org/abs/2203.17270)
-- [[pdf/bevformer.pdf|PDF link]]
+
 - [Zhihu link (I know, why would anyone use Zhihu?)]()
 
 The network's core representation is in BEV view (BEV query), it uses temporal self attention + spatial cross attention. The author states that they are inspired by Tesla's video spatial transformer.

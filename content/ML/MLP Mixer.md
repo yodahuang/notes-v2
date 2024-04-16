@@ -1,5 +1,5 @@
 ---
-share: true
+date: 1970-01-01
 ---
 # MLP-Mixer: An all-MLP Architecture for Vision
 - [Arxiv link](https://arxiv.org/abs/2105.01601)

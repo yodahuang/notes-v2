@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2022-08-15
 ---
 Make One-Shot Video Object Segmentation Efficient Again
 - [Arxiv link](https://arxiv.org/abs/2012.01866v1)

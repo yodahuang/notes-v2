@@ -1,7 +1,8 @@
 ---
-aliases: [MAE]
+aliases:
+  - MAE
 year: 2022
-share: true
+date: 2023-04-16
 ---
 - [Arxiv Link](https://arxiv.org/abs/2111.06377)
 -  [[pdf/mae.pdf|PDF link]]

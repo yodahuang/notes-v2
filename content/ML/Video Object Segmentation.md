@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2022-08-15
 ---
 This summary is based on [this blog](https://techburst.io/video-object-segmentation-the-basics-758e77321914).
 ![[vos.png]]

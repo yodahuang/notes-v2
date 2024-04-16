@@ -1,9 +1,8 @@
 ---
-aliases: 
-share: true
 Arxiv: https://arxiv.org/abs/1901.05555
 pdf: "[[class_balanced_loss.pdf]]"
 original title: Class-Balanced Loss Based on Effective Number of Samples
+date: 2024-01-15
 ---
 ## Summary
 A new way to apply weighting to loss for class imbalanced dataset. It's a middle ground between no-weighting and by inverse class frequency. When used with [[Focal loss (RetinaNet)|Focal loss]], it can be viewed as an explicit way to set $\alpha_t$ .

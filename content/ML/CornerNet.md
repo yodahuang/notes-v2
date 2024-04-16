@@ -1,6 +1,8 @@
 ---
-share: true
+Arxiv: https://arxiv.org/abs/1808.01244
+date: 2020-08-03
 ---
+
 [Arxiv link](https://arxiv.org/abs/1808.01244) 
 
 ## Core idea

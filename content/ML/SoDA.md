@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2022-07-24
 ---
 SoDA: Multi-Object Tracking with Soft Data Association
 

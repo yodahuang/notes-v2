@@ -1,7 +1,6 @@
 ---
-Created: 2022-02-26T16:07
-Link: https://arxiv.org/abs/1703.01365
-share: true
+date: 2022-02-26T16:07
+Arxiv: https://arxiv.org/abs/1703.01365
 ---
 How do I know how much this input changes with output? Looking at the gradient is good, but it doesn’t handle saddle point (and that’s why we added momentum to SGD). Numerical method has its problem too. This paper uses path integration.
 

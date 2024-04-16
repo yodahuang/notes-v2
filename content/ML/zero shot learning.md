@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2022-07-17
 ---
 There's this [Blog](httss://towardsdatascience.com/understanding-zero-shot-learning-making-ml-more-human-4653ac35ccab) that uses [[CLIP]] as the core example to demonstrate how the thing works out. 
 

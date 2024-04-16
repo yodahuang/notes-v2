@@ -4,6 +4,7 @@ Arxiv: https://arxiv.org/abs/2303.09553
 pdf: "[[lerf.pdf]]"
 original title: "LERF: Language Embedded Radiance Fields"
 website: https://www.lerf.io/
+date: 2024-03-10
 ---
 Distill [[CLIP]] embeddings to 3D space for querying, by training a [[NeRF]] with extra embeddings.
 ![[lerf_overview.png]]

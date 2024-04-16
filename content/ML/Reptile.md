@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2022-08-15
 ---
 A similar method to [[MAML]]. 
 ![[reptile.png]]

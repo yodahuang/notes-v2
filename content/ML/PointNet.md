@@ -1,7 +1,6 @@
 ---
-Created: 2021-10-24T15:36
-Link: https://arxiv.org/abs/1612.00593
-share: true
+date: 2021-10-24T15:36
+Arxiv: https://arxiv.org/abs/1612.00593
 ---
 ### Summary
 

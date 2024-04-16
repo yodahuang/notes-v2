@@ -4,6 +4,7 @@ share: true
 Arxiv: https://arxiv.org/abs/2104.14294
 pdf: "[[dino.pdf]]"
 original title: Emerging Properties in Self-Supervised Vision Transformers
+date: 2024-03-10
 ---
 ## Summary
 DINO is a [[Vision Transformer (ViT)|ViT]] based [[self supervised learning]] approach without [[Contrastive learning]]. It uses [[]] with no labels for achieving that. 

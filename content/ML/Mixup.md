@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2022-08-15
 ---
 mixup: Beyond Empirical Risk Minimization
 - [Arxiv link](https://arxiv.org/abs/1710.09412)

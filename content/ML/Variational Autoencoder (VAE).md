@@ -1,7 +1,8 @@
 ---
-aliases: [VAE]
-year: 2013
-share: true
+aliases:
+  - VAE
+date: 2021-06-10
+Link: https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73
 ---
 - [Arxiv Link](https://arxiv.org/abs/1312.6114)
 - [Blog post](https://towardsdatascience.com/understanding-variational-autoencoders-vaes-f70510919f73)

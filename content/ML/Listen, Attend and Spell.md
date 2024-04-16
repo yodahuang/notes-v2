@@ -1,7 +1,6 @@
 ---
-Created: 2020-09-06T17:56
-Link: https://arxiv.org/abs/1508.01211
-share: true
+date: 2020-09-06T17:56
+Arxiv: https://arxiv.org/abs/1508.01211
 ---
 The note only covers the core encoder-decoder attention part., BP-LSTM and stuffs are not important.
 

@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2022-07-17
 ---
 This summary is based off this [blog](https://towardsdatascience.com/understanding-contrastive-learning-d5b19fd96607). 
 

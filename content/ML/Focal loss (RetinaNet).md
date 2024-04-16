@@ -1,6 +1,9 @@
 ---
-aliases: [Focal loss, RetinaNet]
-share: true
+aliases:
+  - Focal loss
+  - RetinaNet
+Arxiv: https://arxiv.org/abs/1708.02002
+date: 2020-08-03
 ---
 
 Basically this paper is saying "cross entropy loss is not good enough, since it puts too much penalty on good, easy-to-classify examples". It also provides a "simple" baseline called RetinaNet, which, controversially, isn't simple at all. The name focal loss doesn't have anything to do with focal. Just fancy hotness.

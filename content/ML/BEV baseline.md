@@ -1,9 +1,9 @@
 ---
-share: true
+date: 2022-08-13
+original title: A Simple Baseline for BEV Perception Without LiDAR
+Arxiv: https://arxiv.org/abs/2206.07959
+pdf: "[[bev.pdf]]"
 ---
-- [Arxiv link](https://arxiv.org/abs/2206.07959)
-- [[bev.pdf |PDF link]]
-
 # A Simple Baseline for BEV Perception Without LiDAR
 
 The problem it wants to solve: from a bunch of Camera (+ radar) images, get a birds eye view. Note this is different from range image with depth. This also tries to predict stuff like "how long is the truck that I can only see the back".

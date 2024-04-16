@@ -1,5 +1,6 @@
 ---
 share: true
+date: 1970-01-01
 ---
 # SpotNet: Self-Attention Multi-Task Network for Object Detection
 - [Arxiv link](https://arxiv.org/abs/2002.05540)

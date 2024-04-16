@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2023-09-17
 ---
 # Swin Transformer: Hierarchical Vision Transformer using Shifted Windows
 - [Arxiv link](https://arxiv.org/abs/2103.14030)

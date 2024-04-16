@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2022-08-15
 ---
 > - Creates a copy of the initialization weights
 > - Runs an iteration of gradient descent for a random task on the copy

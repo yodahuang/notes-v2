@@ -1,8 +1,6 @@
 ---
-Created: 2022-03-11T11:09
+date: 2022-03-11T11:09
 Link: https://m.youtube.com/watch?v=rHIkrotSwcc
-tags:
-  - Finished
 ---
 Simple talk. Three types of cost:
 

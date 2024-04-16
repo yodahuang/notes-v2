@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2023-09-17
 ---
 # ConvNet for the 2020s
 - [Arxiv link](https://arxiv.org/abs/2201.03545)

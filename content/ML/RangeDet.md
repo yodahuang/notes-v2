@@ -1,7 +1,6 @@
 ---
-Created: 2021-04-30T14:17
-Link: https://arxiv.org/abs/2103.10039
-share: true
+date: 2021-04-30T14:17
+Arxiv: https://arxiv.org/abs/2103.10039
 ---
 Full range view detection.
 

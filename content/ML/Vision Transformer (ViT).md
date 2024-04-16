@@ -1,6 +1,8 @@
 ---
-aliases: [ViT]
-share: true
+aliases:
+  - ViT
+Arxiv: https://arxiv.org/abs/2010.11929
+date: 2021-10-26
 ---
 
 A very very simple adaption of transformer, by dividing image to patches, add class label, add learnable 1d embedding, and go.

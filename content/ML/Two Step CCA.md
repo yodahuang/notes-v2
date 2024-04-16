@@ -1,6 +1,7 @@
 ---
-aliases: [TSCCA]
-share: true
+aliases:
+  - TSCCA
+date: 2022-08-25
 ---
 [Arxiv Link](https://arxiv.org/abs/1206.6403)
 [[tscca.pdf |PDF Link]]

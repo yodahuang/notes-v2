@@ -1,5 +1,6 @@
 ---
 share: true
+date: 2022-08-14
 ---
 - [Arxiv link](https://arxiv.org/abs/1705.07115)
 - [[multi_task_uncertainty_weighting.pdf |PDF link]]

@@ -1,5 +1,5 @@
 ---
-share: true
+date: 2022-08-15
 ---
 End-to-End Object Detection with Transformers
 - [Arxiv link](https://arxiv.org/abs/2005.12872)

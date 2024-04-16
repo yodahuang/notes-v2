@@ -1,9 +1,10 @@
 ---
-share: true
+date: 2022-08-27
+Arxiv: https://arxiv.org/abs/2103.03230
+pdf: "[[barlow_twins.pdf]]"
+original title: "Barlow Twins: Self-Supervised Learning via Redundancy Reduction"
 ---
-Barlow Twins: Self-Supervised Learning via Redundancy Reduction
-- [Arxiv link](https://arxiv.org/abs/2103.03230)
-- [[barlow_twins.pdf |PDF Link]]
+# Barlow Twins: Self-Supervised Learning via Redundancy Reduction
 
 This paper offers a new way to do [[self supervised learning]]. Previously this is usually done with [[Contrastive learning]], like [[SIMCLR]] or [[CLIP]]. Or using asymmetric network structure with stop-gradient, like [[BYOL]]. The new method is sound on math (unlike [[BYOL]]), easy to implement, does not require large batches, and has relatively good result.
 

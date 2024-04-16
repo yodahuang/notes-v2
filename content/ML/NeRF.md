@@ -5,6 +5,7 @@ share: true
 Arxiv: https://arxiv.org/abs/2003.08934
 pdf: "[[nerf.pdf]]"
 original title: "NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis"
+date: 2024-03-02
 ---
 
 Note: this is not an easy-to-understand paper. I get the basic idea of it by first going over [a YouTube video](https://youtu.be/CRlN-cYFxTk?si=SBvr65BjiHjWcMyp).

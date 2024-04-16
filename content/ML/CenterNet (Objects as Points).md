@@ -3,8 +3,9 @@ aliases:
   - CenterNet
 share: true
 Arxiv: https://arxiv.org/abs/1904.07850
-pdf: "[[ML/papers/pdf/centernet_object_as_points.pdf|centernet_object_as_points]]"
+pdf: "[[centernet_object_as_points.pdf]]"
 original title: Objects as Points
+date: 1970-01-01
 ---
 Note: this and the [[CenterNet (Keypoint Triplets)|centernet_triplets]] paper share the same network name.
 

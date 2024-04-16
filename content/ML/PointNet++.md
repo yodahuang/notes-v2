@@ -1,6 +1,6 @@
 ---
-Created: 2021-10-24T15:40
-share: true
+date: 2021-10-24T15:40
+Arxiv: https://arxiv.org/abs/1706.02413
 ---
 A follow up on [[PointNet]].
 

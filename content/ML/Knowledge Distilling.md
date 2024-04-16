@@ -1,7 +1,6 @@
 ---
-Created: 2021-06-05T16:21
-Link: https://arxiv.org/abs/1503.02531
-share: true
+date: 2021-06-05T16:21
+Arxiv: https://arxiv.org/abs/1503.02531
 ---
 A simple paper (it’s written in 2015!) The authors does not have the notion of teacher and student network but it’s just like that. We can use the output of teacher network as “soft target” of the student network.
 

@@ -1,8 +1,8 @@
 ---
-share: true
 Arxiv: https://arxiv.org/abs/2004.01177
 pdf: "[[pdf/tracking_objects_as_points.pdf|tracking_objects_as_points]]"
 original title: Tracking Objects as Points
+date: 2023-09-17
 ---
 Tracking object with [[CenterNet (Objects as Points)|CenterNet]], with very small modifications to the original work.
 
