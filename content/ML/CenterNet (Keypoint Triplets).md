@@ -5,7 +5,7 @@ pdf: "[[pdf/centernet.pdf|centernet]]"
 aliases:
   - centernet_triplets
 original title: "CenterNet: Keypoint Triplets for Object Detection"
-date: 1970-01-01
+date: 1900-01-01
 ---
 Note: this and the [[CenterNet (Objects as Points)|centernet]] paper share the same network name.
 

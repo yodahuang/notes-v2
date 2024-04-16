@@ -1,6 +1,6 @@
 ---
 share: true
-date: 1970-01-01
+date: 1900-01-01
 ---
 ## Learning Transferable Visual Models From Natural Language Supervision
 
