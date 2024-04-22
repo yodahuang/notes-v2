@@ -9,7 +9,7 @@ Full range view detection.
 Three problems with range view:
 
 - Scale Variation between nearby and far away objects
-    - [[FPN]] to rescue. Associate label with prediction by range.
+    - [[Feature Pyramid Networks|FPN]] to rescue. Associate label with prediction by range.
     - The paper call it Range Conditioned Pyramid (RCP)
 - Convolution is done in 2D range image, but the output we want is in 3D space.
     - Meta kernel that takes 3D Cartesian information in too (key important bit)
@@ -35,5 +35,3 @@ Let’s recall a normal CNN kernel, which is of size $h_k * w_k * c_{in} * c_{ou
 As we want to take Cartesian information in convolution, it need to be part of the feature. We can simply incorporate that into kernel weight. Thus, we need to relax the weight sharing, since the weight should change based on the Cartesian coordinates. The actual weight is calculated by a MLP.
 
 Notice the strange element wise product there. This is because it use [depth-wise convolution](https://towardsdatascience.com/a-basic-introduction-to-separable-convolutions-b99ec3102728) here, similar as MobileNet. By first doing per-channel convolution, then using $1*1$﻿ convolution to expand to output channel, it saves computation power.
-
-[[Quotes]]

@@ -30,6 +30,8 @@ kanban-plugin: basic
 - [ ] [[Segment Anything]]
 - [ ] [[Deformable Attention]]
 - [ ] [[DEFT]]
+- [ ] [[Embracing Single Stride 3D Object Detector with Sparse Transformer]]
+- [ ] [[Global Tracking Transformers]]
 
 
 ## Backlog

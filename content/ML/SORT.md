@@ -1,7 +1,8 @@
 ---
 date: 2020-08-03T23:04
 Link: https://arxiv.org/abs/1602.00763
-share: true
+tags:
+  - multi-object-tracking
 ---
 Simple paper, nothing special.
 

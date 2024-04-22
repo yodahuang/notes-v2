@@ -1,10 +1,10 @@
 ---
-share: true
 date: 2022-07-24
+tags:
+  - multi-object-tracking
+Arxiv: https://arxiv.org/abs/2008.07725
+original title: "SoDA: Multi-Object Tracking with Soft Data Association"
 ---
-SoDA: Multi-Object Tracking with Soft Data Association
-
-[Arxiv Link](https://arxiv.org/abs/2008.07725)
 I don't think Waymo folks know how to write a good, easy to read paper.
 
 Core idea:

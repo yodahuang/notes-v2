@@ -8,7 +8,7 @@ date: 2023-04-16
 -  [[pdf/mae.pdf|PDF link]]
 
 Just like He's other works (ResNet etc.), this one's simple but great. 
-The goal of the paper is to get a [[self supervised learning]] learner. This is an approach different than [[../Contrastive learning]]. State of the Art of course.
+The goal of the paper is to get a [[self supervised learning]] learner. This is an approach different than [[Contrastive learning]]. State of the Art of course.
 
 ## Overview
 This image kinda gives the overview:
