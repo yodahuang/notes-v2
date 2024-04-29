@@ -1,7 +1,3 @@
----
-share: true
----
-
 # Welcome!
 
 Well, help yourself to my notes:

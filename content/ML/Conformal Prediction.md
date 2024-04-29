@@ -44,3 +44,5 @@ Now we use cumulative sum up to the ground truth class as score.
 First, train models that output quantile values directly. That can be done with [[Pinball loss]].
 Then you calibrate that quantile:
 ![[conformalized_regression.png]]
+
+There's also part 2 and 3 video that I also finished, but didn't got the time to finish the notes. To be finished later.
