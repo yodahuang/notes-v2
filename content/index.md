@@ -1,4 +1,6 @@
-# Welcome!
+---
+title: Welcome to Yanda's random notes
+---
 
 Well, help yourself to my notes:
 
