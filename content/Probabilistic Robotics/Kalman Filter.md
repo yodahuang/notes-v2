@@ -53,3 +53,23 @@ $$
 \Sigma_{t} = (1 - \alpha) \bar{\Sigma}_t
 $$
 Why? If $\alpha \rightarrow 0$, that means measurement noise is too large, and we rely only on state update. If $\alpha \rightarrow 1$, measurement is so good we just need that, and we are super certain.
+
+---
+## The derivation
+
+The following notes are from [[gaussmarkov.pdf|Gauss-Markov Models]], a supplementary material from 16-831, F14. It's clearer than the version in the book Probabilistic Robotics.
+
+Say we have a vector $x\sim\mathcal{N}(\mu,\Sigma)$,
+
+Linear transformation, $Ax$, is easier with [[Gaussian#Moment parameterization|moment parameterization]]. $Ax \sim \mathcal{N}(A\mu, A\Sigma A^T)$.
+
+Conditioning, getting $x_{1}| x_{2}$ from joint distribution $x$, is easier with [[Gaussian#Natural parameterization|natural parameterization]]. Note that conditioning is basically start from joint distribution and then treat $x_2$ as "known".
+$$x_1|x_2\sim\tilde{\mathcal{N}}(J_1-P_{12}x_2,P_{11})$$
+If we want to multiply two likelihood function,  $p(x|z) \sim p(z|x) p(x)$, then posterior can be simply computed by
+$$x_1|z\sim\tilde{\mathcal{N}}(J_{1}+ J_{2}, P_{1}+ P_{2})$$
+
+Now with these in mind, we can have a gauss-markov model. I'm too tired now to repeat the stuff in the PDF. But the general idea is we do it in two steps. One prediction / rollup, one conditioning. 
+
+The former computes $p(x_{t}|z_{1}, ... z_{t-1})$, and relies on $p(x_{t-1} = x | z_{1}, ... z_{t-1})$. The latter is $p(x_{t}) | z_{1}, ..., z_t$ and relies on the previous formula. The first step is easier in moment parameters, while the latter is easier in natural one. 
+
+If we use [[Sherman-Morrison-Woodbury formula]] and convert the natural parameterization to moment one, we get our familiar Kalman filter, which is an algorithm, not the underlying probabilistic model.
