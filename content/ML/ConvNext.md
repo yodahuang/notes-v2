@@ -1,6 +1,7 @@
 ---
 share: true
 date: 2023-09-17
+pdf: "[[ML/papers/pdf/convnext.pdf|convnext]]"
 ---
 # ConvNet for the 2020s
 - [Arxiv link](https://arxiv.org/abs/2201.03545)
@@ -22,13 +23,13 @@ An aggregation of tricks / designs on ResNet so it can outperform [[Swin Transfo
 Comment: We'll see [[#Large kernel size]] later. The $4 \times 4$ mentioned here is the how many patches [[Swin Transformer]] splits in an image, but each patch is $7 \times 7$. Plus, the performance doesn't change much. I don't think this is something good.
 
 ## ResNext-ify
-- Use [[ResNext]]'s idea of grouped convolution. Here we use depthwise convolution, a special case for grouped convolution where the number of groups equals the number of channels. The result is increased FLOPs.
+- Use [[ResNext]]'s idea of grouped convolution. This is more like [[MobileNetV2]]'s version. Here we use [[Depthwise Separable Convolution]], a special case for grouped convolution where the number of groups equals the number of channels. The result is decreased FLOPs.
 
 ## Inverted bottleneck
 - Transformers have it. So we're gonna have this too.(Though it doesn't bring much performance gain, and make the network runs slower).
 - In the following (c), it's the configuration after we do something afterwards. More random.
+- Also see [[linear bottleneck]] and [[inverted residuals]],
 ![[convnext_bottleneck.png]]
-Comment: Another nonsense, only make things slower. 
 
 ## Large kernel size
 - So larger kernel size means more computation, so we adapt that (c) above. The authors argue this is also learned from Transformers: self attention layer is prior to MLP.
@@ -40,7 +41,7 @@ Comment: what a *surprise*. I mean [[Swin Transformer]] is $7 \times 7$.
 - Delete GELU in the blocks except for one. Interestingly improves performance. This is suggested by Transformers has fewer activation functions.
 - Also delete a BatchNorm layer. Slight improvement.
 - Replace BachNorm with [[LayerNorm]]. With all the changes previously we got a better performance now.
-- Separate out the downsampling layers. Between each stage, $2\times2$ conv layers with stride $2$ for spatial downsampling. For [[ResNet]] it was $3\times 3$, at the start of each stage. To stabalize training, some [[LayerNorm]] layers are added. 
+- Separate out the downsampling layers. Between each stage, $2\times2$ conv layers with stride $2$ for spatial downsampling. For [[ResNet]] it was $3\times 3$, at the start of each stage. To stabilize training, some [[LayerNorm]] layers are added. 
 ![[convnext_block.png]]
 
 ![[convnext_arch_comparison.png]]
