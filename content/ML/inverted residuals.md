@@ -1,3 +1,6 @@
+---
+date: 2024-10-12
+---
 
 Here the 8 is [[ResNet]], and 30 is [[ResNext]].  
 ![[inverted_residue.png]]

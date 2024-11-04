@@ -1,3 +1,7 @@
+---
+date: 2024-10-12
+---
+
 > Informally, for an input set of real images, we say that the set of layer activations (for any layer $L_i$) forms a “manifold of interest”. It has been long assumed that manifolds of interest in neural networks could be embedded in low-dimensional subspaces. 
 [[mobilenet_v2.pdf#page=2&selection=253,13,262,1|mobilenet_v2, page 2]]
 
