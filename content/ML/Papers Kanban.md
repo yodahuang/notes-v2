@@ -1,6 +1,6 @@
 ---
 
-kanban-plugin: basic
+kanban-plugin: board
 
 ---
 
@@ -32,6 +32,8 @@ kanban-plugin: basic
 - [ ] [[DEFT]]
 - [ ] [[Embracing Single Stride 3D Object Detector with Sparse Transformer]]
 - [ ] [[Global Tracking Transformers]]
+- [ ] EfficientNet v2
+- [ ] ConvNext v2
 
 
 ## Backlog
@@ -44,6 +46,6 @@ kanban-plugin: basic
 
 %% kanban:settings
 ```
-{"kanban-plugin":"basic"}
+{"kanban-plugin":"board"}
 ```
 %%
