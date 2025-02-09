@@ -13,15 +13,9 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: null,
     baseUrl: "notes.yanda.rocks",
-    ignorePatterns: [
-      "private", 
-      "_templates",
-      ".obsidian", 
-      "**/*Kanban.md", 
-      "*.pdf",
-    ],
+    ignorePatterns: ["private", "_templates", ".obsidian", "**/*Kanban.md", "*.pdf"],
     defaultDateType: "created",
-    generateSocialImages: false,
+    generateSocialImages: true,
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
