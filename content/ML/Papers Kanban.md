@@ -34,6 +34,9 @@ kanban-plugin: board
 - [ ] [[Global Tracking Transformers]]
 - [ ] EfficientNet v2
 - [ ] ConvNext v2
+- [ ] DeiT
+- [ ] PointPillar
+- [ ] Twins: Revisiting the Design of Spatial Attention in Vision Transformers
 
 
 ## Backlog
