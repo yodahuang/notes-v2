@@ -21,6 +21,7 @@ const config: QuartzConfig = {
       "*.pdf",
     ],
     defaultDateType: "created",
+    generateSocialImages: false,
     theme: {
       fontOrigin: "googleFonts",
       cdnCaching: true,
