@@ -7,6 +7,8 @@ kanban-plugin: board
 ## Finished
 
 **Complete**
+- [ ] PointPillar
+- [ ] DeiT
 - [x] [[CLIP]]
 - [x] [[CornerNet]]
 - [x] [[Feature Pyramid Networks|FPN]]
@@ -34,9 +36,10 @@ kanban-plugin: board
 - [ ] [[Global Tracking Transformers]]
 - [ ] EfficientNet v2
 - [ ] ConvNext v2
-- [ ] DeiT
-- [ ] PointPillar
 - [ ] Twins: Revisiting the Design of Spatial Attention in Vision Transformers
+- [ ] Cross view transformers for real time map-view semantic segmentation
+- [ ] FlatFormer
+- [ ] SWFormer
 
 
 ## Backlog
