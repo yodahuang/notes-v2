@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   languages.javascript = {
     enable = true;
     # The project uses npm instead of pnpm
