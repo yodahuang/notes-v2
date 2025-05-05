@@ -25,6 +25,7 @@ kanban-plugin: board
 - [x] [[MLP Mixer]]
 - [x] [[Swin Transformer]]
 - [x] [[ConvNext]]
+- [x] FlatFormer
 
 
 ## Planned
@@ -38,7 +39,6 @@ kanban-plugin: board
 - [ ] ConvNext v2
 - [ ] Twins: Revisiting the Design of Spatial Attention in Vision Transformers
 - [ ] Cross view transformers for real time map-view semantic segmentation
-- [ ] FlatFormer
 - [ ] SWFormer
 
 
