@@ -170,4 +170,4 @@ The left part of the diagram is encoder, the other is decoder. If you operate on
 ![[transformer.png]]
 ![[transformer_1.png]]
 
-[Master Positional Encoding: Part I](https://towardsdatascience.com/master-positional-encoding-part-i-63c05d90a0c3)
+The OG transformer uses [[Absolute position embedding]].

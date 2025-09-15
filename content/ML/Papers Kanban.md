@@ -40,6 +40,12 @@ kanban-plugin: board
 - [ ] Twins: Revisiting the Design of Spatial Attention in Vision Transformers
 - [ ] Cross view transformers for real time map-view semantic segmentation
 - [ ] SWFormer
+- [ ] Mamba
+- [ ] Lift, Splat, Shoot
+- [ ] Deformable DETR
+- [ ] BEVFusion
+- [ ] LRS4Fusion
+- [ ] Rotary encoder
 
 
 ## Backlog

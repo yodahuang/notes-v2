@@ -21,4 +21,5 @@ devenv.local.nix
 .pre-commit-config.yaml
 
 *.pdf
+*.html
 .sync
