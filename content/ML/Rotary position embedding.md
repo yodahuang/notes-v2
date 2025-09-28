@@ -26,15 +26,25 @@ q_m &= f_q(\mathbf{x}_m, m) \\
 $$
 $k$ and $v$ are both on $n$ position because that's a way of understanding the weighted sum.
 And then they go through softmax like this
+
 $$a_{m,n}=\frac{\exp(\frac{\boldsymbol{q}_m^\intercal\boldsymbol{k}_n}{\sqrt{d}})}{\sum_{j=1}^N\exp(\frac{\boldsymbol{q}_m^\intercal\boldsymbol{k}_j}{\sqrt{d}})}$$
+
 For the traditional absolute position embedding, that's
+
 $$f_{t:t\in\{q,k,v\}}(\boldsymbol{x}_i,i):=\boldsymbol{W}_{t:t\in\{q,k,v\}}(\boldsymbol{x}_i+\boldsymbol{p}_i),$$
+
 Since we want to capture the relative information and attention, it would be good if that $q^T_mk_n$ depend only on the relative position between $m$ and $n$. So the problem becomes: can we find such an $f$, such that
+
 $$\langle f_q(\boldsymbol{x}_m,m),f_k(\boldsymbol{x}_n,n)\rangle=g(\boldsymbol{x}_m,\boldsymbol{x}_n,m-n).$$
+
 One can find a solution to our formulation, when $d=2$ is:
+
 $$\begin{aligned}f_{q}(\boldsymbol{x}_{m},m)&=(\boldsymbol{W}_q\boldsymbol{x}_m)e^{im\theta}\\f_k(\boldsymbol{x}_n,n)&=(\boldsymbol{W}_k\boldsymbol{x}_n)e^{in\theta}\\g(\boldsymbol{x}_m,\boldsymbol{x}_n,m-n)&=\mathrm{Re}[(\boldsymbol{W}_q\boldsymbol{x}_m)(\boldsymbol{W}_k\boldsymbol{x}_n)^*e^{i(m-n)\theta}]\end{aligned}$$
+
 where $\mathrm{Re}[\cdot]$ is the real part of a complex number and $(\boldsymbol{W}_k\boldsymbol{x}_n)^*$ represents the conjugate complex number of $(\boldsymbol{W}_k\boldsymbol{x}_n)$. $\theta\in\mathbb{R}$ is a preset non-zero constant. We can further write $f_\{q,k\}$ in a multiplication matrix:
+
 $$f_{\{q,k\}}(\boldsymbol{x}_m,m)=\left(\begin{array}{cc}\cos m\theta&-\sin m\theta\\\sin m\theta&\cos m\theta\end{array}\right)\left(\begin{array}{cc}W_{\{q,k\}}^{(11)}&W_{\{q,k\}}^{(12)}\\W_{\{q,k\}}^{(21)}&W_{\{q,k\}}^{(22)}\end{array}\right)\left(\begin{array}{c}x_m^{(1)}\\x_m^{(2)}\end{array}\right)$$
+
 We can see intuitively that this work since this is rotating the embedding, or, assigning them angles in 2D plane. A vector at $\theta$ and a vector at $\gamma$, when doing dot product, gives us $\cos(\theta - \gamma)$.
 
 In order to generalize our results in 2D to any $x_i \in \mathbb{R}^d$ where $d$ is even, we divide the d-dimension space into $d/2$ sub-spaces and combine them in the merit of the [[#Appendix A linearity of the inner product|linearity of the inner product]], turning $f_{\{q,k\}}$ into:
