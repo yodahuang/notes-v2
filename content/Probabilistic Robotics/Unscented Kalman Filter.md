@@ -13,22 +13,28 @@ The actual thing is as follows:
 ## Unscented Transform
 We choose $2n +1$ sigma points:
 ![[ukf_formulas.png]]
+
 $$
 w^{[i]}_{m}=w^{[i]}_{c}= \frac{1}{2(n + \lambda)}\quad \text{for} i = 1, ..., 2n. 
 $$
+
 The parameter $\beta$ can be chosen to encode additional (higher order) know-  
 ledge about the distribution underlying the Gaussian representation. If the  
 distribution is an exact Gaussian, then $\beta = 2$ is the optimal choice.
+
 $$
 \mathcal{Y}^{[i]} = g(\mathcal{X}^{[i]})
 $$
+
 And we can estimate the shape of the resulting Gaussian by:
+
 $$
 \begin{aligned}
 \mu' &= \sum^{2n}_{i=0} w^{[i]}_{m}\mathcal{Y}^{[i]}\\
 \Sigma' &= \sum^{2n}_{i=0} w^{[i]}_{c}(\mathcal{Y}^{[i]} - \mu')(\mathcal{Y}^{[i]} - \mu')^T\\
 \end{aligned}
 $$
+
 ## The UKF
 ![[ukf.png]]
 

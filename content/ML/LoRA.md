@@ -14,7 +14,9 @@ Why it's good:
 - No inference latency.
 
 > For a pre-trained weight matrix $W_0\in\mathbb{R}^{d\times k}$, we constrain its update by representing the latter with a low-rank decomposition $W_0+\Delta W=W_0+BA$,where $B\in\mathbb{R}^d\times r,A\in\mathbb{R}^{r\times\tilde{k}}$, and the rank $r\ll\min(d,k).$ During training, $W_0$ is frozen and does not receive gradient updates, while $A$ and $B$ contain trainable parameters. Note both $W_0$ and $\Delta W=BA$ are multiplied with the same input, and their respective output vectors are summed coordinate-wise. For $h=W_0x$, our modified forward pass yields:
+>
 > $$h=W_0x+\Delta Wx=W_0x+BAx$$
+>
 > We illustrate our reparametrization in Figure 1. We use a random Gaussian initialization for $A$ and zero for $B$, so $\Delta W=BA$ is zero at the beginning of training. We then scale $\Delta Wx$ by $\frac\alpha r$, where $\alpha$ is a constant in $r$. When optimizing with Adam, tuning $\alpha$ is roughly the same as tuning the learning rate if we scale the initialization appropriately.  
 
 [[lora.pdf#page=4&selection=113,84,272,49|lora, page 4]]

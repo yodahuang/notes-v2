@@ -14,9 +14,11 @@ What’s not covered in the paper is “how do you know it’s HBM access making
 
 ### Standard attention
 $N$ is sequence length and $d$ is the head dimension
+
 $$
 kS = QK^{T} \in \mathbb{R}^{N\times N}, \ \ P = \text{softmax}(S) \in \mathbb{R}^{N \times N}, \ \ O = PV \in \mathbb{R}^{N \times d}
 $$
+
 ![[regular_attention.png]]
 
 ### Flash Attention

@@ -20,15 +20,18 @@ Now onto the details.
 Imagine a classic pinhole camera model. For most of the cameras, their field of view angle stays within a small range. That means the "mm" size would be roughly the same. What's different is the resolution, or the sampling rate. Our network only care about the pixel size.
 
 At training time:
+
 $$
 r_{train} = \frac{kK_{train}}{\sigma}\cdot r_{1}
 $$
+
 - $r_{train}$: apparent size of training
 - $k$: variable relate to focal length. $k^{-1}\approx 1$
 - $\sigma$: scale parameter for `SizedRandomCrop`
 - $r_1$: $\frac{R}{Z}$, where $R$ is size and $Z$ the depth. So only related to the object
 
 At test time, usually we isotropically resizing the image so that the shorter dimension is $K_\mathrm{test}^\mathrm{image}$ and then extracting a $K_\mathrm{test}\times K_\mathrm{test}$ crop (CenterCrop) from that.
+
 $$r_{test} = kK^{image}_{test}\cdot r_1$$
 
 Thus, we should increase $K^{image}_{test}$ by $\frac{1}{\alpha}$ too to counter that. That can be intuitively understood as: in training augmentation we zoom in. So test time we should "zoom in" too by sampling more. We also increase $K_{test}$ to keep the crop / image ratio be the same, so we are not looking at nothing.

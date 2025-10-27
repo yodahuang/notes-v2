@@ -17,6 +17,7 @@ This is my understanding, not what's in the paper. We don't need the absolute po
 
 ## Formulation
 Say we generate the positional embedding via function $f$, 
+
 $$
 \begin{aligned}
 q_m &= f_q(\mathbf{x}_m, m) \\
@@ -24,6 +25,7 @@ q_m &= f_q(\mathbf{x}_m, m) \\
 \mathbf{v}_n &= f_v(\mathbf{x}_n, n),
 \end{aligned}
 $$
+
 $k$ and $v$ are both on $n$ position because that's a way of understanding the weighted sum.
 And then they go through softmax like this
 
@@ -76,6 +78,7 @@ is the rotary matrix with pre-defined parameters $\Theta = \{\theta_i = 10000^{-
 Let's consider two vectors, $\mathbf{x}$ and $\mathbf{y}$, in a $d$-dimensional space, where $d$ is an even number.
 
 $$\mathbf{x} = (x_1, x_2, x_3, x_4, \dots, x_{d-1}, x_d)$$
+
 $$\mathbf{y} = (y_1, y_2, y_3, y_4, \dots, y_{d-1}, y_d)$$
 
 The standard inner product (dot product), denoted by $\langle \mathbf{x}, \mathbf{y} \rangle$, is defined as the sum of the element-wise products of their components:

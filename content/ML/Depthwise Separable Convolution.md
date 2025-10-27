@@ -6,6 +6,7 @@ date: 2024-10-19
 
 ![[depth_wise_conv.png]]
 Instead of having $D_{K}^2 * M * N * D_{F}^2$, where $K$ stands for kernel and $F$ stands for feature map, depth wise conv makes it two step, each step handling less capacity:
+
 $$
 D_{K}^{2}* M * D_{F}^{2} + M * N * D_{F}^2
 $$

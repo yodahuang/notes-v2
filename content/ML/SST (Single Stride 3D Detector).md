@@ -30,9 +30,11 @@ BTW, they [conducted studies]([[sst.pdf#page=3&selection=43,2,43,31|sst, page 3]
 2. Divide the space into non-overlapping regions (the green boxes) according to physical location.
 3. In each of the region, do sparse attention, which basically means only pass in the non-empty voxel as token. In training time each region contain different number of tokens. So region batching is applied here:
 > To utilize the parallel computation of modern devices, we batch regions with similar number of tokens together. In practice, if a region contains the tokens with number $N_{token}$, satisfying: 
+
 $$
  2^i\leqslant N_{token}<2^{i+1},\quad i\in\{0,1,2,3,4,5,6\},
 $$
+
 > then we pad the number of tokens to $2^{i+1}$. With padded tokens, we can divide all the regions into several batches, and then process all regions in the same batch in parallel.
 
 [[sst.pdf#page=4&selection=175,0,232,55|sst, page 4]]. Optimizing this part is the main motivation of [[Flatformer]].

@@ -69,7 +69,9 @@ def generate(self, idx, max_new_tokens):
 ## Building self attention
 
 Let's pay attention (pun not intended) for the very basic formula:
+
 $$\mathrm{Attention}(Q,K,V)=\mathrm{softmax}(\frac{QK^T}{\sqrt{d_k}})V$$
+
 Think about the following questions:
 - What's `softmax` doing here?
 - What if we want each token to only attend to stuff before it? (This paper is machine translation so it does not matter)

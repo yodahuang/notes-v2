@@ -14,19 +14,26 @@ aliases: [Bayes Filter]
 $$
 p(x_t|x_{0:t-1}, z_{1:t-1}, u_{1:t}) = p(x_t|x_{t-1}, u_t)
 $$
+
 This means only $u_t$ matters if we know $x_t-1$. 
 ### Measurement probability
+
 $$
 p(z_t|x_{0:t}, z_{1:t-1}, u_{1:t}) = p(z_t|x_t)
 $$
+
 This means $x_t$ is sufficient to predict measurement $z_t$.
 
 More notations:
+
 $$bel(x_{t}) = p(x_t|z_{1:t}, u_{1:t})$$
+
 If we try to **predict** $x_t$ before we got measurement $z_t$, we got the posterior
+
 $$
 \overline{bel}(x_{t})=p(x_{t}|z_{1:t-1},u_{1:t})
 $$
+
 From $\overline{bel}(x_t)$ to $bel(x_t)$ is called *correction* or *measurement update*.
 
 ## Bayes Filter Algorithm

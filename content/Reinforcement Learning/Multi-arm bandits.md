@@ -20,17 +20,23 @@ The answer is that methods like UCB doesn't scale well. Or, they are not able to
 
 ## Back to definition
 The **action value** for action $a$ is the expected reward
+
 $$q(a) = \mathbb{E}[R_t | A_t = a]$$
 
 The **optimal value** is
+
 $$v_* = \max_{a \in \mathcal{A}} q(a) = \max_a \mathbb{E}[R_t | A_t = a]$$
 
 **Regret** of an action $a$ is
+
 $$\Delta_a = v_* - q(a)$$
+
 Note there is only one state, and there exist such an action that is ALWAYS the best. 
 
 We want to minimize the total regret:
+
 $$L_t=\sum_{n=1}^tv_*-q(A_n)=\sum_{n=1}^t\Delta_{A_n}$$
+
 ## Greedy and epsilon greedy
 Greedy is just greedy.
 The **$\epsilon$-greedy** algorithm:
@@ -39,13 +45,16 @@ The **$\epsilon$-greedy** algorithm:
 * Equivalently:
 
 $$\pi_t(a) = \begin{cases} (1 - \epsilon) + \epsilon / |\mathcal{A}| & \text{if } Q_t(a) = \max_b Q_t(b) \\ \epsilon / |\mathcal{A}| & \text{otherwise} \end{cases}$$
+
 ## Policy gradient
 We want to maximize total reward. We can do it by gradient ascent: in each step we make it better. Think about it this way: the total expected reward is a function of $\theta$ and picture in your head gradient ascent (since it's reward, not loss).
 
 $$\theta_{t+1}=\theta_t+\alpha\nabla_\theta\mathbb{E}[R_t|\pi_{\theta_t}]$$
+
 This expected reward is not the "reward this time" since the policy can be stochastic. How can we compute the gradient? While we can use sample based methods to approximate expectation, here we still need to sample $R_t|\pi_{\theta_1}$, which is not known.
 
 Here comes the log-likelihood trick (also known as REINFORCE trick)
+
 $$
 \begin{aligned}
 \nabla_\theta \mathbb{E}[R_t | \pi_\theta] &= \nabla_\theta \sum_a \pi_\theta(a) \overbrace{\mathbb{E}[R_t | A_t = a]}^{= q(a)} \\
@@ -55,6 +64,7 @@ $$
 &= \mathbb{E} \left[ R_t \frac{\nabla_\theta \pi_\theta(A_t)}{\pi_\theta(A_t)} \right] \quad = \mathbb{E} [R_t \nabla_\theta \log \pi_\theta(A_t)]
 \end{aligned}
 $$
+
 - In the first step we are expanding that expectation into and show $\pi$ is just probability of $a$. Note $a$ is introduced.
 - And the $q$ value doesn't depend on $\theta$, this is great.
 - Some tricks so the whole thing is an expectation again by introducing back $\pi_{\theta}(a)$.
@@ -64,9 +74,12 @@ Hey hey, what changed? It goes from the gradient of theta w.r.t. an expectation 
 $$
 \theta=\theta+\alpha R_t\nabla_\theta\log\pi_\theta(A_t)
 $$
+
 ### Baseline
 For any $b$,
+
 $$\begin{aligned}\sum_ab\nabla_\theta\pi_\theta(a)&=b\nabla_\theta\sum_a\pi_\theta(a)\\&=0\end{aligned}$$
+
 This means we can subtract a **baseline**, and instead use
 
 $$\theta = \theta + \alpha(R_t - b)\nabla_\theta \log \pi_\theta(A_t)$$
@@ -84,6 +97,7 @@ Recall in greedy, we just pick the $a_t = \underset{a \in \mathcal{A}}{\text{arg
 If we pick that $U_{t}(a) = \sqrt{\frac{\log t}{2N_{t}(a)}}$, we can show by [[Hoeffding's Inequality]], that's quite good.
 
 So the formula is:
+
 $$
 a_t=\underset{a\in\mathcal{A}}{\operatorname*{\operatorname*{argmax}}}Q_t(a)+c\sqrt{\frac{\log t}{N_t(a)}}
 $$
@@ -103,6 +117,7 @@ $$
 &= p \left( q(a) = \max_{a'} q(a') \right)
 \end{aligned}
 $$
+
 You can imagine for Bernoulli bandits, we can model it by Beta distribution. 
 
 ## Appendix: why UCB doesn't scale

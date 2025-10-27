@@ -16,7 +16,9 @@ I would also like to put this image here from [[LLM Post-Training]] that I find 
 ## State
 As we can see from control theory, the definition of state can be crucial. There are environment state and agent state. Let's talk about agent state here.
 The *history* is
+
 $$H_{t}= O_{0}, A_{0}, R_{1}, O_{1}, \dots, O_{t-1}, A_{t-1}, R_{t,}O_t$$
+
 The markovian agent state $S_t$ typically is some *compression* of $H_t$. The full hitory is Markov (but keeps growing).
 In an environment with partial observability, the observations are not Markovian, making them a POMDP. The environment state may still be Markovian, but the agent does not know it. 
 

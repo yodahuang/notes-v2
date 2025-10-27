@@ -12,6 +12,7 @@ $$
 \underbrace{Q(S_t, A_t)}_{\color{blue}{\text{Former Q-value estimation}}}
 \quad\; \color{orange}{\text{(TD Error)}}
 $$
+
 But wait, there's still $\max$, so it can't really handle continuous space well. It can handle complicated state space though. 
 ```pseudo
 \begin{algorithm}

@@ -13,9 +13,11 @@ Unlike the [[CenterNet (Keypoint Triplets)|centernet_triplets]] paper, this one 
 ## Loss
 The final layer of the model is a heatmap with output stride of $R=4$.
 Ground truth center is splatted with Gaussian kernel (so that pixels around it is also fine), and then compare with the heatmap with Focal loss. See [[ML/pdf/centernet_object_as_points.pdf#page=3&selection=166,0,259,37|centernet_object_as_points, page 3]]. A local offset is also predicted to recover the discretization error.
+
 $$
 L_{\text {det }}=L_k+\lambda_{size} L_{size}+\lambda_{off} L_{off}
 $$
+
 Here $size$  is the bounding box params, and $off$ is local offset. The values used in the experiments are $\lambda_{size} = 0.1$ and $\lambda_{off} = 1$.
 ## From center to object
 No NMS here. As long as point is a global maxima, we say it's a center.

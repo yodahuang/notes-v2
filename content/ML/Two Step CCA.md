@@ -13,9 +13,11 @@ The goal: learn a low level embedding in an unsupervised learning way. E.g. get 
 > CCA is the analog to Principal Component Analysis (PCA) for pairs of matrices. PCA computes the directions of maximum covariance between elements in a single matrix, whereas CCA computes the directions of maximal correlation between a pair of matrices.
 
 So if we got two metrics $L$ and $R$, we would like to simultaneously find the directions $\Phi_l$ and $\Phi_r$ that maximize the correlation of the projections of $L$ onto $\Phi_l$ with the projections of $R$ onto $\Phi_r$. Writing it in formula:
+
 $$
 \max_{\Phi_l, \Phi_r}\frac{\mathbb{E}[\langle L, \Phi_l\rangle\langle R, \Phi_r \rangle]}{\sqrt{\mathbb{E}[\langle L, \Phi_l\rangle^2]\mathbb{E}[\langle R, \Phi_r\rangle^2]}}
 $$
+
 Here the expectation is assuming $L$ and $R$ are datasets.
 
 ## OSCCA (One Step CCA)
@@ -37,7 +39,9 @@ We then can tell the following (not used in the method though):
 Why? It's like summation across document.
 
 Then we try to find the projections operated on both context and tokens, such that they have maximal correlation. The projection space we choose has dimension $k$. The intuition is that the context and the token themselves should represent the same thing.
+
 $$\text{CCA}(C, W) \rightarrow (\Phi_C, \Phi_W)$$
+
 There's a way to compute $\Phi$, see the [[tscca.pdf |paper]] for detalis.
 
 ## TSCCA

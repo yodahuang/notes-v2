@@ -11,7 +11,9 @@ The note is based on the videos tutorials linked in the website.
 Conformal predictions is  a way to “calibrate” any model so that model’s empirical probability output (e.g. softmax scores for a classification model) can be converted to a rigorous uncertainty.
 
 Some examples:
-- For classification tasks asking for multiple category outputs, we provide a calibration set containing $n$ samples, and we want the model to output a set such that  $\tau(x_{n+1}) \subseteq y$ , and $$P[y_{n+1} \in \tau(x_{n+1})] \ge 1 - \alpha$$. To put in other words, Output a set so we can say with confidence that the probability that the output set contains the ground truth set with probability $1 - \alpha$.
+
+- For classification tasks asking for multiple category outputs, we provide a calibration set containing $n$ samples, and we want the model to output a set such that  $\tau(x_{n+1}) \subseteq y$ , and $$P[y_{n+1} \in \tau(x_{n+1})] \ge 1 - \alpha$$
+. To put in other words, Output a set so we can say with confidence that the probability that the output set contains the ground truth set with probability $1 - \alpha$.
 ![[conformal_prediction_squirrel.png]]
 - For regression, we want the model to give a confidence interval for the regressed values. 
 
@@ -20,11 +22,15 @@ Some examples:
 1. Identify a heuristic notion of uncertainty using the pre-trained model.
 2. Define the score function $s(x,y) \in \mathbb{R}$. (Larger scores encode worse agreement between $x$ and $y$.)
 3. Compute $\hat{q}$ as the $\frac{\lceil (n+1)(1-\alpha) \rceil}{n}$ quantile of the calibration scores $s_1=s(X_1,Y_1),...,s_n=s(X_n,Y_n)$. 
+
 4. Use this quantile to form the prediction sets for new examples: $$C(X_{\rm test}) = \left\{y : s(X_{\rm test},y) \le \hat{q}\right\}.$$
+
 Example time:
 ![[conformal_category_1.png]]
 The score function here is "the softmax logits of the correct class". And then we see in the calibration set: what's the $0.1$ percentile of that score? Then we can tell for a new sample: if any class score is larger than that $0.1$ percentile, then we include that in the output set. It can be proved that
+
 $$1-\alpha\leq P[Y_{n+1}\in \tau(X_{n+1})]\leq1-\alpha+\frac{1}{n+1}$$
+
 , where $n$ is the calibration set size.
 
 ## Why does it work

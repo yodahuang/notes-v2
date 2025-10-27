@@ -11,17 +11,21 @@ Motivation: a detector without NMS, similar performance as Faster-RCNN, 2 times 
 TL; DR: Hungarian algorithm to make prediction-ground-truth match, and then for each pair we do the normal class prediction and box loss. Represent box by center coordinate, height, width relative to image size.
 
 First step: find a bipartite matching between (ground truth set, $y$) and ($N$ predictions, $\hat{y} = \{\hat{y_i}\}^N_{i=1}$). So we want to find an optimal iterable of index:
+
 $$
 \hat{\sigma} = \mathop{\arg\min}_{\sigma \in \mathfrak{S}_N} \sum^N_i\mathcal{L}_{\text{match}}(y_i, \hat{y_{\sigma(i)}})
 $$
+
 This $\mathcal{L}_{\text{match}}$ here is care about:
 - Does the prediction agree with ground truth class?
 - Does the bounding box match?
 
 Second step:
+
 $$
 \mathcal{L}_{\text{Hungarian}}(y, \hat{y}) = \sum^N_{i=1}[-\log\hat{p}_{\hat{\sigma}(i)}(c_i) + \mathbb{1}_{c_i\ne \emptyset}\mathcal{L}_{\text{box}}(b_i, \hat{b}_{\hat{\phi}}(i))]
 $$
+
 So it's the spirit of "assuming best intention", what's the loss?
 
 ## What's transformers doing here?

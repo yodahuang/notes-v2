@@ -10,12 +10,16 @@ Heres's 3Blue1Brown series:
 The core idea there (I think) $\int e^{x}= e^x$ is too convenient. 
 
 ## Moment parameterization
+
 $$P(x)\propto\exp\left(-\frac12(x-\mu)^T\Sigma^{-1}(x-\mu)\right)$$
+
 ## Natural parameterization
 Also known as canonical parameterization. 
+
 $$
 P(x) \propto \exp \left(J^{T}x - \frac{1}{2}x^{T}Px\right)
 $$
+
 $$
 \begin{aligned}
 P&=\Sigma^{-1} \\

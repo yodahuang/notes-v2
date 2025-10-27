@@ -37,10 +37,13 @@ Some more on [[Knowledge Distilling]]
 Recall that in the [[Knowledge Distilling]] we are optimizing this thing (I admit that note is not detailed enough):
 
 *Soft distillation* minimizes the Kullback-Leibler divergence between the softmax of the teacher and the softmax of the student model. Let $Z_t$ be the logits of the teacher model, $Z_s$ the logits of the student model. We denote by $\tau$ the temperature for the distillation, $\lambda$ the coefficient balancing the Kullback–Leibler divergence loss (KL) and the cross-entropy ($L_{CE}$) on ground truth labels $y$, and $\psi$ the softmax function. The distillation objective is
+
 $$\mathcal{L}_{\mathrm{global}}=(1-\lambda)\mathcal{L}_{\mathrm{CE}}(\psi(Z_{\mathrm{s}}),y)+\lambda\tau^2\mathrm{KL}(\psi(Z_{\mathrm{s}}/\tau),\psi(Z_{\mathrm{t}}/\tau)).$$
 
 *Hard-label distillation*. We introduce a variant of distillation where we take the hard decision of the teacher as a true label. Let $y_{t}= \text{argmax}_cZ_t(c)$ be the hard decision of the teacher, the objective associated with this hard-label distillation is:
+
 $$\mathcal{L}_{\mathrm{global}}^{\text{hardDistill}}=\frac{1}{2}\mathcal{L}_{\mathrm{CE}}(\psi(Z_s),y)+\frac{1}{2}\mathcal{L}_{\mathrm{CE}}(\psi(Z_s),y_t).$$
+
 The author does not have good reasoning of why this performs better than the traditional soft one. In the token section we'll see how this is actually being trained.
 
 ### Distillation token

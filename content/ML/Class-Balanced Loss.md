@@ -16,9 +16,11 @@ The paper uses set overlapping yada yada. But really it tries to estimate "given
 So assume the whole set (for this category) should have $N$ data. Note that noone really know what this $N$ is. The author basically use cross validation to get a "good enough" one. We name "Effective Number" to be "expected volume of samples". That means "if we have $n$ samples", theres' duplicate there, so it would not really cover $n$ volume, the volume would be $E_n$.
 
 And we can prove that
+
 $$
 E_{n}= \frac{1 - \beta^{n}}{1 - \beta} \quad \text{where} \quad \beta = \frac{N - 1}{N}
 $$
+
 the assumption here is if all these samplings are just covering a big set of $N$ (this assumption was not made in other literature), then every time you add a sample, the probability of it overlaps with any existing sample is $p = \frac{E_{n-1}}{N}$.
 ![[class_balanced_loss.png]]
 ## How to pick $\beta$

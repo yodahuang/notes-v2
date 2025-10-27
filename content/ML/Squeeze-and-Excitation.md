@@ -14,9 +14,11 @@ CNN, by its design, can only focus on local features. This new block enables a s
 
 So first you do *squeeze*, which is use a global average pooling per channel, across $H \times W$, call it $z_c$.
 Then you do excitation, which is adaptive recalibration:
+
 $$
 s = F_{ex}(z, W) = \sigma(g(z, W)) = \sigma(W_2\delta(W_1z))
 $$
+
 Here $\delta$ is ReLU, $\sigma$ is Sigmoid. $W_{1}\in\mathbb{R}^{\frac{C}{r}\times C}$, $W_{2}\in\mathbb{R}^{C\times\frac{C}{r}}$ . This is just a dimension reduction trick so it runs faster. $r=16$ leads to good enough result. One can see this is basically the simpler idea of a transformer attention block, where there's also dimension reduction and sigmoid (but scaled).
 After that, we just multiply the "weight" to the original feature map.
 
