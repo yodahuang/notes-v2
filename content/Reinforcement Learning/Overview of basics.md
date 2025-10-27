@@ -1,4 +1,10 @@
+---
+date: 2025-10-04
+---
+
 I took deep RL course in grad school and this is a refreshment based on materials of [Hugging Face Deep Reinforcement Learning](https://huggingface.co/learn/deep-rl-course/unit0/introduction?fw=pt). Honestly it's not a good course. It makes hard parts feel hand-wavy and turns simple things overly complicated. This note serves as a place where I store my nodes, which should be a better starting point for exploring RL ideas. 
+
+Edit: the course is just **useless**. It teach you the obvious, but hides the details from you, and the homework / projects are just using existing APIs. I strongly suggest DeepMind x UCL 2021 lecture series [here](https://www.youtube.com/playlist?list=PLqYmG7hTraZDVH599EItlEWsUOsJbAodm). 
 
 RL problem is optimization problem. So it shares quite some core idea with control theory. You should feel at home with state $S_t$ and action $A_t$, they are the same one in [[Intro and Bayes Filters|Bayes Filter]] or [[Kalman Filter]]. We got new thing $R_t$, which is used for reward / loss. 
 
@@ -10,7 +16,7 @@ Well, here I think there are two things worth noticing.
 
 ## Value-based methods
 
-We can assign a value to each state, or to a state-action pair. The value captures how good the state is. Recall the markup property, so the value only needs to depend on state or stake action pairs, and nothing else really matters.  Let's call it $V$.
+We can assign a value to each state, or to a state-action pair. The value captures how good the state is. Recall the markov property, so the value only needs to depend on state or stake action pairs, and nothing else really matters.  Let's call it $V$.
 
 $$V_\pi(s)=\mathbf{E}_\pi[R_{t+1}+\gamma*V_\pi(S_{t+1})|S_t=s]$$
 
@@ -22,7 +28,7 @@ But then we'll need the full state transition matrix. What if we don't know the 
 
 $$V(S_t)\leftarrow V(S_t)+\alpha[R_{t+1}+\gamma V(S_{t+1})-V(S_t)]$$
 
-We're just sampling actions. Can we do better with a [[EM]] idea? First we get value estimation, then we use the value estimation to get a better policy. That's *Q learning*. 
+We're just sampling actions. Can we do better with a [[EM]] idea? First we get value estimation, then we use the value estimation to get a better policy. That's *Q learning*. The next action is using epsilon greedy.
 
 $$Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\alpha[R_{t+1}+\gamma max_aQ(S_{t+1},a)-Q(S_t,A_t)]$$
 

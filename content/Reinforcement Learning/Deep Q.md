@@ -1,6 +1,7 @@
 ---
 aliases:
   - DQN
+date: 2025-10-05
 ---
 Use a NN as the function estimator for Q. The loss is TD loss. 
 
