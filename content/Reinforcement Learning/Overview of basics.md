@@ -42,10 +42,10 @@ Another super simple way is *Monto Carlo Approach*. You get the entire episode o
 
 On-policy vs Off-policy → 🔸 *What policy are you learning about vs what policy generated the data?*
 
-| Term          | Meaning                                                                                 |
-|---------------|------------------------------------------------------------------------------------------|
-| **On-policy** | You learn the value of **the same policy** you use to collect data.                     |
-| **Off-policy**| You learn the value of **a different (target) policy** than the one collecting data.    |
+| Term           | Meaning                                                                              |
+| -------------- | ------------------------------------------------------------------------------------ |
+| **On-policy**  | You learn the value of **the same policy** you use to collect data.                  |
+| **Off-policy** | You learn the value of **a different (target) policy** than the one collecting data. |
 Online vs Offline RL → 🔸 *When / how is the data collected and used for learning?*
 
 | Term          | Meaning                                                                                                    |

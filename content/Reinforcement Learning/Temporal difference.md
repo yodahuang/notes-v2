@@ -21,7 +21,7 @@ $$v_{t+1}(S_t) \leftarrow v_t(S_t) + \alpha (\underbrace{\overbrace{R_{t+1} + \g
 
 between [[Policy & value iteration|dynamic programming]], [[Monte Carlo]] and [[Temporal difference]].
 ![[dynamic_programming_backup.png]]
-![[Monte-Carlo Backup.png]]![[Pasted image 20251026210001.png]]
+![[Monte-Carlo Backup.png]]![[td_backup.png]]
 
 ## On bootstrapping
 
