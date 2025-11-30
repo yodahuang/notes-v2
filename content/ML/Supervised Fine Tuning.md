@@ -1,6 +1,7 @@
 ---
 aliases:
   - SFT
+date: 2025-09-14
 ---
 SFT is imitation learning, or in the very simple form, supervised learning.
 

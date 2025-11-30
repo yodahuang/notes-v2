@@ -1,3 +1,7 @@
+---
+date: 2025-09-14
+---
+
 
 This note is a summary of [Master Positional Encoding: Part I](https://towardsdatascience.com/master-positional-encoding-part-i-63c05d90a0c3)
 
