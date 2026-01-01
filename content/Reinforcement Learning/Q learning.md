@@ -62,6 +62,7 @@ Store two action-value functions: $q$ and $q'$
 $$
 R_{t+1} + \gamma q'_t(S_{t+1}, \arg\max_a q_t(S_{t+1}, a)) \tag{1}
 $$
+
 $$
 R_{t+1} + \gamma q_t(S_{t+1}, \arg\max_a q'_t(S_{t+1}, a)) \tag{2}
 $$

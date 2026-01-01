@@ -13,6 +13,7 @@ Conformal predictions is  a way to “calibrate” any model so that model’s e
 Some examples:
 
 - For classification tasks asking for multiple category outputs, we provide a calibration set containing $n$ samples, and we want the model to output a set such that  $\tau(x_{n+1}) \subseteq y$ , and $$P[y_{n+1} \in \tau(x_{n+1})] \ge 1 - \alpha$$
+
 . To put in other words, Output a set so we can say with confidence that the probability that the output set contains the ground truth set with probability $1 - \alpha$.
 ![[conformal_prediction_squirrel.png]]
 - For regression, we want the model to give a confidence interval for the regressed values. 

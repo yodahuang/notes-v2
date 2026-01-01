@@ -43,6 +43,7 @@ $$
 .  That's strange (and nobody pointed that out), cause obviously to make sense of it we need another $C_{t}$ there on the numerator part. 
 
 Let's just say, $K_t$ is intuitively, $$C_t^{-1}* \text{ratio of covariance}$$
+
 . Of course there's no guarantee that $C_t$ is invertible. But let's just keep it that way.
 
 Now onto the next formula. We compute the innovation: the difference of "real measurement" and "expected measurement", $z_{t}- C_{t}\hat{\mu}_t$.  Recall that $z_{t}= C_{t}x_{t} + \delta_t$. If we just multiply $C^{-1}$ to both side, we get $C_t^{-1}z_{t}= x_{t}+ ...$ . So here we are,

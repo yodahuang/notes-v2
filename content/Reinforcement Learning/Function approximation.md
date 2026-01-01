@@ -33,6 +33,7 @@ Action out is more efficient for (small) discrete action spaces (I guess since i
 ### Convergence and Divergence
 
 MC: this is easy. This can be seen as a simple regression: we have ground truth ($G_t$), and there is close form solution for linear regression case. Not so simple for TD.
+
 $$
 \begin{aligned}
 \mathbf{w}_{\mathrm{MC}} & = \arg\min_{\mathbf{w}} \mathbb{E}_{\pi}\!\left[ \big(G_t - v_{\mathbf{w}}(S_t)\big)^2 \right]
@@ -49,8 +50,10 @@ $$
 = \| v_{\pi} - v_{\mathbf{w}} \|_{d_{\pi}} 
 = \sum_{s \in \mathcal{S}} d_{\pi}(s) \big( v_{\pi}(s) - v_{\mathbf{w}}(s) \big)^2
 $$
+
 The Monte Carlo solution minimises the value error
 **Theorem**
+
 $$
 \overline{\mathrm{VE}}(\mathbf{w}_{\mathrm{TD}}) 
 \le 
@@ -58,6 +61,7 @@ $$
 = 
 \frac{1}{1 - \gamma} \min_{\mathbf{w}} \overline{\mathrm{VE}}(\mathbf{w})
 $$
+
 So TD error is bounded.
 
 Still, TD update is not a true gradient update: it includes itself in the other side.

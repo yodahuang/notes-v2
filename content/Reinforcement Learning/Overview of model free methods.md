@@ -22,6 +22,7 @@ Well that $\epsilon$ is very convenient, but how do we make sure it's sound? Tha
 We can also use TD learning instead of MC for policy evaluation and it's still sound.
 
 A very simple Tabular SARSA with both prediction and control:
+
 $$
 \begin{aligned}
 &\textbf{Initialize } Q(s, a) \text{ arbitrarily} \\
