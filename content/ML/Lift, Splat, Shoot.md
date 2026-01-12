@@ -27,3 +27,7 @@ Now we convert things to BEV with [[PointPillars]]. Each point is assigned to a 
 Different from PointPillars, they cannot use PointNet for exploiting the sparsity of lidar points. After all it's generated 3D grid. But due to projection, the BEV grid could still have dense and sparse parts. Now we need padding and that cost excessive memory. 
 
 Now think: how can we do streaming max pooling? The author argues that we need to use sum pooling because that's the more memory efficient way and I don't get that. They argue we can use cumsum trick to get the individual bin sum.
+
+## Shoot
+
+Not interested for me.
