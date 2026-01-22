@@ -24,8 +24,8 @@ $$
 
 here.
 
-### Talor's Theorem
-This is not only Talor's theorem. We also uses Lagrange theorem (mean value theorem) here.
+### Taylor's Theorem
+This is not only Taylor's theorem. We also uses Lagrange theorem (mean value theorem) here.
 
 Suppose that $f : \mathbb{R}^n \rightarrow \mathbb{R}$ is continuously differentiable and that $p\in\mathbb{R}^n$ . Then we have that
 
@@ -36,7 +36,7 @@ f(x+p) &= f(x) + \nabla f(x+tp)^T p \\
 \end{aligned}
 $$
 
-### FIrst Order Necessary Conditions
+### First Order Necessary Conditions
 If $x^∗$ is a local minimizer and f is continuously differentiable in an open neighborhood of $x^∗$ , then $\nabla f (x^∗) = 0$.
 
 ### Second Order Necessary Conditions

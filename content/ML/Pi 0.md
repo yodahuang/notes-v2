@@ -1,10 +1,10 @@
 ---
-aliases: []
+aliases:
 Arxiv: https://arxiv.org/abs/2410.24164
 pdf: "[[pi0.pdf]]"
 original title: "π0: A Vision-Language-Action Flow Model for General Robot Control"
 date: 2025-12-20
-tags: 
+tags:
 year: 2024
 ---
 The paper mainly focus on the dataset / experiment setup, and show that "it can work" as a system, toward generalist robot.
