@@ -1,7 +1,9 @@
 ---
 chapter: 3
-aliases: [EKF]
+aliases:
+  - EKF
 share: true
+date: 2024-03-31
 ---
 A natural extension of [[Kalman Filter]].
 First, it's non-linear:

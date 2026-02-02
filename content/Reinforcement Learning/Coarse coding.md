@@ -1,3 +1,7 @@
+---
+date: 2025-11-08
+---
+
 Somehow I only see this name in the context of RL. I suspect it just so happens that it's in the famous Richard S.Sutton and Andrew G. Barto book.
 
 This is a way to "expand" the state embedding, or state encoder.

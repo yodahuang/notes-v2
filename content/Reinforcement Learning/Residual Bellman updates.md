@@ -1,3 +1,7 @@
+---
+date: 2025-11-30
+---
+
 This is related to the TD equation in [[Function approximation]]. Note how we do not derive the formula for TD for $\delta w_t$. We just say "replace this part in MC with TD estimation". That's because we are not really minimizing the real loss: $\mathbb{E}[\delta_{t}^2]$. 
 
 Now recall

@@ -1,3 +1,8 @@
+---
+date: 2024-07-06
+---
+
+
 Here I put some useful links that helped me understanding "why Gaussian / normal" distribution is such a special distribution.
 
 It's commonly used in Robotics not because of its expressiveness, but because it can be reasoned in close form, and can be parameterized by its moments, which is very convenient.

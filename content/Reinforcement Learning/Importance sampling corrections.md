@@ -1,3 +1,7 @@
+---
+date: 2025-11-02
+---
+
 *Goal:* given some function $f$ with random inputs $X$, and a distribution $d'$, estimate the expectation of $f(X)$ under a different (target) distribution $d$.  
 
 *Solution:* weight the data by the ratio $d / d'$  

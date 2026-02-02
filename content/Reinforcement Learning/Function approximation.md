@@ -1,3 +1,7 @@
+---
+date: 2025-11-30
+---
+
 We can approximate the true value of a state by using function approximation. And we can find the best one using classic method. 
 
 ### Approximate state value function

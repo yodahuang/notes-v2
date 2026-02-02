@@ -2,6 +2,7 @@
 aliases:
   - DQN
 date: 2025-10-05
+updated: 2026-02-01
 ---
 Use a NN as the function estimator for Q. The loss is TD loss. 
 
@@ -12,6 +13,17 @@ $$
 \underbrace{Q(S_t, A_t)}_{\color{blue}{\text{Former Q-value estimation}}}
 \quad\; \color{orange}{\text{(TD Error)}}
 $$
+
+- A neural network: $O_t \mapsto \mathbf{q}_{\mathbf{w}}$ (action-out)
+- An exploration policy: $\pi_t = \epsilon\text{-greedy}(\mathbf{q}_t)$, and then $A_t \sim \pi_t$
+- A replay buffer to store and sample past transitions $(S_i, A_i, R_{i+1}, S_{i+1})$
+- Target network parameters $\mathbf{w}^{-}$
+- A Q-learning weight update on $\mathbf{w}$ (uses replay and target network):
+
+    $$\Delta\mathbf{w} = \left(R_{i+1} + \gamma \max_{a} q_{\mathbf{w}^{-}}(S_{i+1}, a) - q_{\mathbf{w}}(S_i, A_i)\right) \nabla_{\mathbf{w}}q_{\mathbf{w}}(S_i, A_i)$$
+
+- Update $\mathbf{w}_t^{-} \leftarrow \mathbf{w}_t$ occasionally (e.g., every 10000 steps)
+- An optimizer to minimize the loss (e.g., SGD, RMSprop, or Adam)
 
 But wait, there's still $\max$, so it can't really handle continuous space well. It can handle complicated state space though. 
 ```pseudo

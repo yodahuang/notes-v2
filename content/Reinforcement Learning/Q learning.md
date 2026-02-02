@@ -1,3 +1,7 @@
+---
+date: 2025-11-30
+---
+
 Recall dynamic programming algorithms [[Policy & value iteration]] 
 
 $$
