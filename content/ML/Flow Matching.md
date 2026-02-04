@@ -19,6 +19,14 @@ We could say that the flow-match algorithm basically converts a generation probl
 
 There is another critical reason why the flow-matching algorithm is so great: it only needs several trajectories that could work. It doesn't require a single, definitive trajectory; it can simply generate a multi-hypothesis output because of a very neat mathematical property:
 
+A **flow model** is then described by the ODE
+
+$$\begin{aligned} X_0 &\sim p_{\text{init}} && \blacktriangleright \text{ random initialization} \\ \frac{\mathrm{d}}{\mathrm{d}t} X_t &= u_t^\theta(X_t) && \blacktriangleright \text{ ODE} \end{aligned}$$
+
+Our goal is to make the endpoint $X_1$ of the trajectory have distribution $p_{\text{data}}$, i.e.
+
+$$X_1 \sim p_{\text{data}} \quad \Leftrightarrow \quad \psi_1^\theta(X_0) \sim p_{\text{data}}$$
+
 **Conditional flow matching loss** and **marginal flow matching loss** differ only by a constant (w.r.t. θ),  so they have the _same minimizer_.
 
 So, what one would do is generate training data. We generate it in a supervised learning way, which is basically sampling here, because you just need to sample:
@@ -33,6 +41,7 @@ We can derive the expected vector field $u_t$ easily, provided that we choose a 
 let $p_t(\cdot|z) = \mathcal{N}(\alpha_t z, \beta_t^2 I_d)$ for noise schedulers $\alpha_t, \beta_t$ . Let $\dot{\alpha}_t = \partial_t \alpha_t$ and $\dot{\beta}_t = \partial_t \beta_t$ denote respective time derivatives of $\alpha_t$ and $\beta_t$. he conditional Gaussian vector field is given by
 
 $$u_t^{\text{target}}(x|z) = \left( \dot{\alpha}_t - \frac{\dot{\beta}_t}{\beta_t} \alpha_t \right) z + \frac{\dot{\beta}_t}{\beta_t} x$$
+
 This can be derived on demand:
 The conditional flow model is $\psi_t^{\text{target}}(x|z) = \alpha_t z + \beta_t \epsilon$. You just do derivative on $t$ to the components, and replace $\epsilon$ with $x$ and $z$ since the value of that is determined since we already sampled $x$. Or you can just say it's $\dot{\alpha_{t}}z + \dot{\beta_{t}}\epsilon$ . 
 
