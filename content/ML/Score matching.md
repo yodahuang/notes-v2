@@ -1,5 +1,5 @@
 ---
-date: 2025-12-02
+date: 2026-02-04
 ---
 
 Similar to [[Flow Matching]], this is from that MIT course. 
