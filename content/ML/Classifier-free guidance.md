@@ -31,6 +31,7 @@ Well, where do we get the $y|x$ part? Another classifier, thus the name.
 Well, now you know why we emphasize classifier-free here. Surprise! We used Bayes' rule again, and we got $x|y$ again.
 
 How can we double-dip Bayes rule to get a generative model from classifier, or reuse our current generator to do two jobs? Here it goes
+
 $$\tilde{u}_t(x|y) = (1-w)u_t^{\text{target}}(x) + wu_t^
  {\text{target}}(x|y)$$
 Our model can produce both $u(x)$ and $u(x|y)$ since it can treat $u(x) = u(x|\emptyset)$ . We'll hack our label so that with some probability $\eta$ it output this empty thing.

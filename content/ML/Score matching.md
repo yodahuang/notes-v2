@@ -26,6 +26,7 @@ $$\begin{aligned} \mathrm{d}X_t &= u_t(X_t)\mathrm{d}t + \sigma_t \mathrm{d}W_t 
 **Euler-Maruyama method** is one of the simplest way to simulate it:
 
 $$X_{t+h} = X_t + h u_t(X_t) + \sqrt{h}\sigma_t\epsilon_t, \quad \epsilon_t \sim \mathcal{N}(0, I_d)$$
+
 We can see $\sigma_{t}=0$ makes it a flow model.
 
 ## Score functions
