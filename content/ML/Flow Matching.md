@@ -38,7 +38,7 @@ So, what one would do is generate training data. We generate it in a supervised 
 We just need to make sure the probability path we choose converge to $z$ in the end and is $x_0$ in the beginning.
 
 We can derive the expected vector field $u_t$ easily, provided that we choose a path. For example:
-let $p_t(\cdot|z) = \mathcal{N}(\alpha_t z, \beta_t^2 I_d)$ for noise schedulers $\alpha_t, \beta_t$ . Let $\dot{\alpha}_t = \partial_t \alpha_t$ and $\dot{\beta}_t = \partial_t \beta_t$ denote respective time derivatives of $\alpha_t$ and $\beta_t$. he conditional Gaussian vector field is given by
+let $p_t(\cdot|z) = \mathcal{N}(\alpha_t z, \beta_t^2 I_d)$ for noise schedulers $\alpha_t, \beta_t$ . Let $\dot{\alpha}_t = \partial_t \alpha_t$ and $\dot{\beta}_t = \partial_t \beta_t$ denote respective time derivatives of $\alpha_t$ and $\beta_t$. The conditional Gaussian vector field is given by
 
 $$u_t^{\text{target}}(x|z) = \left( \dot{\alpha}_t - \frac{\dot{\beta}_t}{\beta_t} \alpha_t \right) z + \frac{\dot{\beta}_t}{\beta_t} x$$
 

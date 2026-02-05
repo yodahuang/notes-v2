@@ -2,9 +2,15 @@
 date: 2025-10-04
 ---
 
-I took deep RL course in grad school and this is a refreshment based on materials of [Hugging Face Deep Reinforcement Learning](https://huggingface.co/learn/deep-rl-course/unit0/introduction?fw=pt). Honestly it's not a good course. It makes hard parts feel hand-wavy and turns simple things overly complicated. This note serves as a place where I store my nodes, which should be a better starting point for exploring RL ideas. 
+> [!danger] 
+> I took deep RL course in grad school and this is a refreshment based on materials of [Hugging Face Deep Reinforcement Learning](https://huggingface.co/learn/deep-rl-course/unit0/introduction?fw=pt). Honestly it's not a good course. It makes hard parts feel hand-wavy and turns simple things overly complicated. This note serves as a place where I store my nodes, which should be a better starting point for exploring RL ideas. 
+> Edit: the course is just **useless**. It teach you the obvious, but hides the details from you, and the homework / projects are just using existing APIs. 
+> I strongly suggest
+> - DeepMind x UCL 2021 lecture series [here](https://www.youtube.com/playlist?list=PLqYmG7hTraZDVH599EItlEWsUOsJbAodm). 
+> - Berkeley CS 185/285 [here](https://rail.eecs.berkeley.edu/deeprlcourse/)
 
-Edit: the course is just **useless**. It teach you the obvious, but hides the details from you, and the homework / projects are just using existing APIs. I strongly suggest DeepMind x UCL 2021 lecture series [here](https://www.youtube.com/playlist?list=PLqYmG7hTraZDVH599EItlEWsUOsJbAodm). 
+> [!tip] 
+> Please see [[The real overview of basics]] instead.
 
 RL problem is optimization problem. So it shares quite some core idea with control theory. You should feel at home with state $S_t$ and action $A_t$, they are the same one in [[Intro and Bayes Filters|Bayes Filter]] or [[Kalman Filter]]. We got new thing $R_t$, which is used for reward / loss. 
 

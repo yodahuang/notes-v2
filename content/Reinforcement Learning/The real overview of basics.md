@@ -59,3 +59,12 @@ $$
 This is like the Expecation-maximization algorithm. 
 - *Prediction*: evaluate the future (for a given policy)
 - *Control*: optimise the future (find the best policy)
+
+> [!info]
+> The rest of the note comes from [[285-rl-basics.pdf]]
+
+In RL, we almost always care about *expectation* since that makes things smooth.
+$r(x)$ - not smooth
+$E_{\pi_\theta}[r(x)]$ - smooth in $\theta$
+
+The slide also gives good explanation to algorithm tradeoffs, why we need different kind of them, etc.
