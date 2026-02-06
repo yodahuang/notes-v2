@@ -38,7 +38,9 @@ So we basically skip computation of $E_i(x)$ whenever that is not selected.
 
 Obviously the most simple form is just linear layer followed by Softmax. On top of that they added sparsity and noise. 
 
-$$\begin{aligned} G(x) &= Softmax(KeepTopK(H(x), k)) \\ H(x)_i &= (x \cdot W_g)_i + StandardNormal() \cdot Softplus((x \cdot W_{noise})_i) \\ KeepTopK(v, k)_i &= \begin{cases} v_i & \text{if } v_i \text{ is in the top } k \text{ elements of } v. \\ -\infty & \text{otherwise.} \end{cases} \end{aligned}$$
+$$
+\begin{aligned} G(x) &= Softmax(KeepTopK(H(x), k)) \\ H(x)_i &= (x \cdot W_g)_i + StandardNormal() \cdot Softplus((x \cdot W_{noise})_i) \\ KeepTopK(v, k)_i &= \begin{cases} v_i & \text{if } v_i \text{ is in the top } k \text{ elements of } v. \\ -\infty & \text{otherwise.} \end{cases} \end{aligned}
+$$
 
 You can see the `KeepTopK`operation is done before Softmax. We can also do it after softmax and then re-normalize, same thing (see [[moe.pdf#page=18&selection=344,0,344,37|Appendix F]]). 
 

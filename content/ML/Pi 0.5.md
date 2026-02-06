@@ -18,7 +18,9 @@ Pretraining is done on dataset A with autoregressive output using [[FAST]]. Post
 
 The new loss:
 
-$$\mathbb{E}_{\mathcal{D},\tau,\omega} \left[ H(x_{1:M}, f_{\theta}^{\ell}(\mathbf{o}_t, \ell)) + \alpha \|\omega - \mathbf{a}_{t:t+H} - f_{\theta}^a(\mathbf{a}_{t:t+H}^{\tau,\omega}, \mathbf{o}_t, \ell)\|^2 \right]$$
+$$
+\mathbb{E}_{\mathcal{D},\tau,\omega} \left[ H(x_{1:M}, f_{\theta}^{\ell}(\mathbf{o}_t, \ell)) + \alpha \|\omega - \mathbf{a}_{t:t+H} - f_{\theta}^a(\mathbf{a}_{t:t+H}^{\tau,\omega}, \mathbf{o}_t, \ell)\|^2 \right]
+$$
 
 where $H(x_{1:M}, y_{1:M}^{\ell})$ is the cross entropy loss between the text tokens and predicted logits (including the FAST encoded action tokens), $y_{1:H}^a = f_{\theta}^a(\mathbf{a}_{t:t+H}^{\tau,\omega}, \mathbf{o}_t, \ell)$ is the output from the (smaller) action expert, and $\alpha \in \mathbb{R}$ is a trade-off parameter.
 

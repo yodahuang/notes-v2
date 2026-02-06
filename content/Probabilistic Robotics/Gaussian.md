@@ -16,7 +16,9 @@ The core idea there (I think) $\int e^{x}= e^x$ is too convenient.
 
 ## Moment parameterization
 
-$$P(x)\propto\exp\left(-\frac12(x-\mu)^T\Sigma^{-1}(x-\mu)\right)$$
+$$
+P(x)\propto\exp\left(-\frac12(x-\mu)^T\Sigma^{-1}(x-\mu)\right)
+$$
 
 ## Natural parameterization
 Also known as canonical parameterization. 

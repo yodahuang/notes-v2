@@ -17,7 +17,9 @@ I would also like to put this image here from [[LLM Post-Training]] that I find 
 As we can see from control theory, the definition of state can be crucial. There are environment state and agent state. Let's talk about agent state here.
 The *history* is
 
-$$H_{t}= O_{0}, A_{0}, R_{1}, O_{1}, \dots, O_{t-1}, A_{t-1}, R_{t,}O_t$$
+$$
+H_{t}= O_{0}, A_{0}, R_{1}, O_{1}, \dots, O_{t-1}, A_{t-1}, R_{t,}O_t
+$$
 
 The markovian agent state $S_t$ typically is some *compression* of $H_t$. The full hitory is Markov (but keeps growing).
 In an environment with partial observability, the observations are not Markovian, making them a POMDP. The environment state may still be Markovian, but the agent does not know it. 
@@ -27,7 +29,9 @@ A quick reminder: we need the notion of value / state, since the reward only hav
 
 The *actual* value function is defined as
 
-$$\begin{aligned}v_{\pi}(s)&=\mathbb{E}\left[G_{t}\mid S_{t}=s,\pi\right]\\&=\mathbb{E}\left[R_{t+1}+\gamma R_{t+2}+\gamma^{2}R_{t+3}+...\mid S_{t}=s,\pi\right]\end{aligned}$$
+$$
+\begin{aligned}v_{\pi}(s)&=\mathbb{E}\left[G_{t}\mid S_{t}=s,\pi\right]\\&=\mathbb{E}\left[R_{t+1}+\gamma R_{t+2}+\gamma^{2}R_{t+3}+...\mid S_{t}=s,\pi\right]\end{aligned}
+$$
 
 $\gamma$  $0$ means we only care about the instant reward, while $1$ means it considers long term and immediate rewards equally. Personally I'm interested to see if there are alternative definitions. There's no reason it's defined like this.
 
@@ -43,7 +47,9 @@ $$
 Now note here that $a$ is chosen by policy $\pi$ in state $s$.
 We can take out the dependency on a specific policy by stating that the following holds for the optimal case: 
 
-$$v_*(s)=\max_a\mathbb{E}\left[R_{t+1}+\gamma v_*(S_{t+1})\mid S_t=s,A_t=a\right]$$
+$$
+v_*(s)=\max_a\mathbb{E}\left[R_{t+1}+\gamma v_*(S_{t+1})\mid S_t=s,A_t=a\right]
+$$
 
 ## model
 A *model* predicts what the environment will do next. It can predict the next state, or the next (immediate reward). Note it does not directly give a policy.

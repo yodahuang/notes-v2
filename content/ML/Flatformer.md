@@ -19,7 +19,9 @@ Let's just make a way of having an equal number of points per group, and make th
 
 With a point cloud $\{(x,y)\}$,we first quantize the coordinate of each point $(x,y)$ to
 
-$$\left(\underbrace{\lfloor x/w_x\rfloor,\lfloor y/w_y\rfloor}_{\text{window coordinates}},\underbrace{x-\lfloor x/w_x\rfloor\cdot w_x,y-\lfloor y/w_y\rfloor\cdot w_y}_{\text{local coordinates within window}}\right),$$
+$$
+\left(\underbrace{\lfloor x/w_x\rfloor,\lfloor y/w_y\rfloor}_{\text{window coordinates}},\underbrace{x-\lfloor x/w_x\rfloor\cdot w_x,y-\lfloor y/w_y\rfloor\cdot w_y}_{\text{local coordinates within window}}\right),
+$$
 
 where $(w_x,w_y)$ is the window shape. Next, we sort all points first by window coordinates and then by local coordinates within the window. This step turns the unordered point cloud into an ordered one, where points within the same window will be next to each other.
 [[flatformer.pdf#page=4&selection=244,0,341,27|flatformer, page 4]]

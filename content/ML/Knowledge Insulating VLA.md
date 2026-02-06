@@ -31,7 +31,9 @@ And freezing the VLM is also a good idea:
 
 The new loss:
 
-$$\mathcal{L}_{\text{CO-VLA}}(\theta) = \mathbb{E}_{\mathcal{D},\tau,\omega} \left[ -\sum_{j=1}^{n-1} M_j^{\ell} \log p_{\theta}(\hat{\ell}_{j+1}|x_{1:j}) + \alpha M^{\text{act}} \|\omega - a_{1:H} - f_{\theta}^a(a_{1:H}^{\tau,\omega})\|^2 \right]$$
+$$
+\mathcal{L}_{\text{CO-VLA}}(\theta) = \mathbb{E}_{\mathcal{D},\tau,\omega} \left[ -\sum_{j=1}^{n-1} M_j^{\ell} \log p_{\theta}(\hat{\ell}_{j+1}|x_{1:j}) + \alpha M^{\text{act}} \|\omega - a_{1:H} - f_{\theta}^a(a_{1:H}^{\tau,\omega})\|^2 \right]
+$$
 
 where $\alpha$ is a loss multiplier, trading off action prediction via flow-matching with the standard language modeling loss. $M^{\ell}$ is a language loss mask (indicating locations in the token stream at which the language loss should be applied) and $M^{\text{act}}$ is an action mask indicator specifying whether or not actions should be predicted for the given example.
 
@@ -45,11 +47,15 @@ Compare with [[Pi 0.5]], we can see the main difference is that mask.
 
 For the single head attention case, we can write the attention operation as $P = \text{softmax}(Q(X)K(X)^T + A) = \begin{pmatrix} P_{bb} & 0 \\ P_{ab} & P_{aa} \end{pmatrix}$ where $X$ are the inputs to the attention layer, $Q, K$ are the attention query and key projections, respectively, $A$ is the attention mask as described above, and softmax is the row-wise softmax. The result are attention probabilities over token features which decompose into probabilities where features from the VLM backbone attend to features from the backbone $P_{bb}$, probabilities for action expert features attending to backbone features $P_{ab}$ and probabilities for action expert features attending other action expert features $P_{aa}$. Given this we can restrict information flow as desired by implementing the softmax computation as
 
-$$\begin{pmatrix} P_{bb} & 0 \\ P_{ab} & P_{aa} \end{pmatrix} = \text{softmax} \left( \begin{pmatrix} Q_b(X_b)K_b(X_b)^T & 0 \\ Q_a(X_a)\text{sg}(K_b(X_b)^T) & Q_a(X_a)K_a(X_a)^T \end{pmatrix} + A \right)$$
+$$
+\begin{pmatrix} P_{bb} & 0 \\ P_{ab} & P_{aa} \end{pmatrix} = \text{softmax} \left( \begin{pmatrix} Q_b(X_b)K_b(X_b)^T & 0 \\ Q_a(X_a)\text{sg}(K_b(X_b)^T) & Q_a(X_a)K_a(X_a)^T \end{pmatrix} + A \right)
+$$
 
 where sg denotes the stop-gradient operator that restricts gradient-flow through this part of the computation. $X_b$ corresponds to all $x_i$ processed with the backbone weights, $X_a$ to the tokens processed with the action expert weights. The value embeddings are then computed by
 
-$$E = \begin{pmatrix} E_b \\ E_a \end{pmatrix} = \begin{pmatrix} P_{bb}V_b(X_b) \\ P_{ab}\text{sg}(V_b(X_b)) + P_{aa}V_a(X_a) \end{pmatrix}$$
+$$
+E = \begin{pmatrix} E_b \\ E_a \end{pmatrix} = \begin{pmatrix} P_{bb}V_b(X_b) \\ P_{ab}\text{sg}(V_b(X_b)) + P_{aa}V_a(X_a) \end{pmatrix}
+$$
 
 and the final attention is $\text{attn}(X) = PE$. One additional advantage of this design is that we can simply set $\alpha = 1$ in (4), since now the diffusion loss term applies to an independent set of weights.
 

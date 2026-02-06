@@ -30,7 +30,9 @@ In summary, all because of infra. This is a pragmatic paper.
 
 ![[switch_transformer_routing.png]]
 
-$$\text{expert capacity} = \left( \frac{\text{tokens per batch}}{\text{number of experts}} \right) \times \text{capacity factor} \text{}$$
+$$
+\text{expert capacity} = \left( \frac{\text{tokens per batch}}{\text{number of experts}} \right) \times \text{capacity factor} \text{}
+$$
 
 >  If too many tokens are routed to an expert (referred to later as dropped tokens), computation is skipped and the token representation is passed directly to the next layer through the residual connection. 
 
@@ -56,7 +58,9 @@ Later in the experiment they show that
 
 Given $N$ experts indexed by $i = 1$ to $N$ and a batch $\mathcal{B}$ with $T$ tokens, the loss is calculated as follows:
 
-$$\begin{aligned} \text{loss} &= \alpha \cdot N \cdot \sum_{i=1}^{N} f_i \cdot P_i \\ f_i &= \frac{1}{T} \sum_{x \in \mathcal{B}} \mathbb{1}\{\text{argmax } p(x) = i\} \\ P_i &= \frac{1}{T} \sum_{x \in \mathcal{B}} p_i(x) \end{aligned}$$
+$$
+\begin{aligned} \text{loss} &= \alpha \cdot N \cdot \sum_{i=1}^{N} f_i \cdot P_i \\ f_i &= \frac{1}{T} \sum_{x \in \mathcal{B}} \mathbb{1}\{\text{argmax } p(x) = i\} \\ P_i &= \frac{1}{T} \sum_{x \in \mathcal{B}} p_i(x) \end{aligned}
+$$
 
 **Key Definitions:**
 - **$f_i$**: The fraction of tokens dispatched to expert $i$.

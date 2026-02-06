@@ -26,7 +26,9 @@ When the user provide a query, we return the sampled point and scale that highes
 
 The score is computed as
 
-$$\min_i\frac{\exp(\phi_\mathrm{lang}\cdot\phi_\mathrm{quer})}{\exp(\phi_\mathrm{lang}\cdot\phi_\mathrm{canon}^i)+\exp(\phi_\mathrm{lang}\cdot\phi_\mathrm{quer}))}$$
+$$
+\min_i\frac{\exp(\phi_\mathrm{lang}\cdot\phi_\mathrm{quer})}{\exp(\phi_\mathrm{lang}\cdot\phi_\mathrm{canon}^i)+\exp(\phi_\mathrm{lang}\cdot\phi_\mathrm{quer}))}
+$$
 
 > All renderings use the same canonical phrases: “object”, “things”, “stuff”, and “texture”. We chose these as qualitatively “average” words for queries users might mak
 

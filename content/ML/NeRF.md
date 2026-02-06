@@ -25,7 +25,9 @@ What's volume density? Obviously it's classic thing in volume rendering.
 
 > The volume density $\sigma(x)$ can be interpreted as the differential probability of a ray terminating at an infinitesimal particle at location $x$. The expected color $C(r)$ of camera ray $r(t) = o + td$ with near and far bounds $t_n$ and $t_f$ is:
 
-$$C(\mathbf{r})=\int_{t_n}^{t_f}T(t)\sigma(\mathbf{r}(t))\mathbf{c}(\mathbf{r}(t),\mathbf{d})dt\mathrm{~,~where~}T(t)=\exp\left(-\int_{t_n}^t\sigma(\mathbf{r}(s))ds\right).$$
+$$
+C(\mathbf{r})=\int_{t_n}^{t_f}T(t)\sigma(\mathbf{r}(t))\mathbf{c}(\mathbf{r}(t),\mathbf{d})dt\mathrm{~,~where~}T(t)=\exp\left(-\int_{t_n}^t\sigma(\mathbf{r}(s))ds\right).
+$$
 
 $T(t)$ here is basically the probability that the ray travels from $t_n$ to $t$ without hitting any other particle (it's not occluded). So here the formula means "if the ray ends here you would see this, if it ends there you'll see that, add them together".
 
@@ -45,7 +47,9 @@ Directly using $xyz\theta\phi$ cause the model to perform poorly. This can be ca
 Spend the network power on where it's needed. Train two networks: one "coarse" and one "fine". First sample a set of $N_{c}= 64$ locations, then get a PDF of where it think is dense, and then use inverse transform sampling to sample fine points $N_{f}=128$.
 The loss is the simple summation of both networks.
 
-$$\mathcal{L}=\sum_{\mathbf{r}\in\mathcal{R}}\left[\left\|\hat{C}_c(\mathbf{r})-C(\mathbf{r})\right\|_2^2+\left\|\hat{C}_f(\mathbf{r})-C(\mathbf{r})\right\|_2^2\right]$$
+$$
+\mathcal{L}=\sum_{\mathbf{r}\in\mathcal{R}}\left[\left\|\hat{C}_c(\mathbf{r})-C(\mathbf{r})\right\|_2^2+\left\|\hat{C}_f(\mathbf{r})-C(\mathbf{r})\right\|_2^2\right]
+$$
 
 Here $C$ is the rendered RGB color.
 

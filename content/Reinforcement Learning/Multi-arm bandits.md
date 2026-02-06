@@ -21,21 +21,29 @@ The answer is that methods like UCB doesn't scale well. Or, they are not able to
 ## Back to definition
 The **action value** for action $a$ is the expected reward
 
-$$q(a) = \mathbb{E}[R_t | A_t = a]$$
+$$
+q(a) = \mathbb{E}[R_t | A_t = a]
+$$
 
 The **optimal value** is
 
-$$v_* = \max_{a \in \mathcal{A}} q(a) = \max_a \mathbb{E}[R_t | A_t = a]$$
+$$
+v_* = \max_{a \in \mathcal{A}} q(a) = \max_a \mathbb{E}[R_t | A_t = a]
+$$
 
 **Regret** of an action $a$ is
 
-$$\Delta_a = v_* - q(a)$$
+$$
+\Delta_a = v_* - q(a)
+$$
 
 Note there is only one state, and there exist such an action that is ALWAYS the best. 
 
 We want to minimize the total regret:
 
-$$L_t=\sum_{n=1}^tv_*-q(A_n)=\sum_{n=1}^t\Delta_{A_n}$$
+$$
+L_t=\sum_{n=1}^tv_*-q(A_n)=\sum_{n=1}^t\Delta_{A_n}
+$$
 
 ## Greedy and epsilon greedy
 Greedy is just greedy.
@@ -44,12 +52,16 @@ The **$\epsilon$-greedy** algorithm:
 * With probability $\epsilon$ select a random action
 * Equivalently:
 
-$$\pi_t(a) = \begin{cases} (1 - \epsilon) + \epsilon / |\mathcal{A}| & \text{if } Q_t(a) = \max_b Q_t(b) \\ \epsilon / |\mathcal{A}| & \text{otherwise} \end{cases}$$
+$$
+\pi_t(a) = \begin{cases} (1 - \epsilon) + \epsilon / |\mathcal{A}| & \text{if } Q_t(a) = \max_b Q_t(b) \\ \epsilon / |\mathcal{A}| & \text{otherwise} \end{cases}
+$$
 
 ## Policy gradient
 We want to maximize total reward. We can do it by gradient ascent: in each step we make it better. Think about it this way: the total expected reward is a function of $\theta$ and picture in your head gradient ascent (since it's reward, not loss).
 
-$$\theta_{t+1}=\theta_t+\alpha\nabla_\theta\mathbb{E}[R_t|\pi_{\theta_t}]$$
+$$
+\theta_{t+1}=\theta_t+\alpha\nabla_\theta\mathbb{E}[R_t|\pi_{\theta_t}]
+$$
 
 This expected reward is not the "reward this time" since the policy can be stochastic. How can we compute the gradient? While we can use sample based methods to approximate expectation, here we still need to sample $R_t|\pi_{\theta_1}$, which is not known.
 
@@ -78,11 +90,15 @@ $$
 ### Baseline
 For any $b$,
 
-$$\begin{aligned}\sum_ab\nabla_\theta\pi_\theta(a)&=b\nabla_\theta\sum_a\pi_\theta(a)\\&=0\end{aligned}$$
+$$
+\begin{aligned}\sum_ab\nabla_\theta\pi_\theta(a)&=b\nabla_\theta\sum_a\pi_\theta(a)\\&=0\end{aligned}
+$$
 
 This means we can subtract a **baseline**, and instead use
 
-$$\theta = \theta + \alpha(R_t - b)\nabla_\theta \log \pi_\theta(A_t)$$
+$$
+\theta = \theta + \alpha(R_t - b)\nabla_\theta \log \pi_\theta(A_t)
+$$
 
 Baselines *do not* change the expected update, but they *do* change variance
 
@@ -126,7 +142,9 @@ The short answer: **UCB doesn't work "out of the box" in complex environments.**
 
 The UCB algorithm's action selection is:
 
-$$a_t = \arg\max_{a} \left( Q(a) + c \sqrt{\frac{\ln t}{N(a)}} \right)$$
+$$
+a_t = \arg\max_{a} \left( Q(a) + c \sqrt{\frac{\ln t}{N(a)}} \right)
+$$
 
 The most important part of that formula is **$N(a)$**, the "visit count" for that arm. In the MAB problem, this is easy. You only have one state, so you just count how many times you've pulled each arm.
 

@@ -42,7 +42,11 @@ $$
 
 .  That's strange (and nobody pointed that out), cause obviously to make sense of it we need another $C_{t}$ there on the numerator part. 
 
-Let's just say, $K_t$ is intuitively, $$C_t^{-1}* \text{ratio of covariance}$$
+Let's just say, $K_t$ is intuitively,
+
+$$
+C_t^{-1}* \text{ratio of covariance}
+$$
 
 . Of course there's no guarantee that $C_t$ is invertible. But let's just keep it that way.
 
@@ -76,11 +80,15 @@ Linear transformation, $Ax$, is easier with [[Gaussian#Moment parameterization|m
 
 Conditioning, getting $x_{1}| x_{2}$ from joint distribution $x$, is easier with [[Gaussian#Natural parameterization|natural parameterization]]. Note that conditioning is basically start from joint distribution and then treat $x_2$ as "known".
 
-$$x_1|x_2\sim\tilde{\mathcal{N}}(J_1-P_{12}x_2,P_{11})$$
+$$
+x_1|x_2\sim\tilde{\mathcal{N}}(J_1-P_{12}x_2,P_{11})
+$$
 
 If we want to multiply two likelihood function,  $p(x|z) \sim p(z|x) p(x)$, then posterior can be simply computed by
 
-$$x_1|z\sim\tilde{\mathcal{N}}(J_{1}+ J_{2}, P_{1}+ P_{2})$$
+$$
+x_1|z\sim\tilde{\mathcal{N}}(J_{1}+ J_{2}, P_{1}+ P_{2})
+$$
 
 Now with these in mind, we can have a gauss-markov model. I'm too tired now to repeat the stuff in the PDF. But the general idea is we do it in two steps. One prediction / rollup, one conditioning. 
 

@@ -27,7 +27,9 @@ Anyway, they charge ahead and propose let the network learn a easier thing: the 
 
 > The dimensions of x and F must be equal in Eqn.(1). If this is not the case (e.g., when changing the input/output channels), we can perform a linear projection Ws by the shortcut connections to match the dimensions:
 >
-> $$\mathbf{y}=\mathcal{F}(\mathbf{x},\{W_i\})+W_s\mathbf{x}.$$
+> $$
+> \mathbf{y}=\mathcal{F}(\mathbf{x},\{W_i\})+W_s\mathbf{x}.
+> $$
 
 [[resnet.pdf#page=3&selection=207,0,225,43|resnet, page 3]]
 

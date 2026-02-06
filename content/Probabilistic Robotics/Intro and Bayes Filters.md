@@ -26,7 +26,9 @@ This means $x_t$ is sufficient to predict measurement $z_t$.
 
 More notations:
 
-$$bel(x_{t}) = p(x_t|z_{1:t}, u_{1:t})$$
+$$
+bel(x_{t}) = p(x_t|z_{1:t}, u_{1:t})
+$$
 
 If we try to **predict** $x_t$ before we got measurement $z_t$, we got the posterior
 

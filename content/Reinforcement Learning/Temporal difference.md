@@ -8,12 +8,16 @@ Model free sampling learning.
 **[[Monte Carlo]]**
 - Update value $v_n(S_t)$ towards sampled return $G_t$
 
-$$v_{n+1}(S_t) = v_n(S_t) + \alpha (G_t - v_n(S_t))$$
+$$
+v_{n+1}(S_t) = v_n(S_t) + \alpha (G_t - v_n(S_t))
+$$
 
 **Temporal-difference learning:**
 - Update value $v_t(S_t)$ towards estimated return $R_{t+1} + \gamma v(S_{t+1})$
 
-$$v_{t+1}(S_t) \leftarrow v_t(S_t) + \alpha (\underbrace{\overbrace{R_{t+1} + \gamma v_t(S_{t+1})}^{\text{target}} - v_t(S_t)}_{\text{TD error}})$$
+$$
+v_{t+1}(S_t) \leftarrow v_t(S_t) + \alpha (\underbrace{\overbrace{R_{t+1} + \gamma v_t(S_{t+1})}^{\text{target}} - v_t(S_t)}_{\text{TD error}})
+$$
 
 - $\delta_t = R_{t+1} + \gamma v_t(S_{t+1}) - v_t(S_t)$ is called the TD error
 
@@ -32,7 +36,9 @@ Because of that, TD target is a bias estimate. But it has lower variance.
 
 [[Monte Carlo]]  converges to best mean-squared fit for the observed returns
 
-$$ \sum_{k=1}^K \sum_{t=1}^{T_k} \left(G_t^k - v(S_t^k)\right)^2$$
+$$
+ \sum_{k=1}^K \sum_{t=1}^{T_k} \left(G_t^k - v(S_t^k)\right)^2
+$$
 
 TD converges to solution of max likelihood Markov model, given the data. It's the solution to the empirical MDP $(\mathcal{S}, \mathcal{A}, \hat{\mathcal{P}}, \gamma)$ that best fits the data. 
 
@@ -47,15 +53,21 @@ MC does not exploit Markov property: can help in partially-observable environmen
 
 Consider the following $n$-step returns for $n = 1, 2, \infty$:
 
-$$\begin{array}{r c l} n = 1 & \text{(TD)} & G_t^{(1)} = R_{t+1} + \gamma v(S_{t+1}) \\ n = 2 & & G_t^{(2)} = R_{t+1} + \gamma R_{t+2} + \gamma^2 v(S_{t+2}) \\ \vdots & & \vdots \\ n = \infty & \text{(MC)} & G_t^{(\infty)} = R_{t+1} + \gamma R_{t+2} + ... + \gamma^{T-t-1} R_T \end{array}$$
+$$
+\begin{array}{r c l} n = 1 & \text{(TD)} & G_t^{(1)} = R_{t+1} + \gamma v(S_{t+1}) \\ n = 2 & & G_t^{(2)} = R_{t+1} + \gamma R_{t+2} + \gamma^2 v(S_{t+2}) \\ \vdots & & \vdots \\ n = \infty & \text{(MC)} & G_t^{(\infty)} = R_{t+1} + \gamma R_{t+2} + ... + \gamma^{T-t-1} R_T \end{array}
+$$
 
 In general, the $n$-step return is defined by
 
-$$G_t^{(n)} = R_{t+1} + \gamma R_{t+2} + ... + \gamma^{n-1} R_{t+n} + \gamma^n v(S_{t+n})$$
+$$
+G_t^{(n)} = R_{t+1} + \gamma R_{t+2} + ... + \gamma^{n-1} R_{t+n} + \gamma^n v(S_{t+n})
+$$
 
 Multi-step temporal-difference learning
 
-$$v(S_t) \leftarrow v(S_t) + \alpha \left( G_t^{(n)} - v(S_t) \right)$$
+$$
+v(S_t) \leftarrow v(S_t) + \alpha \left( G_t^{(n)} - v(S_t) \right)
+$$
 
 With good tuning of $\alpha$ and $n$, it can converge faster and better than both MC and TD(0).
 
@@ -74,11 +86,15 @@ $$
 
 You can also bootstrap a little bit on multiple states:
 
-$$G_t^\lambda = R_{t+1} + \gamma \left( (1 - \lambda) v(S_{t+1}) + \lambda G_{t+1}^\lambda \right)$$
+$$
+G_t^\lambda = R_{t+1} + \gamma \left( (1 - \lambda) v(S_{t+1}) + \lambda G_{t+1}^\lambda \right)
+$$
 
 This gives a weighted average of $n$-step returns:
 
-$$G_t^\lambda = \sum_{n=1}^\infty (1 - \lambda) \lambda^{n-1} G_t^{(n)}$$
+$$
+G_t^\lambda = \sum_{n=1}^\infty (1 - \lambda) \lambda^{n-1} G_t^{(n)}
+$$
 
 (Note, $\sum_{n=1}^\infty (1 - \lambda) \lambda^{n-1} = 1$)
 

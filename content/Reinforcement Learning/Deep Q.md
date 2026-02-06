@@ -20,7 +20,11 @@ $$
 - Target network parameters $\mathbf{w}^{-}$
 - A Q-learning weight update on $\mathbf{w}$ (uses replay and target network):
 
-    $$\Delta\mathbf{w} = \left(R_{i+1} + \gamma \max_{a} q_{\mathbf{w}^{-}}(S_{i+1}, a) - q_{\mathbf{w}}(S_i, A_i)\right) \nabla_{\mathbf{w}}q_{\mathbf{w}}(S_i, A_i)$$
+    $$
+
+\Delta\mathbf{w} = \left(R_{i+1} + \gamma \max_{a} q_{\mathbf{w}^{-}}(S_{i+1}, a) - q_{\mathbf{w}}(S_i, A_i)\right) \nabla_{\mathbf{w}}q_{\mathbf{w}}(S_i, A_i)
+
+$$
 
 - Update $\mathbf{w}_t^{-} \leftarrow \mathbf{w}_t$ occasionally (e.g., every 10000 steps)
 - An optimizer to minimize the loss (e.g., SGD, RMSprop, or Adam)

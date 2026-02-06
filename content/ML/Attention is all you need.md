@@ -70,7 +70,9 @@ def generate(self, idx, max_new_tokens):
 
 Let's pay attention (pun not intended) for the very basic formula:
 
-$$\mathrm{Attention}(Q,K,V)=\mathrm{softmax}(\frac{QK^T}{\sqrt{d_k}})V$$
+$$
+\mathrm{Attention}(Q,K,V)=\mathrm{softmax}(\frac{QK^T}{\sqrt{d_k}})V
+$$
 
 Think about the following questions:
 - What's `softmax` doing here?

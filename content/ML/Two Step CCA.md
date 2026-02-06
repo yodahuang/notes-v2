@@ -40,7 +40,9 @@ Why? It's like summation across document.
 
 Then we try to find the projections operated on both context and tokens, such that they have maximal correlation. The projection space we choose has dimension $k$. The intuition is that the context and the token themselves should represent the same thing.
 
-$$\text{CCA}(C, W) \rightarrow (\Phi_C, \Phi_W)$$
+$$
+\text{CCA}(C, W) \rightarrow (\Phi_C, \Phi_W)
+$$
 
 There's a way to compute $\Phi$, see the [[tscca.pdf |paper]] for detalis.
 

@@ -22,10 +22,14 @@ We can also minimize the Bellman error directly (L1 loss).
 
 **loss:**  
 
-$$\mathbb{E}[\delta_t]^2$$
+$$
+\mathbb{E}[\delta_t]^2
+$$
 
 **update:**  
 
-$$\Delta w_t = \alpha \delta_t \nabla_w (v_w(S_t) - \gamma v_w(S'_{t+1}))$$
+$$
+\Delta w_t = \alpha \delta_t \nabla_w (v_w(S_t) - \gamma v_w(S'_{t+1}))
+$$
 
 ...but requires a second independent sample $S'_{t+1}$ which could (randomly) differ from $S_{t+1}$ . (So we can’t use this online)
