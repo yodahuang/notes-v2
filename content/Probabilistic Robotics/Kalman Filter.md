@@ -95,3 +95,6 @@ Now with these in mind, we can have a gauss-markov model. I'm too tired now to r
 The former computes $p(x_{t}|z_{1}, ... z_{t-1})$, and relies on $p(x_{t-1} = x | z_{1}, ... z_{t-1})$. The latter is $p(x_{t}) | z_{1}, ..., z_t$ and relies on the previous formula. The first step is easier in moment parameters, while the latter is easier in natural one. 
 
 If we use [[Sherman-Morrison-Woodbury formula]] and convert the natural parameterization to moment one, we get our familiar Kalman filter, which is an algorithm, not the underlying probabilistic model.
+
+> [!note] The "information" is Fisher information
+> The precision matrix $P = \Sigma^{-1}$ in the natural parameterization is the [[Fisher Information]] about the state given the current belief. The measurement update $P_{\text{new}} = P_{\text{old}} + C^T Q^{-1} C$ is adding the Fisher information from the new observation. This is why conditioning is additive in natural parameters — Fisher information from independent observations adds. The Kalman filter achieves the Cramér-Rao bound: $\Sigma_t$ is the minimum-variance estimator, and $\Sigma_t^{-1}$ is the total accumulated Fisher information.
