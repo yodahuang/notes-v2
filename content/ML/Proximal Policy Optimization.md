@@ -12,7 +12,7 @@ Note that I haven't finished the paper (it would require prior review of [[TRPO]
 
 The rest of the note is based on Appendix A: Diving deeper into PPO of this [blog post](https://pytorch.org/blog/a-primer-on-llm-post-training/).
 
-We start with [[REINFORCE]], then [[Actor-Critic]], then [[TRPO]] and finally reach PPO.
+We start with [[Policy Gradient|REINFORCE]], then [[Actor-Critic]], then [[TRPO]] and finally reach PPO.
 
 Without consulting the actual math that leads to REINFORCE (that aims to maximize the expected episodic reward), we basically want this if the `model` is the policy network.
 ```python
