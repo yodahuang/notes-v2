@@ -56,7 +56,7 @@ $$
 \pi_t(a) = \begin{cases} (1 - \epsilon) + \epsilon / |\mathcal{A}| & \text{if } Q_t(a) = \max_b Q_t(b) \\ \epsilon / |\mathcal{A}| & \text{otherwise} \end{cases}
 $$
 
-## Policy gradient
+## [[Policy Gradient]]
 We want to maximize total reward. We can do it by gradient ascent: in each step we make it better. Think about it this way: the total expected reward is a function of $\theta$ and picture in your head gradient ascent (since it's reward, not loss).
 
 $$
@@ -65,7 +65,7 @@ $$
 
 This expected reward is not the "reward this time" since the policy can be stochastic. How can we compute the gradient? While we can use sample based methods to approximate expectation, here we still need to sample $R_t|\pi_{\theta_1}$, which is not known.
 
-Here comes the log-likelihood trick (also known as REINFORCE trick)
+Here comes the log-likelihood trick (also known as [[Policy Gradient|REINFORCE]] trick)
 
 $$
 \begin{aligned}

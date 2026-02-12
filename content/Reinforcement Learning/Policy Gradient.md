@@ -77,7 +77,7 @@ $$
 \nabla_\theta J(\theta) \approx \frac{1}{N} \sum_{i=1}^N \sum_{t=1}^T \nabla_\theta \log \pi_\theta(\mathbf{a}_{i,t} | \mathbf{s}_{i,t}) \underbrace{\left( \sum_{t'=t}^T r(\mathbf{s}_{i,t'}, \mathbf{a}_{i,t'}) \right)}_{\substack{\text{"reward to go"} \\ \hat{Q}_{i,t}}}
 $$
 
-We are writing out the expectation because then we can clearly see that one trajectory is really from 1 to time $T$, and use the distributive law. That $Q$ is a hint to the value function
+We are writing out the expectation because then we can clearly see that one trajectory is really from 1 to time $T$, and use the distributive law. That $Q$ is a hint to the value function.
 
 ### Baseline
 
