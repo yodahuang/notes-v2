@@ -21,5 +21,9 @@ This is off policy, and the $\pi$ only show up implicitly in that $\max_{a_i'}$,
 
 We can make it online:
 
-![[Pasted image 20260211212207.png]]
-And for exploring in step one we can use [[Multi-arm bandits#Greedy and epsilon greedy]]. You can see more exploration way there too.
+![[online_q_iteration.png]]
+And for exploring in step one we can use [[Multi-arm bandits#Greedy and epsilon greedy]]. You can see more exploration way there too.o
+
+Also see the traditional [[Q learning]]. The change are basically if we use batch / function approximation. 
+
+Now we have correlated samples, on to the [[Deep Q]].

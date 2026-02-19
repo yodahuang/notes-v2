@@ -4,6 +4,7 @@ aliases:
   - Policy Iteration
   - Value Iteration
 date: 2025-10-19
+updated: 2026-02-18
 ---
 
 All things discrete. These are model based methods that plans by dynamic programming to solve a known MDP.
@@ -23,6 +24,8 @@ Another way to think about it is it use Bellman optimality equation. Note that's
 
 Note now policy iteration and evaluation are in one step and we keep looping.
 
+### Why does this work
+
 One may ask "hey why does this work though"? See [this video](https://www.youtube.com/watch?v=XpbLq7rIJAA&list=PLqYmG7hTraZDVH599EItlEWsUOsJbAodm&index=4&pp=iAQB). We can show that the bellman update can be formulated as Bellman operator, and the operator is a $\gamma$-contraction mapping, meaning it converges to the unique fixed point.
 
 It's also covered in CS 285, lecture 7. 
@@ -34,3 +37,6 @@ Note that this does not work for the non-tablular case. You can image NN is opti
 ![[bellman_operator_nn.png]]
 You can see it may get us further from the goal (the star)
 ![[belman_operator_nn_getting_further.png]]
+
+---
+[[Policy Gradient]] can be seen as a soft form of policy iteration. See [[TRPO]] for more info.

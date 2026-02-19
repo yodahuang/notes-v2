@@ -1,7 +1,7 @@
 ---
 date: 2025-11-30
 ---
-
+See also [[Deep Q]]
 Recall dynamic programming algorithms [[Policy & value iteration]] 
 
 $$
@@ -60,6 +60,11 @@ Uses same values to *select* and to *evaluate*.
 
 That "max" is persisting. Imagine you are in a state with 100 actions with stochastic outcome. If one of the action by chance got jackpot, then you would keep exploring that state. That leads to super slow convergence: blinded by overestimated values.
 
+Another way to think about it: say we have two random variables: $X_1$ and $X_2$,
+$$
+E[\max(X_{1}, X_{2})] \ge \max(E[X_{1}],E[X_{2}])
+$$
+our q estimation is a noisy estimation, and we are using the left one to estimate the right.
 #### Double Q-learning
 Store two action-value functions: $q$ and $q'$  
 
@@ -72,5 +77,7 @@ R_{t+1} + \gamma q_t(S_{t+1}, \arg\max_a q'_t(S_{t+1}, a)) \tag{2}
 $$
 
 Each $t$, pick $q$ or $q'$ (e.g., randomly) and update using (1) for $q$ or (2) for $q'$.  
+
+This solves the issue because now the noise is decorrelated. The "max" when selecting the action may not actually leads to the "max" when actually getting the estimated Q value.
 
 We can also extend this to SARSA.
