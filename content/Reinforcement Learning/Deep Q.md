@@ -125,7 +125,7 @@ There's this $\max_{a}Q(s, a)$ here that's hard to do for continuous actions
 ### Stochastic optimization
 
 - We can random sample: sample a bunch in continuous space and pick the max we see.
-- Or use cross-entropy method (CEM) or [[CMA-ES]], doing stochastic optimization to "guess the max" basically.
+- Or use [[Cross Entropy Method|CEM]] or [[CMA-ES]], doing [[Stochastic optimization]] to "guess the max" basically.
 
 ## Use function class that's easy to optimize
 
