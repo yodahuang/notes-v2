@@ -19,7 +19,7 @@ $$
 For a single sample with true class $c$, this is simply $-\log \hat{y}_c$.
 
 > [!note] No $p(k)$ here
-> Notice that this derivation never introduces a weighting by $p(k)$. It only says: for each sample, penalize $-\log$ of the predicted probability at the correct class. The connection to the full cross-entropy formula $-\sum_k p(k) \log q(k)$ only becomes clear when we aggregate samples — see [[#Why These Views Agree|below]].
+> Notice that this derivation never introduces a weighting by $p(k)$. It only says: for each sample, penalize $-\log$ of the predicted probability **at the correct class**. The connection to the full cross-entropy formula $-\sum_k p(k) \log q(k)$ only becomes clear when we aggregate samples — see [[#Why These Views Agree|below]].
 
 ---
 

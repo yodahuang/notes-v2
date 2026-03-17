@@ -131,6 +131,15 @@ out = wei @ v
 
 For that scaled $\sqrt{d_k}$ part, since we're doing `q@k` there, if the inputs are all unit gaussian, `wei`'s distribution would be $\text{head\_size}^2$, thus making the softmax too sharp, converge to max.
 
+> [!note] Why Both Q and K? 
+> The goal of `q @ k.T` is to produce a `(B, T, T)` weight matrix encoding how much each token attends to every other. You could ask: why two projections? Why not just `q @ q.T`?
+> 
+> The answer is **asymmetry**. `q @ q.T` forces the weight matrix to be symmetric — token $i$'s affinity toward $j$ equals $j$'s toward $i$. But attention isn't symmetric: "it" attending to "cat" doesn't mean "cat" should attend to "it." Separate Q and K projections let the matrix be asymmetric: **Q encodes "what am I looking for?"** and **K encodes "what do I advertise about myself?"** — genuinely different roles.
+> 
+> The factorization also has practical virtues: it's **data-dependent** (weights are recomputed fresh per input, not fixed parameters) and **low-rank** ($O(T \cdot d_k)$ parameters vs. a raw $O(T^2)$ weight matrix that wouldn't generalize across positions).
+> 
+> So Q/K together give you an asymmetric, data-dependent, low-rank factorization of the attention weight matrix — each property doing real work.
+
 ## Multi-head attention
 
 ```python

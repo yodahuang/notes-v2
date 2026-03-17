@@ -53,3 +53,13 @@ One way to deal with it is to learn seperately $p(o_t|s_t)$ and $p(s_{t+1}|s_{t}
 $$\begin{aligned} &\max_{\phi} \frac{1}{N} \sum_{i=1}^{N} \sum_{t=1}^{T} E \left[ \log p_{\phi}(\mathbf{s}_{t+1,i} | \mathbf{s}_{t,i}, \mathbf{a}_{t,i}) + \log p_{\phi}(\mathbf{o}_{t,i} | \mathbf{s}_{t,i}) \right] \\ &\text{expectation w.r.t. } (\mathbf{s}_t, \mathbf{s}_{t+1}) \sim p(\mathbf{s}_t, \mathbf{s}_{t+1} | \mathbf{o}_{1:T}, \mathbf{a}_{1:T}) \end{aligned}$$
 So we somehow need to know "where am I" to get started. We can also learn this posterior "encoder": $q_{\psi}(\mathbf{s}_t | \mathbf{o}_{1:t}, \mathbf{a}_{1:t})$, in the simplest form it can be $q_{\psi}(s_t|o_t)$. If we have that and say it's deterministic, we can take the expectation away and now it's just
 $$\max_{\phi, \psi} \frac{1}{N} \sum_{i=1}^{N} \sum_{t=1}^{T} \underbrace{\log p_{\phi}(g_{\psi}(\mathbf{o}_{t+1,i}) | g_{\psi}(\mathbf{o}_{t,i}), \mathbf{a}_{t,i})}_{\text{latent space dynamics}} + \underbrace{\log p_{\phi}(\mathbf{o}_{t,i} | g_{\psi}(\mathbf{o}_{t,i}))}_{\text{image reconstruction}} + \underbrace{\log p_{\phi}(r_{t,i} | g_{\psi}(\mathbf{o}_{t,i}))}_{\text{reward model}}$$
+
+---
+
+Now, we've assumed we are using planning once we got the state representation. We can also use a global policy for doing model-based RL with policies. 
+
+Just running back prop through state transitions would not work, since it's the same issue as [[BPTT]]: vanishing or exploding gradient. So the common way to do this is just to treat the model as "fast simulator" for model free RL. Policy gradient might be more stable since it doesn't require multiplying many Jacobians.
+
+We want *short* rollouts since the learned model is approximate, which means distribution shift from the real world. The more we rely on it, the more we differentiate from it. 
+
+One of the general algorithms: [[Dyna]]
