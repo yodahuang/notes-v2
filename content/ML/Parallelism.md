@@ -180,3 +180,89 @@ From DeepSpeed...
 | Tensor Parallel          | Partial activations (all-reduce after every matmul)           | Every matmul, every layer; fully blocking, cannot pipeline     | Very high          | Intra-node only (NVLink)   |
 | Pipeline Parallel (1F1B) | Activations between adjacent stages (point-to-point)          | At micro-batch boundaries; blocking per stage, bubble overhead | Medium             | Cross-node OK              |
 | DDP (baseline)           | Gradients only (all-reduce once per step)                     | Once per step; overlapped with backward                        | Low                | Cross-node                 |
+
+## Bonus: Ring All-Reduce
+
+This part is from a conversation with Claude Sonnet 4.6.
+
+### Goal
+
+Every rank starts with a local tensor (e.g. gradients). The goal is for every rank to end up with the **elementwise sum** across all ranks — without any single node being a bottleneck.
+
+### Concrete Setup
+
+4 ranks, each holding a length-4 tensor (`arange(4) + rank`):
+
+```
+Rank 0: [0, 1, 2, 3]
+Rank 1: [1, 2, 3, 4]
+Rank 2: [2, 3, 4, 5]
+Rank 3: [3, 4, 5, 6]
+```
+
+Target (elementwise sum): `[6, 10, 14, 18]`
+
+Each tensor is split into `world_size` chunks. Each rank is **responsible** for fully reducing one chunk.
+
+---
+
+### Phase 1: Reduce-Scatter
+
+Logically arranged in a ring:
+
+```
+Rank 0 → Rank 1 → Rank 2 → Rank 3 → (back to Rank 0)
+```
+
+At each step, every rank simultaneously sends one chunk to its right neighbor and receives one chunk from its left neighbor, **accumulating** (adding) as it goes. Notation: `a/b/c/d` = chunk index (0/1/2/3), subscript = source rank.
+
+|Step|R0 → R1|R1 → R2|R2 → R3|R3 → R0|
+|---|---|---|---|---|
+|1|`a0`|`b1`|`c2`|`d3`|
+|2|`d0+d3`|`a1+a0`|`b2+b1`|`c3+c2`|
+|3|`c0+c3+c2`|`d1+d0+d3`|`a2+a1+a0`|`b3+b2+b1`|
+|**hold**|`b0+b1+b2+b3` ✓|`c1+c2+c3+c0` ✓|`d2+d3+d0+d1` ✓|`a3+a0+a1+a2` ✓|
+
+After `world_size - 1` steps, each rank holds one fully-reduced chunk:
+
+```
+Rank 0 receives: a (chunk0) fully reduced = 0+1+2+3 = 6
+Rank 1 receives: b (chunk1) fully reduced = 1+2+3+4 = 10
+Rank 2 receives: c (chunk2) fully reduced = 2+3+4+5 = 14
+Rank 3 receives: d (chunk3) fully reduced = 3+4+5+6 = 18
+```
+
+Each step moves `size / world_size` data. Total sent per rank:
+
+$$\text{size} \times \frac{world_size - 1}{world_size} \approx \text{size}$$
+
+---
+
+### Phase 2: All-Gather
+
+Each rank now forwards its fully-reduced chunk around the ring (no accumulation, just copy). After another `world_size - 1` steps, every rank holds the complete result `[6, 10, 14, 18]`.
+
+Same data volume as phase 1: another `≈ size` per rank.
+
+---
+
+## Total Communication Cost
+
+| |Per-rank data sent|Total across all ranks|
+|---|---|---|
+|Naive (everyone → everyone)|`O(N · size)`|`O(N² · size)`|
+|Ring all-reduce|`≈ 2 · size`|`O(N · size)`|
+
+The 2x comes from the two phases (reduce-scatter + all-gather). Adding more GPUs does **not** increase per-device communication cost — it scales linearly, not quadratically.
+
+---
+
+### Why a Ring?
+
+The ring topology is an **implementation choice**, not fundamental to reduce-scatter. The same total data is moved regardless of topology. The ring's advantage:
+
+- Every rank is **simultaneously sending and receiving** at every step — no idle ranks
+- Each network link is used by exactly one sender per step — no contention
+- Perfectly pipelined and load-balanced
+
+The core idea (each rank responsible for reducing one chunk, receives that chunk from all others) works with any topology — the ring just maximizes bandwidth utilization.

@@ -15,7 +15,7 @@ LLM interference has a prefill and a decoding stage. Their characteristic is dif
 
 Here it’s mentioned that the decoding step only looks at the new token per step since there is [[KV cache]]. This needs to be shared in both step. So there need to be a copy process to update the cache from prefill step to decoding step.
 
-Things are also complicated when the model is too large to fit into a single GPU. We can do this by [[model parallellism]]. We can partition the big model by computationally intensive operations (infra-operator), or by stage (inter-operator). They have different compute / memory performance behavior. 
+Things are also complicated when the model is too large to fit into a single GPU. We can do this by [[Parallelism#Model parallelism]]. We can partition the big model by computationally intensive operations (infra-operator), or by stage (inter-operator). They have different compute / memory performance behavior. 
 
 ![[distserve_algo.png]]
 

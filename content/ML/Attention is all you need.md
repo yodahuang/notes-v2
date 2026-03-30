@@ -139,6 +139,18 @@ For that scaled $\sqrt{d_k}$ part, since we're doing `q@k` there, if the inputs 
 > The factorization also has practical virtues: it's **data-dependent** (weights are recomputed fresh per input, not fixed parameters) and **low-rank** ($O(T \cdot d_k)$ parameters vs. a raw $O(T^2)$ weight matrix that wouldn't generalize across positions).
 > 
 > So Q/K together give you an asymmetric, data-dependent, low-rank factorization of the attention weight matrix — each property doing real work.
+> 
+> The naming is borrowed from a **key-value store** analogy. Token $i$'s query $q_i$ is "what am I looking for?", token $j$'s key $k_j$ is "what do I advertise?", and $v_j$ is the actual content retrieved. The asymmetry is semantic, not mathematical — if you swapped $W_Q \leftrightarrow W_K$ you'd get the transpose of the weight matrix. The learned weights shape Q-space and K-space so that meaningful pairs have high dot product.
+
+
+> [!info] Single Head = One Scalar Per Token Pair
+> Each row $i$ of $QK^\top \in \mathbb{R}^{T \times T}$ is $q_i K^\top$ — token $i$ scoring every other token simultaneously. After softmax, row $i$ sums to 1: it's a **single probability distribution** over positions. This means token $i$ must express *all* its attention needs — syntactic, semantic, positional — in one weighted average of $V$. Softmax kills superposition: you can't attend 70% to position 3 *and* 70% to position 7 at the same time within one head.
+>
+> Multi-head attention escapes this by running $h$ independent heads, each with its own $W_Q^h, W_K^h, W_V^h$ projecting into a $d_k = d_{model}/h$ subspace. Two things happen at once:
+> - **Complexity is preserved** — total FLOPs across all heads ≈ one full-dim head.
+> - **Each head gets its own distribution** — head 1 might track syntax, head 2 coreference, head 3 local context. $W_O$ then mixes the concatenated outputs.
+>
+> So multi-head isn't just a chunked single lens — it's parallel diverse lenses, each freed from the softmax-superposition constraint.
 
 ## Multi-head attention
 
@@ -184,3 +196,116 @@ The left part of the diagram is encoder, the other is decoder. If you operate on
 ![[transformer_1.png]]
 
 The OG transformer uses [[Absolute position embedding]].
+
+
+## My code
+```python
+def scaled_dot_product_attention(
+    Q: Float[Tensor, " ... queries d_k"],
+    K: Float[Tensor, " ... keys d_k"],
+    V: Float[Tensor, " ... values d_v"],
+    mask: Bool[Tensor, " ... queries keys"] | None = None,
+) -> Float[Tensor, "... values d_v"]:
+    # Q and K compose together to form the actual big softmax weighting tensor
+    pre_softmax: Float[Tensor, "... queries keys"] = einx.dot(
+        "... queries d_k, ... keys d_k -> ... queries keys", Q, K
+    ) / math.sqrt(K.shape[-1])
+    if mask is not None:
+        pre_softmax = torch.where(mask, pre_softmax, -torch.inf)
+    return softmax(pre_softmax, -1) @ V
+
+class CausalMultiHeadAttention(nn.Module):
+    def __init__(self, d_model: int, num_heads: int):
+        super().__init__()
+        assert not (d_model % num_heads)
+        d_k = d_model // num_heads
+        # We can combine them but that makes weight loading hard so I do the easy thing
+        self.project_q = Linear(d_model, d_model)
+        self.project_k = Linear(d_model, d_model)
+        self.project_v = Linear(d_model, d_model)
+        self.project_o = Linear(d_model, d_model)
+        self.d_k = d_k
+        self.num_heads = num_heads
+
+    def forward(self, x: Float[Tensor, "... seq_len d_model"]) -> Float[Tensor, "... seq_len d_model"]:
+        Q = self.project_q(x)
+        K = self.project_k(x)
+        V = self.project_v(x)
+        Q = einx.rearrange("... seq_len (h d_k) -> ... h seq_len d_k", Q, h=self.num_heads)
+        K = einx.rearrange("... seq_len (h d_k) -> ... h seq_len d_k", K, h=self.num_heads)
+        V = einx.rearrange("... seq_len (h d_k) -> ... h seq_len d_k", V, h=self.num_heads)
+        seq_len = x.shape[-2]
+        before_output: Float[Tensor, "... h seq_len d_k_per_head"] = scaled_dot_product_attention(
+            Q, K, V, mask=torch.tril(torch.ones((seq_len, seq_len)).bool())
+        )
+        before_output = einx.rearrange("... h seq_len d_k_per_head -> ... seq_len (h d_k_per_head)", before_output)
+        return self.project_o(before_output)
+
+class CausalMultiHeadAttentionWithRoPE(CausalMultiHeadAttention):
+    def __init__(self, d_model: int, num_heads: int, max_seq_len: int, rope_theta: float):
+        super().__init__(d_model, num_heads)
+        self.rope = RoPE(theta=rope_theta, d_k=self.d_k, max_seq_len=max_seq_len)
+
+    def forward(
+        self,
+        x: Float[Tensor, "... seq_len d_model"],
+        token_positions: Integer[Tensor, " ... sequence_length"] | None = None,
+    ) -> Float[Tensor, "... seq_len d_model"]:
+        Q = self.project_q(x)
+        K = self.project_k(x)
+        V = self.project_v(x)
+        Q = einx.rearrange("... seq_len (h d_k) -> ... h seq_len d_k", Q, h=self.num_heads)
+        K = einx.rearrange("... seq_len (h d_k) -> ... h seq_len d_k", K, h=self.num_heads)
+        V = einx.rearrange("... seq_len (h d_k) -> ... h seq_len d_k", V, h=self.num_heads)
+        seq_len = x.shape[-2]
+        if token_positions is None:
+            token_positions = torch.arange(seq_len)
+        Q = self.rope(Q, token_positions=token_positions)
+        K = self.rope(K, token_positions=token_positions)
+        before_output: Float[Tensor, "... h seq_len d_k_per_head"] = scaled_dot_product_attention(
+            Q, K, V, mask=torch.tril(torch.ones((seq_len, seq_len), dtype=bool, device=x.device))
+        )
+        before_output = einx.rearrange("... h seq_len d_k_per_head -> ... seq_len (h d_k_per_head)", before_output)
+        return self.project_o(before_output)
+
+class TransformerBlock(nn.Module):
+    def __init__(self, d_model: int, num_heads: int, d_ff: int, max_seq_len: int, rope_theta: float):
+        super().__init__()
+        self.norm_1 = RMSNorm(d_model)
+        self.norm_2 = RMSNorm(d_model)
+        self.mha = CausalMultiHeadAttentionWithRoPE(d_model, num_heads, max_seq_len, rope_theta)
+        self.ff = SwiGLUFeedForward(d_model=d_model, d_ff=d_ff)
+
+    def forward(self, x: Float[Tensor, "... seq_len d_model"]) -> Float[Tensor, "... seq_len d_model"]:
+        x = self.mha(self.norm_1(x)) + x
+        x = self.ff(self.norm_2(x)) + x
+        return x
+
+class TransformerLM(nn.Module):
+    def __init__(
+        self,
+        d_model: int,
+        num_heads: int,
+        d_ff: int,
+        context_length: int,
+        rope_theta: float,
+        vocab_size: int,
+        num_layers: int,
+    ):
+        super().__init__()
+        self.embedding = Embedding(num_embeddings=vocab_size, embedding_dim=d_model)
+        self.transformers = nn.ModuleList(
+            [TransformerBlock(d_model, num_heads, d_ff, context_length, rope_theta) for _ in range(num_layers)]
+        )
+        self.ln_final = RMSNorm(d_model)
+        self.lm_head = Linear(d_model, vocab_size)
+
+    def forward(self, x: Integer[Tensor, "... seq_len"]) -> Float[Tensor, "... seq_len token_size"]:
+        x = self.embedding(x)
+        for layer in self.transformers:
+            x = layer(x)
+        x = self.ln_final(x)
+        x = self.lm_head(x)
+        return x
+
+```
