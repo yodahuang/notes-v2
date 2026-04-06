@@ -1,3 +1,7 @@
+---
+date: 2026-02-06
+---
+
 
 This is generated with my conversation with ChatGPT 5.2.
 

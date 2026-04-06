@@ -1,3 +1,7 @@
+---
+date: 2026-02-05
+---
+
 Related: [[Flow Matching]], [[Score matching]].
 
 ### Vanilla Guidance
