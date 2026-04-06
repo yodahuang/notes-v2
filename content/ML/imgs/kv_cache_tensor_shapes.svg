@@ -1,0 +1,147 @@
+<svg width="100%" viewBox="0 0 680 534.6" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+<style>
+  .tok  { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.5; }
+  .out  { fill: #FAEEDA; stroke: #854F0B; stroke-width: 0.5; }
+  .kv   { fill: #E6F1FB; stroke: #185FA5; stroke-width: 0.5; }
+  .blk  { fill: #EEEDFE; stroke: #534AB7; stroke-width: 0.5; }
+  .dim  { fill: #F0EFED; stroke: #999;    stroke-width: 0.5; }
+  .th   { font: 500 14px sans-serif; fill: #1e1e1e; }
+  .ts   { font: 400 12px sans-serif; fill: #555; }
+  .tok-h { font: 500 13px sans-serif; fill: #0F5C45; }
+  .tok-s { font: 400 11px sans-serif; fill: #2a7a5a; }
+  .out-h { font: 500 13px sans-serif; fill: #6B3E08; }
+  .out-s { font: 400 11px sans-serif; fill: #854F0B; }
+  .kv-h  { font: 500 13px sans-serif; fill: #124C84; }
+  .kv-s  { font: 400 11px sans-serif; fill: #185FA5; }
+  .blk-h { font: 500 13px sans-serif; fill: #433A93; }
+  .blk-s { font: 400 11px sans-serif; fill: #534AB7; }
+  .dim-h { font: 500 13px sans-serif; fill: #444; }
+  @media (prefers-color-scheme: dark) {
+    .tok  { fill: #085041; stroke: #5DCAA5; }
+    .out  { fill: #633806; stroke: #EF9F27; }
+    .kv   { fill: #0C447C; stroke: #85B7EB; }
+    .blk  { fill: #3C3489; stroke: #AFA9EC; }
+    .dim  { fill: #444442; stroke: #B4B2A9; }
+    .th   { fill: #e5e5e5; }
+    .ts   { fill: #aaa; }
+    .tok-h { fill: #9FE1CB; }
+    .tok-s { fill: #5DCAA5; }
+    .out-h { fill: #FAC775; }
+    .out-s { fill: #EF9F27; }
+    .kv-h  { fill: #A8CFEE; }
+    .kv-s  { fill: #85B7EB; }
+    .blk-h { fill: #CECBF6; }
+    .blk-s { fill: #AFA9EC; }
+    .dim-h { fill: #D3D1C7; }
+  }
+</style>
+
+<!-- Column headers -->
+<text class="th" x="175" y="22" text-anchor="middle">Prefill</text>
+<text class="ts" x="175" y="36" text-anchor="middle">S tokens in parallel</text>
+<text class="th" x="510" y="22" text-anchor="middle">Generation</text>
+<text class="ts" x="510" y="36" text-anchor="middle">1 new token</text>
+
+<!-- Divider -->
+<line x1="340" y1="12" x2="340" y2="518" stroke="#ccc" stroke-width="1" stroke-dasharray="4 3"/>
+
+<!-- Row labels -->
+<text class="ts" x="32" y="80"  text-anchor="middle" dominant-baseline="central">RMSNorm</text>
+<text class="ts" x="32" y="155" text-anchor="middle" dominant-baseline="central">QKV proj</text>
+<text class="ts" x="32" y="265" text-anchor="middle" dominant-baseline="central">Attention</text>
+<text class="ts" x="32" y="390" text-anchor="middle" dominant-baseline="central">FFN</text>
+<text class="ts" x="32" y="480" text-anchor="middle" dominant-baseline="central">Output</text>
+
+<!-- ════ PREFILL ════ -->
+
+<!-- RMSNorm -->
+<rect class="tok" x="60" y="58" width="230" height="44" rx="4"/>
+<text class="tok-h" x="175" y="80" text-anchor="middle" dominant-baseline="central">[S, d_model]</text>
+<line x1="175" y1="102" x2="175" y2="118" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- QKV proj -->
+<rect class="tok" x="60" y="118" width="230" height="44" rx="4"/>
+<text class="tok-h" x="175" y="140" text-anchor="middle" dominant-baseline="central">[S, d_head]  each of Q, K, V</text>
+<line x1="175" y1="162" x2="175" y2="178" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- Attention -->
+<rect class="blk" x="60"  y="178" width="114" height="90" rx="4"/>
+<text class="blk-h" x="117" y="213" text-anchor="middle" dominant-baseline="central">QKᵀ</text>
+<text class="blk-s" x="117" y="231" text-anchor="middle" dominant-baseline="central">[S, S]</text>
+<line x1="174" y1="223" x2="194" y2="223" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect class="blk" x="194" y="178" width="96"  height="90" rx="4"/>
+<text class="blk-h" x="242" y="213" text-anchor="middle" dominant-baseline="central">softmax·V</text>
+<text class="blk-s" x="242" y="231" text-anchor="middle" dominant-baseline="central">[S, d_head]</text>
+<line x1="175" y1="268" x2="175" y2="330" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- FFN -->
+<rect class="tok" x="60" y="330" width="230" height="90" rx="4"/>
+<text class="tok-h" x="175" y="362" text-anchor="middle" dominant-baseline="central">[S, d_ff]  →  [S, d_model]</text>
+<text class="tok-s" x="175" y="380" text-anchor="middle" dominant-baseline="central">seq = batch, fully parallel</text>
+<line x1="175" y1="420" x2="175" y2="456" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- Output -->
+<rect class="dim" x="60" y="456" width="230" height="44" rx="4"/>
+<text class="dim-h" x="175" y="478" text-anchor="middle" dominant-baseline="central">logits [S, vocab] → take last</text>
+
+<!-- ════ GENERATION ════ -->
+
+<!-- RMSNorm -->
+<rect class="out" x="395" y="58" width="230" height="44" rx="4"/>
+<text class="out-h" x="510" y="80" text-anchor="middle" dominant-baseline="central">[1, d_model]</text>
+<line x1="510" y1="102" x2="510" y2="118" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- QKV proj -->
+<rect class="out" x="395" y="118" width="72" height="44" rx="4"/>
+<text class="out-h" x="431" y="133" text-anchor="middle" dominant-baseline="central">Q new</text>
+<text class="out-s" x="431" y="151" text-anchor="middle" dominant-baseline="central">[1, d_head]</text>
+
+<rect class="out" x="473" y="118" width="72" height="44" rx="4"/>
+<text class="out-h" x="509" y="133" text-anchor="middle" dominant-baseline="central">K, V new</text>
+<text class="out-s" x="509" y="151" text-anchor="middle" dominant-baseline="central">[1, d_head]</text>
+
+<rect class="kv"  x="551" y="118" width="74" height="44" rx="4"/>
+<text class="kv-h" x="588" y="133" text-anchor="middle" dominant-baseline="central">K, V past</text>
+<text class="kv-s" x="588" y="151" text-anchor="middle" dominant-baseline="central">[S, d_head]</text>
+
+<!-- append arrow: K,V new → K,V past -->
+<path d="M509 162 L509 170 L588 170 L588 162" fill="none" stroke="#854F0B" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arr)"/>
+<text class="ts" x="548" y="182" text-anchor="middle">append</text>
+
+<line x1="510" y1="162" x2="510" y2="196" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- Attention -->
+<rect class="blk" x="395" y="196" width="114" height="90" rx="4"/>
+<text class="blk-h" x="452" y="231" text-anchor="middle" dominant-baseline="central">q·K_allᵀ</text>
+<text class="blk-s" x="452" y="249" text-anchor="middle" dominant-baseline="central">[1, S+1]</text>
+<line x1="509" y1="241" x2="529" y2="241" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+<rect class="blk" x="529" y="196" width="96"  height="90" rx="4"/>
+<text class="blk-h" x="577" y="231" text-anchor="middle" dominant-baseline="central">softmax·V</text>
+<text class="blk-s" x="577" y="249" text-anchor="middle" dominant-baseline="central">[1, d_head]</text>
+<line x1="510" y1="286" x2="510" y2="330" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- FFN -->
+<rect class="out" x="395" y="330" width="230" height="90" rx="4"/>
+<text class="out-h" x="510" y="362" text-anchor="middle" dominant-baseline="central">[1, d_ff]  →  [1, d_model]</text>
+<text class="out-s" x="510" y="380" text-anchor="middle" dominant-baseline="central">same weights, 1 row</text>
+<line x1="510" y1="420" x2="510" y2="456" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+
+<!-- Output -->
+<rect class="dim" x="395" y="456" width="230" height="44" rx="4"/>
+<text class="dim-h" x="510" y="478" text-anchor="middle" dominant-baseline="central">logits [1, vocab] → sample</text>
+
+<!-- Legend -->
+<rect class="tok" x="60"  y="512" width="10" height="10" rx="2"/>
+<text class="ts" x="76"  y="517" dominant-baseline="central">all tokens (seq matters)</text>
+<rect class="out" x="230" y="512" width="10" height="10" rx="2"/>
+<text class="ts" x="246" y="517" dominant-baseline="central">new token (computed fresh)</text>
+<rect class="kv"  x="420" y="512" width="10" height="10" rx="2"/>
+<text class="ts" x="436" y="517" dominant-baseline="central">past tokens (cached, frozen)</text>
+<rect class="blk" x="608" y="512" width="10" height="10" rx="2"/>
+<text class="ts" x="624" y="517" dominant-baseline="central">cross-token</text>
+</svg>
