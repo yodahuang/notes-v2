@@ -35,7 +35,7 @@ Examples:
 - [[Q learning]]
 - [[SARSA]]
 - [[Policy Gradient]]
-- [[Proximal Policy Optimization|PPO]]
+- [[PPO]]
 
 Key property: works with a fixed dataset (offline RL).
 

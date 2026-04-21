@@ -155,7 +155,7 @@ $$
 \begin{aligned} \hat{A}_{\text{GAE}}^{\pi}(\mathbf{s}_t, \mathbf{a}_t) &= r(\mathbf{s}_t, \mathbf{a}_t) + \gamma((1 - \lambda)\hat{V}_{\phi}^{\pi}(\mathbf{s}_{t+1}) + \lambda(r(\mathbf{s}_{t+1}, \mathbf{a}_{t+1}) + \gamma((1 - \lambda)\hat{V}_{\phi}^{\pi}(\mathbf{s}_{t+2}) + \lambda r(\mathbf{s}_{t+2}, \mathbf{a}_{t+2}) + \dots) \\ \hat{A}_{\text{GAE}}^{\pi}(\mathbf{s}_t, \mathbf{a}_t) &= \sum_{t'=t}^{\infty} (\gamma \lambda)^{t'-t} \delta_{t'} \quad \quad \quad \delta_{t'} = r(\mathbf{s}_{t'}, \mathbf{a}_{t'}) + \gamma \hat{V}_{\phi}^{\pi}(\mathbf{s}_{t'+1}) - \hat{V}_{\phi}^{\pi}(\mathbf{s}_{t'}) \end{aligned}
 $$
 
-This is the first part of implementing [[Proximal Policy Optimization|PPO]]
+This is the first part of implementing [[PPO]]
 ```pseudo
 \begin{algorithm}
 \caption{Policy Gradient with GAE}

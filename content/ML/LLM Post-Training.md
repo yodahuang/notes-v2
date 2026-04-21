@@ -15,8 +15,8 @@ First there's [[Supervised Fine Tuning|SFT]].
 
 ![[rl_domain.png]]
 Then there's [[Direct Preference Optimization|DPO]].
-Finally we can do online RL, which nowadays is often tied to [[Proximal Policy Optimization|PPO]].
-Other than RLHF, we can do more RL, since it's basically building reward pipeline by mixing Software 1.0 and 2.0. You can imagine we have a sophisticated reward shaping pipeline. Just judge it, rule based or LLM judge. 
+Finally we can do online RL, which nowadays is often tied to [[PPO]].
+Other than [[RLHF]], we can do more RL, since it's basically building reward pipeline by mixing Software 1.0 and 2.0. You can imagine we have a sophisticated reward shaping pipeline. Just judge it, rule based or LLM judge. 
 ![[reward_shaping_pipeline.png]]
 
 ### Test-time compute and reasoning

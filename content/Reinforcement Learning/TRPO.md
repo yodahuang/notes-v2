@@ -1,14 +1,15 @@
 ---
 date: 2026-02-18
 pdf: "[[285-advanced-policy-gradient.pdf]]"
+original title: Trust Region Policy Optimization
+year: 2015
 ---
-
 
 The following stuff is from CS285, lecture 9.
 
 One could also think about [[Policy Gradient]] as a soft form of [[Policy & value iteration|Policy Iteration]]. Instead of directly changing policy according to the belief of advantage, we just adjust the policy a bit.
 
-This idea would lead to [[TRPO]], [[Proximal Policy Optimization|PPO]] and others.
+This idea would lead to [[TRPO]], [[PPO]] and others.
 
 As policy iteration update $\theta$ to be the new $\theta'$, policy iteration is basically optimizing this in the policy improvement part:
 
@@ -107,7 +108,7 @@ This is now very similar to [[Natural Policy Gradient|Natural Gradient]], but he
 
 Now since we are dealing with NN, we can't solve it nicely. We can use dual gradient descent for this.
 
-Or we can just do second order Taylor expansion and approximate $KL$ by $F$, which leads to [[Natural Policy Gradient|Natural Gradient]]. This is doable since now we convert $KL$ to a quadratic function: $\frac{1}{2}\Delta\theta^{T}H\Delta\theta$, which makes it easy to do $\nabla_{\theta'}$, solvable in closed form.
+Or we can just do second order Taylor expansion and approximate $KL$ by $F$, [[Fisher information]], which leads to [[Natural Policy Gradient|Natural Gradient]]. This is doable since now we convert $KL$ to a quadratic function: $\frac{1}{2}\Delta\theta^{T}H\Delta\theta$, which makes it easy to do $\nabla_{\theta'}$, solvable in closed form.
 
 If we solve that we got
 
@@ -119,3 +120,37 @@ $$
 $$
 
 There's more in TRPO on how to do efficient Fisher-vector products.
+
+---
+
+The following is from a conversation with Claude Sonnet 4.6, when reading [[PPO]] paper.
+
+---
+
+## Efficient Fisher-Vector Products via Conjugate Gradient
+
+$F$ is $|\theta| \times |\theta|$ — impossible to store or invert for any real network. Instead, TRPO reformulates $F^{-1}g$ as solving the linear system $Fx = g$ using **conjugate gradient (CG)**, which only needs matrix-vector products $Fv$, never $F$ itself.
+
+Computing $Fv$ for arbitrary $v$ is cheap. Since $F = \mathbb{E}[\nabla \log \pi \cdot \nabla \log \pi^T]$:
+
+$$
+Fv = \mathbb{E}[(\nabla \log \pi^T v)\nabla \log \pi]
+$$
+
+This requires two backward passes (or one forward-over-backward autodiff pass) — no $|\theta|^2$ storage. CG runs ~10 iterations, each needing one $Fv$ product, to approximate $F^{-1}g$. Then $\alpha$ is computed from the closed-form formula above.
+
+> [!note] Cost
+> 
+> ~10x more expensive than a plain SGD step, plus requires custom autodiff infrastructure. This is exactly what [[PPO]] wanted to escape.
+
+## Limitations of TRPO
+
+**Incompatible with parameter sharing.** The KL constraint is defined purely over policy outputs. When policy and value function share parameters, a gradient step satisfying the KL constraint may cause a large unconstrained update to the value head — or the value loss gradient may yank shared parameters in a way that violates the policy's KL budget. There's no clean way to enforce the constraint on the policy while jointly optimizing a value loss through shared weights.
+
+**Incompatible with dropout.** CG requires multiple forward passes to compute Fisher-vector products. Dropout samples a different mask each pass, so each CG iteration is computing $Fv$ for a _different network_. CG's convergence guarantee assumes repeated multiplication by the _same_ matrix $F$ — dropout breaks this structurally, not just noisily. Freezing the mask is a workaround but adds yet more implementation complexity.
+
+**The approximation is imperfect anyway.** The Fisher approximation (quadratic KL) and finite CG iterations mean TRPO doesn't actually solve the constrained problem exactly. The complexity cost is real; the theoretical guarantee is approximate.
+
+> [!question] Where does the penalty form $\beta \cdot \text{KL}$ come from?
+> 
+> The theory (an error bound proof, analogous to [[Imitation Learning]]) shows there _exists_ some $\beta$ such that optimizing surrogate $- \beta \cdot \text{KL}$ guarantees monotonic improvement. The $\beta$ absorbs horizon, discount, and bound constants — it's problem-dependent and changes over training. This is why TRPO uses the hard constraint form instead: $\epsilon$ is far more stable to tune than $\beta$. See [[PPO]] for how this tension is resolved differently.
