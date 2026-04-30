@@ -49,9 +49,9 @@ Key property: works with a fixed dataset (offline RL).
 
 Examples:
 - [[Policy & value iteration|Value Iteration]] (with known model)
-- MCTS
-- MPC (with known or learned dynamics)
-- Dyna-style methods
+- [[Monte Carlo tree search|MCTS]]
+- [[MPC]] (with known or learned dynamics)
+- [[Dyna]]-style methods
 
 Key property: requires ability to generate new transitions.
 
