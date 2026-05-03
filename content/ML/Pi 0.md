@@ -13,7 +13,13 @@ End result: a model that takes in images and pose, and can one shot easy tasks. 
 
 ![[pi0_model.png]]
 
-The model structure is heavily inspired by [[TransFusion]] for supervising continuous output with flow matching objective. Unlike that paper, a separate set of weights is used for robotics-specific (action and state) tokens.
+The model structure is heavily inspired by [[TransFusion]] for supervising continuous output with flow matching objective. Unlike that paper, a separate set of weights is used for robotics-specific (action and state) tokens. That's why they called it the action expert: following [[Mixture of Experts Overview|MoE]] idea, but manual routing: all action input goes to that action expert. 
+
+> **Action expert.** $\pi_0$ is implemented as a single transformer with two sets of weights (also known as experts), where each token is routed to one of the experts; the weights interact only through the transformer’s self-attention layers. The images and language prompt, $[\mathbf{I}_t^1, \dots, \mathbf{I}_t^n, \ell_t]$, are routed to the larger VLM backbone, which we initialize from PaliGemma. The inputs not seen during VLM pre-training, $[\mathbf{q}_t, \mathbf{A}_t^\tau]$, are routed to the action expert. PaliGemma is based on the Gemma 2B language model.
+
+[[pi0.pdf#page=15&selection=480,0,586,16|pi0, page 15]]
+
+And then in inference the VLM output is just discarded.
 
 As is shown in the image, they used a pre-trained VLM, [[PaliGemma]]. We then added an action expert, but note, it's still on transformer. 
 
@@ -38,8 +44,3 @@ In inference time, 10 integration steps are used with KV cache. Inference is ope
 Only 9.1% is from open-source datasets, while the rests are from their own datasets from various different robots of 68 tasks. The class imbalance is offset by weighing by $n^{0.43}$. How suspicious that number is. They also use a subset from OXE, called "OXE Magic Soup". Sus. 
 
 The experiment result shows that with pretraining, the model performs even better than the from-scratch version with fine tuning data. Using large VLM may be helpful, but it's hard to tell if it's because they use web scale data, or just because the model is large.
-
-
-# Note to self
-
-It's unclear to me how does the "mixture of expert" action expert actually work. Routing specific token to specific expert? Maybe I should read the MoE paper.
