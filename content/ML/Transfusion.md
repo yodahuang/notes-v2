@@ -38,7 +38,7 @@ In inference time, we append $n$ pure noise image patches to the generated seque
 
 ### Image representation
 
-[[U-Net]] on [[Variational Autoencoder (VAE)|VAE]]. It's shown to perform better than just linear.
+[[U-Net]] on [[Variational Autoencoder|VAE]]. It's shown to perform better than just linear.
 
 > Overall, it appears that there are indeed inductive bias benefits to U-Net encoding and decoding of images beyond the mere addition of parameters.
 

@@ -81,7 +81,7 @@ Some works anneal or tune it adaptively, but static $\beta$ is the norm. [[DPO]]
 
 The objective is $\mathbb{E}_{y \sim \pi_\theta}[r(y)]$. The only $\theta$-dependence is in $\pi_\theta(y)$, but $y$ is a **discrete sample** — once you commit to a token sequence, there's no gradient flowing back through that choice.
 
-### The reparametrization trick ([[Variational Autoencoder (VAE)|VAE]] analogy)
+### The [[Reparameterization trick]] ([[Variational Autoencoder|VAE]] analogy)
 
 In a VAE, the encoder outputs $\mu, \sigma$ and you need to sample $z \sim \mathcal{N}(\mu, \sigma^2)$:
 

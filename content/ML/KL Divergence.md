@@ -150,19 +150,29 @@ In the illustration, $P$ is the blue one, bimodal, and $Q_{\theta}$ the normal o
 
 **Minimizing $D_\text{KL}(p | q)$** — sampling from $p$, penalizing where $p$ has mass that $q$ misses:
 
-$$ D_\text{KL}(p | q) = \mathbb{E}_{x \sim p}\left[\log \frac{p(x)}{q(x)}\right] $$
+$$
+ D_\text{KL}(p | q) = \mathbb{E}_{x \sim p}\left[\log \frac{p(x)}{q(x)}\right] 
+$$
+
 ![[forward_kl.png]]
 A good approximation under this objective satisfies: _wherever $p$ has high probability, $q$ must also have high probability._ The mechanism is that wherever $p(x) > 0$ but $q(x) \approx 0$, the term $\log(p/q)$ blows up — so $q$ is forced away from zero there. If $p$ is bimodal, $q$ will spread between both modes rather than miss one entirely, even if the result fits neither mode well. This is **mass-covering** (or mean-seeking) behavior.
 
 **Minimizing $D_\text{KL}(q | p)$** — sampling from $q$, penalizing where $q$ has mass that $p$ doesn't support:
 
-$$ D_\text{KL}(q | p) = \mathbb{E}_{x \sim q}\left[\log \frac{q(x)}{p(x)}\right] $$
+$$
+ D_\text{KL}(q | p) = \mathbb{E}_{x \sim q}\left[\log \frac{q(x)}{p(x)}\right] 
+$$
+
 ![[reverse_kl.png]]
 A good approximation under this objective satisfies: _wherever $q$ has high probability, $p$ must also have high probability._ The mechanism is that wherever $q(x) > 0$ but $p(x) \approx 0$, the term $\log(q/p)$ blows up — so $q$ is afraid to put mass outside $p$'s support. If $p$ is bimodal, $q$ will snap to one mode and ignore the other. The entropy term in the expansion prevents $q$ from collapsing to a point; the typical behavior is to find the widest mode of $p$ and mimic it exactly. This is **mode-seeking** behavior.
 
 > [!tip] Gradient scaling intuition
 > The functional derivative with respect to $q(x)$ makes the asymmetry precise:
-> $$\frac{\partial}{\partial q(x)} D_\text{KL}(p \| q) = -\frac{p(x)}{q(x)} \qquad \frac{\partial}{\partial q(x)} D_\text{KL}(q \| p) = \log\frac{q(x)}{p(x)} + 1$$
+>
+> $$
+> \frac{\partial}{\partial q(x)} D_\text{KL}(p \| q) = -\frac{p(x)}{q(x)} \qquad \frac{\partial}{\partial q(x)} D_\text{KL}(q \| p) = \log\frac{q(x)}{p(x)} + 1
+> $$
+>
 > The $p/q$ term diverges as $q(x) \to 0$ — this is the mechanism behind mass-covering. The $\log(q/p)$ term grows only logarithmically, which is why mode-seeking exerts much weaker pressure toward coverage.
 > Source: [Max Shen's blog](https://argmax.blog/posts/modes-cover-definition/)
 
@@ -177,7 +187,9 @@ The choice of direction is often constrained by what you have access to, not jus
 
 **Supervised learning minimizes forward KL.** Given a dataset of samples ${x_i} \sim p_\text{data}$, minimizing [[Cross Entropy]] loss over a model $q_\theta$ is identical to minimizing $D_\text{KL}(p_\text{data} | q_\theta)$, since the entropy of $p_\text{data}$ is a constant:
 
-$$ D_\text{KL}(p | q_\theta) = \underbrace{\mathbb{E}_p[-\log q_\theta(x)]}_{\text{cross-entropy}} - \underbrace{\mathbb{E}_p[-\log p(x)]}_{\text{constant}} $$
+$$
+ D_\text{KL}(p | q_\theta) = \underbrace{\mathbb{E}_p[-\log q_\theta(x)]}_{\text{cross-entropy}} - \underbrace{\mathbb{E}_p[-\log p(x)]}_{\text{constant}} 
+$$
 
 This covers classification (cross-entropy loss), regression (MSE = NLL of a Gaussian), and maximum likelihood estimation generally.
 
@@ -193,7 +205,9 @@ Define $r = p(x)/q(x)$ (the density ratio at a sample). Three natural estimators
 
 ### The Three Estimators
 
-$$ k_1 = -\log r = \log\frac{q}{p} \qquad k_2 = \tfrac{1}{2}(\log r)^2 \qquad k_3 = (r - 1) - \log r $$
+$$
+ k_1 = -\log r = \log\frac{q}{p} \qquad k_2 = \tfrac{1}{2}(\log r)^2 \qquad k_3 = (r - 1) - \log r 
+$$
 
 All three are trying to estimate the same quantity $D_\text{KL}(q | p)$, but they trade off differently.
 
@@ -236,7 +250,9 @@ Notably, $k_3$ is the one that's being used in [[GRPO]].
 
 Any quantity with zero expectation under $q$ can be added to $k_1$ without introducing bias. The only natural zero-mean term here is $r - 1 = p(x)/q(x) - 1$, since $\mathbb{E}_q[r] = \int q \cdot (p/q) , dx = 1$. So for any $\lambda$:
 
-$$ k_1 + \lambda(r - 1) = -\log r + \lambda(r - 1) $$
+$$
+ k_1 + \lambda(r - 1) = -\log r + \lambda(r - 1) 
+$$
 
 is still unbiased. The question is what $\lambda$ minimizes variance. The optimal $\lambda$ depends on $p$ and $q$ and has no closed form. But a simple argument fixes $\lambda = 1$: since $\log$ is concave, $\log x \leq x - 1$ for all $x > 0$, so setting $\lambda = 1$ guarantees the estimator is non-negative everywhere. Positivity alone substantially reduces variance.
 
@@ -244,12 +260,18 @@ is still unbiased. The question is what $\lambda$ minimizes variance. The optima
 
 An f-divergence is any functional of the form:
 
-$$ D_f(p | q) = \mathbb{E}_{x \sim q}\left[f\left(\frac{p(x)}{q(x)}\right)\right] $$
+$$
+ D_f(p | q) = \mathbb{E}_{x \sim q}\left[f\left(\frac{p(x)}{q(x)}\right)\right] 
+$$
 
 for a convex $f$ with $f(1) = 0$. KL corresponds to $f(x) = -\log x$. The expectation of $k_2$ is the f-divergence with $f(x) = \frac{1}{2}(\log x)^2$. These are different divergences, but a key fact is:
 
 > [!note] All f-divergences agree to second order near $p = q$ 
-> For any differentiable convex $f$, a parametric family $p_\theta$ near $p_0$: $$D_f(p_0 | p_\theta) = \frac{f''(1)}{2} ,\theta^\top F \theta + O(\theta^3)$$ where $F$ is the [[Fisher information]] matrix. Normalizing so $f''(1) = 1$, all f-divergences look like $\frac{1}{2}\theta^\top F\theta$ locally — the same quadratic.
+> For any differentiable convex $f$, a parametric family $p_\theta$ near $p_0$:
+>
+> $$
+> D_f(p_0 | p_\theta) = \frac{f''(1)}{2} ,\theta^\top F \theta + O(\theta^3)
+> $$ where $F$ is the [[Fisher information]] matrix. Normalizing so $f''(1) = 1$, all f-divergences look like $\frac{1}{2}\theta^\top F\theta$ locally — the same quadratic.
 
 Both $f(x) = -\log x$ (KL) and $f(x) = \frac{1}{2}(\log x)^2$ ($k_2$'s expectation) satisfy $f''(1) = 1$. So $k_2$'s expectation is a faithful local surrogate for KL whenever $q \approx p$. The bias only becomes visible when the distributions separate enough for third-order terms to matter.
 
@@ -257,13 +279,17 @@ Both $f(x) = -\log x$ (KL) and $f(x) = \frac{1}{2}(\log x)^2$ ($k_2$'s expectati
 
 The deepest perspective. A **Bregman divergence** generated by a convex function $\phi$ is:
 
-$$ B_\phi(x | y) = \phi(x) - \phi(y) - \phi'(y)(x - y) $$
+$$
+ B_\phi(x | y) = \phi(x) - \phi(y) - \phi'(y)(x - y) 
+$$
 
 This measures the gap between $\phi(x)$ and the tangent plane to $\phi$ at $y$, evaluated at $x$. Since $\phi$ is convex, it lies above all its tangent lines, so $B_\phi \geq 0$ always — and the gap vanishes only when $x = y$.
 
 Now let $\phi(x) = -\log x$, and evaluate $B_\phi(r | 1)$:
 
-$$ B_\phi(r | 1) = -\log r - (-\log 1) - \underbrace{\phi'(1)}_{= -1}(r - 1) = -\log r + (r - 1) = k_3 $$
+$$
+ B_\phi(r | 1) = -\log r - (-\log 1) - \underbrace{\phi'(1)}_{= -1}(r - 1) = -\log r + (r - 1) = k_3 
+$$
 
 So **$k_3$ is exactly the Bregman divergence of $\phi(x) = -\log x$, between the ratio $r$ and the equilibrium point $r = 1$** (where $p = q$). Non-negativity is not a clever trick — it falls out immediately from convexity of $\phi$.
 
@@ -274,7 +300,9 @@ So **$k_3$ is exactly the Bregman divergence of $\phi(x) = -\log x$, between the
 
 For any f-divergence with convex $f$, subtracting the tangent at $r = 1$ gives an always-positive, unbiased estimator:
 
-$$ f(r) - f'(1)(r - 1) $$
+$$
+ f(r) - f'(1)(r - 1) 
+$$
 
 This is $B_f(r | 1)$ — the Bregman divergence of $f$ at the equilibrium. For $D_\text{KL}(p | q)$, use $f(x) = x \log x$ (which has $f'(1) = 1$), giving the estimator $r \log r - (r-1)$.
 
@@ -287,8 +315,9 @@ This is $B_f(r | 1)$ — the Bregman divergence of $f$ at the equilibrium. For $
 
 All three perspectives trace back to one fact:
 
-$$ \log x \leq x - 1 \quad \text{for all } x > 0, \text{ with equality iff } x = 1 $$
+$$
+ \log x \leq x - 1 \quad \text{for all } x > 0, \text{ with equality iff } x = 1 
+$$
 
 This is just concavity of $\log$, or equivalently convexity of $-\log$. It is also the same inequality used to prove $D_\text{KL} \geq 0$ via Jensen's inequality. The non-negativity of KL and the non-negativity of $k_3$ share the same root.
 
----

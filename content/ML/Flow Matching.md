@@ -31,7 +31,7 @@ $$
 X_1 \sim p_{\text{data}} \quad \Leftrightarrow \quad \psi_1^\theta(X_0) \sim p_{\text{data}}
 $$
 
-**Conditional flow matching loss** and **marginal flow matching loss** differ only by a constant (w.r.t. θ),  so they have the _same minimizer_.
+**Conditional flow matching loss** and **marginal flow matching loss** differ only by a constant (w.r.t. θ),  so they have the _same minimizer_. See more details at [[flow_matching_diffusion_notes.pdf#page=20&selection=370,0,370,10|flow_matching_diffusion_notes, page 20]]
 
 So, what one would do is generate training data. We generate it in a supervised learning way, which is basically sampling here, because you just need to sample:
 1. Your z

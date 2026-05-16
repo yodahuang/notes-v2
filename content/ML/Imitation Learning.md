@@ -33,7 +33,7 @@ It's proved that this can reduce the error to linear.
 		1. Autoregressive discretization. So an autoregressive model output one dim at a time. For sequential model, since the next output depend on all the previous output, the math works.
 		2. Consider autoregressive robot output modeling. E.g. [[FAST]]
 	2. Expressive continuous distributions
-		1. [[Variational Autoencoder (VAE)|VAE]]
+		1. [[Variational Autoencoder|VAE]]
 		2. [[Flow Matching]] / [[Score matching]]
 
 ### Data
