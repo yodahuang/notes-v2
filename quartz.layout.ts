@@ -18,6 +18,7 @@ export const defaultContentPageLayout: PageLayout = {
     }),
     Component.ArticleTitle(),
     Component.ContentMeta(),
+    Component.FrontmatterMeta({ fields: ["Arxiv", "original title"] }),
     Component.TagList(),
   ],
   left: [

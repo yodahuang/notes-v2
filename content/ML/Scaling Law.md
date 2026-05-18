@@ -1,6 +1,8 @@
 ---
 date: 2026-04-01
 pdf: "[[chinchilla.pdf]]"
+aliases:
+  - Chinchilla
 ---
 Referenced material:
 - [[chinchilla.pdf]]

@@ -88,6 +88,8 @@ This is binary cross-entropy. No reward model, no RL rollouts, no PPO.
 
 ## DPO in the discrete-sampling taxonomy
 
+See also [[RLHF#Why Not Just Backprop? The Discrete Sampling Problem]].
+
 Step back. The objective DPO and [[PPO]] both face is:
 
 $$

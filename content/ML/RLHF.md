@@ -77,8 +77,6 @@ Some works anneal or tune it adaptively, but static $\beta$ is the norm. [[DPO]]
 
 ## Why Not Just Backprop? The Discrete Sampling Problem
 
-> [!question] Why does discrete language generation require RL rather than gradient descent?
-
 The objective is $\mathbb{E}_{y \sim \pi_\theta}[r(y)]$. The only $\theta$-dependence is in $\pi_\theta(y)$, but $y$ is a **discrete sample** — once you commit to a token sequence, there's no gradient flowing back through that choice.
 
 ### The [[Reparameterization trick]] ([[Variational Autoencoder|VAE]] analogy)
@@ -89,6 +87,9 @@ In a VAE, the encoder outputs $\mu, \sigma$ and you need to sample $z \sim \math
 - ✅ Reparametrized: $z = \mu_\theta + \sigma_\theta \cdot \epsilon$, $\epsilon \sim \mathcal{N}(0,1)$ — differentiable, randomness pushed into parameter-free $\epsilon$
 
 For discrete tokens there's no equivalent — you can't write "token 42" as a differentiable function of logits.
+
+> [!note] The differentiable generator case: LPIPS
+> In image generation, the analogous problem is solved trivially — the VAE decoder is differentiable, so you *can* backprop a learned perceptual reward directly into the generator. LPIPS (Zhang et al. 2018) does exactly this: freeze a pretrained VGG, learn only a tiny linear weighting over its feature layers from human perceptual judgments, use it as a loss. No RL needed. The discrete token sampling problem is precisely what makes RLHF complicated where LPIPS is simple. See [[Latent Diffusion Models|LDM]].
 
 ### The [[Mixture of Experts Overview|MoE]] / Gumbel-Softmax connection
 
