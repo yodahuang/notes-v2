@@ -27,7 +27,7 @@ Standard MHA caches K and V at full dimension. MLA instead:
 > [!tip] Key insight
 > We shift _where_ we cache. Instead of caching `K, V ∈ ℝ^d`, we cache `c_KV ∈ ℝ^{d_c}` where $d_c \ll d$. The decompression back to full rank happens on-the-fly and is **not** stored.
 
-![[mla_bottleneck_cache.svg]]
+![[mla_bottleneck_cache.svg|637]]
 ## Dimensions
 
 Let $d$ = `d_model`, $h$ = num heads, $d_h = d/h$ per-head dim.
