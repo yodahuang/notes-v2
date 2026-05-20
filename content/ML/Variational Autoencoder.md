@@ -44,7 +44,9 @@ The intuitive AE→VAE story leaves a gap: why have a latent variable in the fir
 
 VAE doesn't model $p(x)$ directly. It models data as the visible result of hidden causes:
 
-$$ z \sim p(z), \quad x \sim p_\theta(x|z) $$
+$$
+ z \sim p(z), \quad x \sim p_\theta(x|z) 
+$$
 
 Two reasons this matters:
 
@@ -57,7 +59,9 @@ The probabilistic framing immediately forces a question: given observed $x$, wha
 
 The central equation in Doersch's tutorial:
 
-$$ \log p_\theta(x) - D_{KL}(q_\phi(z|x) | p_\theta(z|x)) = \mathbb{E}_{q_\phi(z|x)}[\log p_\theta(x|z)] - D_{KL}(q_\phi(z|x) | p(z)) $$
+$$
+ \log p_\theta(x) - D_{KL}(q_\phi(z|x) | p_\theta(z|x)) = \mathbb{E}_{q_\phi(z|x)}[\log p_\theta(x|z)] - D_{KL}(q_\phi(z|x) | p(z)) 
+$$
 
 The right-hand side is the [[ELBO]] — the VAE training objective. Decomposed:
 
@@ -86,13 +90,17 @@ See [[ELBO]] for the full derivation, the "gap shrinks for free" argument (gradi
 
 The encoder outputs $\mu_\phi(x)$ and $\log \sigma_\phi^2(x)$. To sample $z \sim q_\phi(z|x)$ while keeping the operation differentiable:
 
-$$ z = \mu_\phi(x) + \sigma_\phi(x) \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I) $$
+$$
+ z = \mu_\phi(x) + \sigma_\phi(x) \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I) 
+$$
 
 Gradients flow through $\mu$ and $\sigma$ into the encoder. Without this, you can't backprop through the sampling step — see [[Reparameterization trick]] for why and what to do when $z$ is discrete (the case motivating [[VQ-VAE]]'s straight-through codebook lookup).
 
 For diagonal Gaussian $q_\phi$ against an $\mathcal{N}(0, I)$ prior, the KL has a closed form:
 
-$$ D_{KL}(\mathcal{N}(\mu, \mathrm{diag}(\sigma^2)) | \mathcal{N}(0, I)) = \frac{1}{2}\sum_i \left(\mu_i^2 + \sigma_i^2 - \log \sigma_i^2 - 1\right) $$
+$$
+ D_{KL}(\mathcal{N}(\mu, \mathrm{diag}(\sigma^2)) | \mathcal{N}(0, I)) = \frac{1}{2}\sum_i \left(\mu_i^2 + \sigma_i^2 - \log \sigma_i^2 - 1\right) 
+$$
 
 so the training loss is a sum of reconstruction (typically MSE or BCE depending on the likelihood model) and this closed-form KL. No Monte Carlo estimate needed for the KL — only for the reconstruction term, which uses a single $\epsilon$ sample per datapoint in practice.
 

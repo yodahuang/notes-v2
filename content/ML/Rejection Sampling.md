@@ -12,7 +12,9 @@ We want to draw samples from a target distribution $p(x)$, but cannot sample fro
 
 Choose a proposal distribution $q(x)$ you can sample from, and find a scalar $M$ such that:
 
-$$M \cdot q(x) \geq p(x) \quad \forall x$$
+$$
+M \cdot q(x) \geq p(x) \quad \forall x
+$$
 
 Then repeat until acceptance:
 
@@ -51,7 +53,9 @@ Both methods use the ratio $p(x)/q(x)$, but answer different questions.
 
 Importance sampling rewrites the expectation as:
 
-$$\mathbb{E}_p[f(x)] = \mathbb{E}_q\left[f(x) \cdot \frac{p(x)}{q(x)}\right]$$
+$$
+\mathbb{E}_p[f(x)] = \mathbb{E}_q\left[f(x) \cdot \frac{p(x)}{q(x)}\right]
+$$
 
 so you draw $x_i \sim q$ and average $f(x_i) \cdot w(x_i)$ with weights $w(x_i) = p(x_i)/q(x_i)$. No rejection, no $M$. Its failure mode is variance blow-up when $q$ has lighter tails than $p$, causing a few samples to dominate with huge weights.
 

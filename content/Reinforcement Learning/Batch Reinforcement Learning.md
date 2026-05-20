@@ -35,6 +35,7 @@ Repeat:
 
     $$
 
+
 \Delta\mathbf{w} = \alpha(R_{n+1} + \gamma v_{\mathbf{w}}(S_{n+1}) - v_{\mathbf{w}}(S_n))\nabla_{\mathbf{w}}v_{\mathbf{w}}(S_n)
 
 $$

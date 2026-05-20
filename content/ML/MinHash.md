@@ -1,9 +1,11 @@
 ---
 date: 2026-04-09
 ---
+
 $$
 Pr[h(A) = h(B)] = Jaccard(A, B)
 $$
+
 How we do this? Hash all the items in a set and pick the min (or max, doesn't matter). See [[Jaccard similarity]] for what's that Jaccard.
 
 ```python

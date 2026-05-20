@@ -8,7 +8,9 @@ date: 2026-02-08
 
 The **score function** is the gradient of the log-probability with respect to parameters:
 
-$$\nabla_\theta \log p_\theta(x)$$
+$$
+\nabla_\theta \log p_\theta(x)
+$$
 
 It appears across statistics, machine learning, and physics — not by coincidence, but because it encodes the geometry of how probability distributions change with their parameters.
 
@@ -20,7 +22,9 @@ Probabilities have multiplicative structure (independent events multiply), but c
 
 For [[Cross Entropy|exponential families]] — the most natural parametric distributions — the log-probability is literally linear in the parameters:
 
-$$p_\theta(x) = \exp(\theta^T T(x) - A(\theta)) h(x) \quad \Longrightarrow \quad \log p_\theta(x) = \theta^T T(x) - A(\theta) + \log h(x)$$
+$$
+p_\theta(x) = \exp(\theta^T T(x) - A(\theta)) h(x) \quad \Longrightarrow \quad \log p_\theta(x) = \theta^T T(x) - A(\theta) + \log h(x)
+$$
 
 So the score function $\nabla_\theta \log p_\theta(x) = T(x) - \nabla A(\theta)$ is especially clean here.
 
@@ -32,7 +36,9 @@ So the score function $\nabla_\theta \log p_\theta(x) = T(x) - \nabla A(\theta)$
 
 The normalization constraint $\int p_\theta(x) dx = 1$ holds for all $\theta$. Differentiating both sides:
 
-$$\nabla_\theta \int p_\theta(x) dx = \int \nabla_\theta p_\theta(x) dx = \int p_\theta(x) \nabla_\theta \log p_\theta(x) dx = 0$$
+$$
+\nabla_\theta \int p_\theta(x) dx = \int \nabla_\theta p_\theta(x) dx = \int p_\theta(x) \nabla_\theta \log p_\theta(x) dx = 0
+$$
 
 So $\mathbb{E}_{p_\theta}[\nabla_\theta \log p_\theta(x)] = 0$. This is not an accident — it is a geometric consequence of staying on the probability simplex. Any direction that preserves normalization must have zero expected score.
 
@@ -40,7 +46,9 @@ So $\mathbb{E}_{p_\theta}[\nabla_\theta \log p_\theta(x)] = 0$. This is not an a
 
 The score function components $\partial_{\theta_i} \log p_\theta(x)$ form the natural basis for the tangent space at $p_\theta$ on the [[Statistical Manifold]]. The inner product of two tangent vectors under the distribution defines the [[Fisher Information]] matrix:
 
-$$F_{ij}(\theta) = \mathbb{E}_{p_\theta}\left[\frac{\partial \log p_\theta}{\partial \theta_i} \cdot \frac{\partial \log p_\theta}{\partial \theta_j}\right]$$
+$$
+F_{ij}(\theta) = \mathbb{E}_{p_\theta}\left[\frac{\partial \log p_\theta}{\partial \theta_i} \cdot \frac{\partial \log p_\theta}{\partial \theta_j}\right]
+$$
 
 This gives the [[Statistical Manifold]] its Riemannian structure.
 
@@ -50,7 +58,9 @@ This gives the [[Statistical Manifold]] its Riemannian structure.
 
 The identity $\nabla_\theta p_\theta(x) = p_\theta(x) \nabla_\theta \log p_\theta(x)$ — which is just the chain rule applied to $\nabla \log p = \nabla p / p$ — converts derivatives of probabilities into expectations:
 
-$$\nabla_\theta \mathbb{E}_{p_\theta}[f(x)] = \nabla_\theta \int p_\theta(x) f(x) dx = \int p_\theta(x) \nabla_\theta \log p_\theta(x) f(x) dx = \mathbb{E}_{p_\theta}[f(x) \nabla_\theta \log p_\theta(x)]$$
+$$
+\nabla_\theta \mathbb{E}_{p_\theta}[f(x)] = \nabla_\theta \int p_\theta(x) f(x) dx = \int p_\theta(x) \nabla_\theta \log p_\theta(x) f(x) dx = \mathbb{E}_{p_\theta}[f(x) \nabla_\theta \log p_\theta(x)]
+$$
 
 This matters because we can now estimate the gradient by sampling from $p_\theta$ — we never need to differentiate through the sampling process itself. This is the core of:
 
@@ -66,11 +76,15 @@ The zero-mean property (Property 1) is separately useful for **variance reductio
 
 In score-based generative models, the relevant object is the score with respect to *data* rather than parameters:
 
-$$\nabla_x \log p_t(x)$$
+$$
+\nabla_x \log p_t(x)
+$$
 
 This is a vector field pointing toward higher-density regions of $p_t$. The reverse-time SDE (Anderson, 1982) uses this to denoise:
 
-$$dx = \left[f(x, t) - g(t)^2 \nabla_x \log p_t(x)\right] dt + g(t) d\bar{W}$$
+$$
+dx = \left[f(x, t) - g(t)^2 \nabla_x \log p_t(x)\right] dt + g(t) d\bar{W}
+$$
 
 where $f$ is the forward drift and $g$ is the diffusion coefficient. The score function is estimated by a neural network trained via denoising score matching.
 

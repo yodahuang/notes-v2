@@ -160,7 +160,6 @@ $$
 \begin{bmatrix} -x_1 \\ x_0 \\ -x_3 \\ x_2 \\ -x_5 \\ x_4 \end{bmatrix}
 $$
 
-
 ---
 
 ## Final Formula

@@ -15,7 +15,11 @@ The paper basically covers how to do [[Scaling Law]] analysis on a [[Vision Tran
 - $f : \mathbb{N}^D \times \mathbb{R}^+ \to \mathbb{R}$  A performance metric of interest, such as downstream ImageNet 10-shot error rate. Specifically, $f(\mathbf{x}, \mathbf{t})$ results from (pre)-training an architecture $\mathbf{x}$ for a fixed compute budget $\mathbf{t}$. We always assume that $f$ corresponds to a loss, meaning lower values are better.
 
 For each dimension $x_{k}$, the paper argues that the function form is as follows:
-$$\begin{aligned} f_k(\mathbf{x}_k, \mathbf{t}) \sim \alpha_k \mathbf{x}_k^{-a_k} + (\beta_k \mathbf{x}_k^{b_k} + \xi_k) \mathbf{t}^{-c} + \varepsilon_k, \end{aligned}$$
+
+$$
+\begin{aligned} f_k(\mathbf{x}_k, \mathbf{t}) \sim \alpha_k \mathbf{x}_k^{-a_k} + (\beta_k \mathbf{x}_k^{b_k} + \xi_k) \mathbf{t}^{-c} + \varepsilon_k, \end{aligned}
+$$
+
 where $\alpha_k, a_k, \beta_k, b_k, c, \xi_k, \varepsilon_k > 0$. Here, $f_k$ focuses on the dimension $k$ alone and assumes that all other shape dimensions $j \neq k$ are sufficiently large such that they do not constitute a bottleneck.
 
 Why? 
@@ -27,12 +31,18 @@ Why?
 And I'll omit that in this note.
 
 Now let's take the derivative and set to zero w.r.t. $x_k$: we got the optimal one:
-$$\boxed{\mathbf{x}_k^\star = \left(\frac{\alpha_k a_k \mathbf{t}^c}{\beta_k b_k}\right)^{\frac{1}{b_k + a_k}}}$$
+
+$$
+\boxed{\mathbf{x}_k^\star = \left(\frac{\alpha_k a_k \mathbf{t}^c}{\beta_k b_k}\right)^{\frac{1}{b_k + a_k}}}
+$$
 
 Thus $\mathbf{x}_k^\star \propto \mathbf{t}^{c/(b_k + a_k)}$, and we call that exponent $s_k$
 
 We can then derive that
-$$f_k(\mathbf{x}_k^\star, t) = F(\mathbf{x}_k^\star)^{-a_k} + Gt^{-c} + \varepsilon_k$$
+
+$$
+f_k(\mathbf{x}_k^\star, t) = F(\mathbf{x}_k^\star)^{-a_k} + Gt^{-c} + \varepsilon_k
+$$
 
 ## The procedure
 

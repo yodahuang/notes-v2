@@ -39,13 +39,17 @@ When a draft token is rejected, you already have the full target distribution $p
 
 Because sampling from $p$ directly gives the wrong marginal distribution. The marginal probability of outputting token $x$ is the sum of two paths:
 
-$$ P(\text{output} = x) = \underbrace{\min(p(x), q(x))}_{\text{accepted from draft}} + \underbrace{P(\text{reject}) \cdot p'(x)}_{\text{resampled on rejection}} $$
+$$
+ P(\text{output} = x) = \underbrace{\min(p(x), q(x))}_{\text{accepted from draft}} + \underbrace{P(\text{reject}) \cdot p'(x)}_{\text{resampled on rejection}} 
+$$
 
 If you set $p'(x) = p(x)$, this becomes $\min(p(x), q(x)) + P(\text{reject}) \cdot p(x)$, which is not equal to $p(x)$ in general. You double-count: tokens where $p$ and $q$ both place mass get delivered through the acceptance path _and_ again through the rejection path, skewing the output.
 
 The $(p - q)_+$ correction fixes this by subtracting out exactly the mass already delivered via acceptance:
 
-$$ p'(x) = \frac{\max(0,, p(x) - q(x))}{\sum_{x'} \max(0,, p(x') - q(x'))} $$
+$$
+ p'(x) = \frac{\max(0,, p(x) - q(x))}{\sum_{x'} \max(0,, p(x') - q(x'))} 
+$$
 
 > [!tip] Intuition
 > 
@@ -53,6 +57,8 @@ $$ p'(x) = \frac{\max(0,, p(x) - q(x))}{\sum_{x'} \max(0,, p(x') - q(x'))} $$
 
 The normalizing constant $\sum_x \max(0, p(x) - q(x))$ equals $P(\text{reject})$ by conservation of probability ($\sum_x p(x) = \sum_x q(x) = 1$), so the algebra closes:
 
-$$ \min(p(x), q(x)) + \max(0, p(x) - q(x)) = p(x) $$
+$$
+ \min(p(x), q(x)) + \max(0, p(x) - q(x)) = p(x) 
+$$
 
 This is the unique correction that makes the output distribution exactly $p$ without requiring any additional model calls.

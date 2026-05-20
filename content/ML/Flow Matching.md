@@ -40,7 +40,11 @@ X_1 \sim p_{\text{data}} \quad \Leftrightarrow \quad \psi_1^\theta(X_0) \sim p_{
 $$
 
 The problem: to train $u^\theta_t$, we'd need to supervise it on the **marginal velocity field**:
-$$u_t(x) = \mathbb{E}[u^*_t(x_t | z) \mid x_t = x]$$
+
+$$
+u_t(x) = \mathbb{E}[u^*_t(x_t | z) \mid x_t = x]
+$$
+
 This is intractable — it requires averaging over all $z \sim p_\text{data}$ consistent with $x_t$, which we can't compute.
 
 ---
@@ -48,7 +52,9 @@ This is intractable — it requires averaging over all $z \sim p_\text{data}$ co
 
 The neat property that makes flow matching work: the **conditional** and **marginal** losses have the same minimizer (differ only by a constant w.r.t. $\theta$):
 
-$$\mathcal{L}_\text{FM} = \mathbb{E}\|u^\theta_t(x_t) - u_t(x_t)\|^2 \quad \longleftrightarrow \quad \mathcal{L}_\text{CFM} = \mathbb{E}\|u^\theta_t(x_t) - u^*_t(x_t|z)\|^2$$
+$$
+\mathcal{L}_\text{FM} = \mathbb{E}\|u^\theta_t(x_t) - u_t(x_t)\|^2 \quad \longleftrightarrow \quad \mathcal{L}_\text{CFM} = \mathbb{E}\|u^\theta_t(x_t) - u^*_t(x_t|z)\|^2
+$$
 
 So instead of supervising on the intractable marginal, we supervise on the **conditional velocity** $u^*_t(x_t|z)$ — which we *can* compute because we sampled $z$ from the dataset. See [[flow_matching_diffusion_notes.pdf#page=20&selection=370,0,370,10|notes p.20]] for the proof.
 
@@ -59,12 +65,18 @@ This also means: we don't need a single correct trajectory. Any set of condition
 ## Constructing the Conditional Path
 
 To compute $u^*_t(x_t|z)$, we need to define a path from noise to data. We build an interpolant:
-$$x_t = \alpha_t z + \beta_t \epsilon, \qquad \epsilon \sim p_\text{init}$$
+
+$$
+x_t = \alpha_t z + \beta_t \epsilon, \qquad \epsilon \sim p_\text{init}
+$$
 
 Boundary conditions: $\alpha_0 = 0,\ \alpha_1 = 1,\ \beta_0 = 1,\ \beta_1 = 0$ — pure noise at $t=0$, pure data at $t=1$.
 
 When $p_\text{init} = \mathcal{N}(0,I)$ and the interpolant is affine like this, the conditional distribution is Gaussian:
-$$p_t(x|z) = \mathcal{N}(\alpha_t z,\ \beta_t^2 I)$$
+
+$$
+p_t(x|z) = \mathcal{N}(\alpha_t z,\ \beta_t^2 I)
+$$
 
 This is the **Gaussian CondOT path**. "Gaussian" means the conditional path is Gaussian. "CondOT" refers to the coupling — more below.
 
@@ -89,18 +101,24 @@ Different methods just pick different $(\alpha_t, \beta_t)$:
 ## Deriving the Conditional Velocity $u^*$
 
 Differentiate the interpolant w.r.t. $t$:
-$$\dot x_t = \dot\alpha_t z + \dot\beta_t \epsilon$$
+
+$$
+\dot x_t = \dot\alpha_t z + \dot\beta_t \epsilon
+$$
 
 This has two unknowns ($z$ and $\epsilon$), linked by $x_t = \alpha_t z + \beta_t \epsilon$. Eliminating $\epsilon = (x_t - \alpha_t z)/\beta_t$:
 
-$$u^*_t(x_t|z) = \left(\dot\alpha_t - \frac{\dot\beta_t}{\beta_t}\alpha_t\right)z + \frac{\dot\beta_t}{\beta_t}x_t$$
-
+$$
+u^*_t(x_t|z) = \left(\dot\alpha_t - \frac{\dot\beta_t}{\beta_t}\alpha_t\right)z + \frac{\dot\beta_t}{\beta_t}x_t
+$$
 
 ### Rectified Flow specifically
 
 $\alpha_t = t$, $\beta_t = 1-t$, $\dot\alpha_t = 1$, $\dot\beta_t = -1$. Substituting $x_t = tz + (1-t)\epsilon$:
 
-$$u^*_t = \frac{z - x_t}{1-t} = \frac{(1-t)(z-\epsilon)}{1-t} = z - \epsilon$$
+$$
+u^*_t = \frac{z - x_t}{1-t} = \frac{(1-t)(z-\epsilon)}{1-t} = z - \epsilon
+$$
 
 The $t$ cancels — the velocity is **constant**. Straight-line path = constant direction. This is why RF is fast: an Euler solver with one step is exact for straight lines.
 

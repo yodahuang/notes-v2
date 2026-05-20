@@ -15,11 +15,15 @@ The trick that makes [[Variational Autoencoder|VAE]] training work end-to-end. I
 
 We want to maximize an objective of the form:
 
-$$ \mathcal{L}(\phi) = \mathbb{E}_{q_\phi(z)}[f(z)] $$
+$$
+ \mathcal{L}(\phi) = \mathbb{E}_{q_\phi(z)}[f(z)] 
+$$
 
 Gradient descent needs $\nabla_\phi \mathcal{L}$. But $\phi$ controls the _distribution we sample from_, not the function inside, so:
 
-$$ \nabla_\phi \mathbb{E}_{q_\phi(z)}[f(z)] \neq \mathbb{E}_{q_\phi(z)}[\nabla_\phi f(z)] $$
+$$
+ \nabla_\phi \mathbb{E}_{q_\phi(z)}[f(z)] \neq \mathbb{E}_{q_\phi(z)}[\nabla_\phi f(z)] 
+$$
 
 The expectation itself depends on $\phi$ through the sampling density. The gradient doesn't commute with the expectation.
 
@@ -27,15 +31,21 @@ The expectation itself depends on $\phi$ through the sampling density. The gradi
 
 If $z$ can be written as a deterministic function of $\phi$ and a $\phi$-free noise variable:
 
-$$ z = g_\phi(\epsilon), \quad \epsilon \sim p(\epsilon) $$
+$$
+ z = g_\phi(\epsilon), \quad \epsilon \sim p(\epsilon) 
+$$
 
 then the expectation rewrites with the _fixed_ base distribution outside:
 
-$$ \mathbb{E}_{q_\phi(z)}[f(z)] = \mathbb{E}_{p(\epsilon)}[f(g_\phi(\epsilon))] $$
+$$
+ \mathbb{E}_{q_\phi(z)}[f(z)] = \mathbb{E}_{p(\epsilon)}[f(g_\phi(\epsilon))] 
+$$
 
 Now the gradient passes through cleanly:
 
-$$ \nabla_\phi \mathbb{E}_{p(\epsilon)}[f(g_\phi(\epsilon))] = \mathbb{E}_{p(\epsilon)}[\nabla_\phi f(g_\phi(\epsilon))] $$
+$$
+ \nabla_\phi \mathbb{E}_{p(\epsilon)}[f(g_\phi(\epsilon))] = \mathbb{E}_{p(\epsilon)}[\nabla_\phi f(g_\phi(\epsilon))] 
+$$
 
 A Monte Carlo estimate: sample $\epsilon$, compute $\nabla_\phi f(g_\phi(\epsilon))$ via autograd, done.
 
@@ -43,7 +53,9 @@ A Monte Carlo estimate: sample $\epsilon$, compute $\nabla_\phi f(g_\phi(\epsilo
 
 For $q_\phi(z|x) = \mathcal{N}(z; \mu_\phi(x), \sigma_\phi(x)^2 I)$:
 
-$$ z = \mu_\phi(x) + \sigma_\phi(x) \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I) $$
+$$
+ z = \mu_\phi(x) + \sigma_\phi(x) \odot \epsilon, \quad \epsilon \sim \mathcal{N}(0, I) 
+$$
 
 The encoder outputs $\mu$ and $\log \sigma^2$ (logvar, for numerical stability — exponentiating keeps $\sigma^2$ positive without constraints). The sample $z$ is a deterministic function of $\mu$, $\sigma$, $\epsilon$; backprop flows through $\mu$ and $\sigma$ into the encoder.
 
@@ -53,7 +65,9 @@ This is why VAE encoder heads output two things rather than a sample.
 
 The score-function ([[Policy Gradient|REINFORCE]]) estimator works for any $q_\phi$ without requiring a reparameterization:
 
-$$ \nabla_\phi \mathbb{E}_{q_\phi}[f(z)] = \mathbb{E}_{q_\phi}[f(z) \nabla_\phi \log q_\phi(z)] $$
+$$
+ \nabla_\phi \mathbb{E}_{q_\phi}[f(z)] = \mathbb{E}_{q_\phi}[f(z) \nabla_\phi \log q_\phi(z)] 
+$$
 
 It's universal but high-variance — $f(z)$ multiplies the score, so noise in $f$ amplifies into the gradient estimate. Variance reduction (baselines, control variates) helps but rarely closes the gap.
 

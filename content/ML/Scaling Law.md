@@ -18,9 +18,11 @@ Scaling law basically try to answer "How do the performance changes as we vary o
 
 The Kaplan one. Loss and dataset size is linear on a log-log plot.
 This can be understood as say, given a bunch of data, estimate the mean. The error 
+
 $$
 E[(\hat{\mu} - \mu)^{2]}= \frac{\sigma^2}{n}
 $$
+
 $$
 \log(\text{Error}) = -\log n + 2 \log\sigma
 $$
@@ -80,7 +82,11 @@ Repeat for several FLOP budgets to get a family of IsoFLOP profiles. Read off th
 ![[chinchilla_3.png]]
 
 Just fit this:
-$$\hat{L}(N, D) \triangleq E + \frac{A}{N^{\alpha}} + \frac{B}{D^{\beta}}.$$
+
+$$
+\hat{L}(N, D) \triangleq E + \frac{A}{N^{\alpha}} + \frac{B}{D^{\beta}}.
+$$
+
 They use Huber loss + L-BFGS. According to hitchhiker guide these does not matter. It's just fitting anyway.
 
 Now if we say we want to find the most compute efficient model, then we're basically fixing $\text{FLOPs}(N, D) \approx 6ND$.

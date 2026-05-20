@@ -24,7 +24,9 @@ The key point is that **parameter space $\mathbb{R}^d$ is not the manifold itsel
 
 The [[Fisher Information]] matrix $F(\theta)$ serves as the Riemannian metric tensor. It defines the inner product on the tangent space at each point:
 
-$$\langle u, v \rangle_{p_\theta} = u^T F(\theta) v$$
+$$
+\langle u, v \rangle_{p_\theta} = u^T F(\theta) v
+$$
 
 where $u, v$ are tangent vectors. The tangent space is spanned by the [[Score Function]] components $\partial_{\theta_i} \log p_\theta(x)$.
 

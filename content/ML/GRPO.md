@@ -12,7 +12,9 @@ Essentially [[Policy Gradient|REINFORCE]] with a mean baseline — the only twis
 
 For a given input $q$, sample $G$ responses ${o_1, \ldots, o_G} \sim \pi_\theta$, get rewards ${r_1, \ldots, r_G}$ from a reward model, then define the advantage for response $o_i$ as:
 
-$$\hat{A}_i = \frac{r_i - \text{mean}(r_1, \ldots, r_G)}{\text{std}(r_1, \ldots, r_G)}$$
+$$
+\hat{A}_i = \frac{r_i - \text{mean}(r_1, \ldots, r_G)}{\text{std}(r_1, \ldots, r_G)}
+$$
 
 Then optimize with a PPO-style clipped surrogate objective using these advantages.
 
@@ -27,7 +29,9 @@ Both [[PPO]] and [[GRPO]] use a **learned neural reward model** (not rule-based)
 
 The original GRPO loss averages over tokens per response:
 
-$$\mathcal{L} = \mathbb{E}\left[\frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \hat{A}_i \cdot \log \pi_\theta(o_{i,t} \mid q, o_{i,<t})\right]$$
+$$
+\mathcal{L} = \mathbb{E}\left[\frac{1}{|o_i|} \sum_{t=1}^{|o_i|} \hat{A}_i \cdot \log \pi_\theta(o_{i,t} \mid q, o_{i,<t})\right]
+$$
 
 Dr. GRPO identifies two problems and removes both:
 
@@ -35,7 +39,9 @@ Dr. GRPO identifies two problems and removes both:
 
 **2. Remove std from advantage** — dividing by std distorts relative magnitudes when within-group reward variance is low. If all responses are similarly good or bad, std $\approx 0$ causes instability or over-amplification of noise. Mean subtraction alone is sufficient for variance reduction:
 
-$$\hat{A}_i = r_i - \text{mean}(r_1, \ldots, r_G)$$
+$$
+\hat{A}_i = r_i - \text{mean}(r_1, \ldots, r_G)
+$$
 
 ## Connection to MCTS and PRMs
 

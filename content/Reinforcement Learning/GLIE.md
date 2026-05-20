@@ -9,6 +9,7 @@ date: 2025-11-02
   $$
   \forall s, a \quad \lim_{t \to \infty} N_t(s, a) = \infty
 
+
 $
 $
 
@@ -17,6 +18,7 @@ $
   $$
 
   \lim_{t \to \infty} \pi_t(a \mid s) = \mathcal{I}\left(a = \arg\max_{a'} q_t(s, a')\right)
+
 
 $$
 

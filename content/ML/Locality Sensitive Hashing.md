@@ -31,7 +31,7 @@ $$
 > $$
 > J \mid \text{obs} \sim \text{Beta}(M+1,\ N+1)
 > $$ 
-> 
+>
 > So $P(J > X \mid \text{obs})$ is just the Beta CDF tail. The MAP estimate recovers $\hat{J} = M/(M+N)$.
 > 
 > In practice this isn't used — practitioners just threshold on $\hat{J}$ directly — but it's the principled answer to "how uncertain am I?"

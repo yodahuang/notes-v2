@@ -13,11 +13,15 @@ The universal objective of [[Variational inference]]. Given a latent variable mo
 
 ## Definition
 
-$$ \mathrm{ELBO}(\theta, \phi; x) = \mathbb{E}_{q_\phi(z|x)}[\log p_\theta(x|z)] - D_{KL}(q_\phi(z|x) | p(z)) $$
+$$
+ \mathrm{ELBO}(\theta, \phi; x) = \mathbb{E}_{q_\phi(z|x)}[\log p_\theta(x|z)] - D_{KL}(q_\phi(z|x) | p(z)) 
+$$
 
 Equivalent rewriting:
 
-$$ \mathrm{ELBO} = \mathbb{E}_{q_\phi(z|x)}[\log p_\theta(x, z) - \log q_\phi(z|x)] $$
+$$
+ \mathrm{ELBO} = \mathbb{E}_{q_\phi(z|x)}[\log p_\theta(x, z) - \log q_\phi(z|x)] 
+$$
 
 (Use $\log p(x,z) = \log p(x|z) + \log p(z)$ and pull the $\log p(z) - \log q$ terms together.)
 
@@ -25,11 +29,15 @@ $$ \mathrm{ELBO} = \mathbb{E}_{q_\phi(z|x)}[\log p_\theta(x, z) - \log q_\phi(z|
 
 Start from $D_{KL}(q_\phi | p_\theta(z|x))$ and expand using Bayes' rule $\log p_\theta(z|x) = \log p_\theta(x,z) - \log p_\theta(x)$:
 
-$$ \begin{aligned} D_{KL}(q_\phi(z|x) | p_\theta(z|x)) &= \mathbb{E}_{q_\phi}[\log q_\phi(z|x) - \log p_\theta(z|x)] \\ &= \mathbb{E}_{q_\phi}[\log q_\phi(z|x) - \log p_\theta(x,z)] + \log p_\theta(x) \end{aligned} $$
+$$
+ \begin{aligned} D_{KL}(q_\phi(z|x) | p_\theta(z|x)) &= \mathbb{E}_{q_\phi}[\log q_\phi(z|x) - \log p_\theta(z|x)] \\ &= \mathbb{E}_{q_\phi}[\log q_\phi(z|x) - \log p_\theta(x,z)] + \log p_\theta(x) \end{aligned} 
+$$
 
 Rearranging gives the central identity:
 
-$$ \log p_\theta(x) = \underbrace{\mathbb{E}_{q_\phi}[\log p_\theta(x,z) - \log q_\phi(z|x)]}_{\mathrm{ELBO}} + D_{KL}(q_\phi(z|x) | p_\theta(z|x)) $$
+$$
+ \log p_\theta(x) = \underbrace{\mathbb{E}_{q_\phi}[\log p_\theta(x,z) - \log q_\phi(z|x)]}_{\mathrm{ELBO}} + D_{KL}(q_\phi(z|x) | p_\theta(z|x)) 
+$$
 
 Three facts fall out:
 
@@ -43,11 +51,15 @@ This is the form to keep in your head — "evidence = ELBO + gap" decomposes the
 
 A shorter route that gives the bound but doesn't expose what the gap _is_:
 
-$$ \log p_\theta(x) = \log \int p_\theta(x, z), dz = \log \mathbb{E}_{q_\phi(z|x)}!\left[\frac{p_\theta(x,z)}{q_\phi(z|x)}\right] $$
+$$
+ \log p_\theta(x) = \log \int p_\theta(x, z), dz = \log \mathbb{E}_{q_\phi(z|x)}!\left[\frac{p_\theta(x,z)}{q_\phi(z|x)}\right] 
+$$
 
 Apply Jensen ($\log$ is concave, so $\log \mathbb{E}[\cdot] \geq \mathbb{E}[\log \cdot]$):
 
-$$ \log p_\theta(x) \geq \mathbb{E}_{q_\phi}!\left[\log \frac{p_\theta(x,z)}{q_\phi(z|x)}\right] = \mathrm{ELBO} $$
+$$
+ \log p_\theta(x) \geq \mathbb{E}_{q_\phi}!\left[\log \frac{p_\theta(x,z)}{q_\phi(z|x)}\right] = \mathrm{ELBO} 
+$$
 
 Clean, but no gap term — for the gap, use the KL-identity derivation above.
 
@@ -57,11 +69,15 @@ The puzzling part: we want to minimize the gap $D_{KL}(q_\phi | p_\theta(z|x))$,
 
 Look at gradients with respect to the encoder parameters $\phi$ only (decoder $\theta$ held fixed). Since $\log p_\theta(x)$ has no $\phi$ dependence:
 
-$$ \frac{\partial}{\partial \phi}\log p_\theta(x) = 0 $$
+$$
+ \frac{\partial}{\partial \phi}\log p_\theta(x) = 0 
+$$
 
 From the identity:
 
-$$ \frac{\partial \mathrm{ELBO}}{\partial \phi} = -\frac{\partial D_{KL}(q_\phi | p_\theta(z|x))}{\partial \phi} $$
+$$
+ \frac{\partial \mathrm{ELBO}}{\partial \phi} = -\frac{\partial D_{KL}(q_\phi | p_\theta(z|x))}{\partial \phi} 
+$$
 
 **Every gradient step on $\phi$ that increases the ELBO is exactly a gradient step that decreases the KL gap.** You never compute the gap, but encoder optimization closes it anyway. That's the "for free" part.
 

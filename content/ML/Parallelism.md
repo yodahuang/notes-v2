@@ -234,7 +234,9 @@ Rank 3 receives: d (chunk3) fully reduced = 3+4+5+6 = 18
 
 Each step moves `size / world_size` data. Total sent per rank:
 
-$$\text{size} \times \frac{world_size - 1}{world_size} \approx \text{size}$$
+$$
+\text{size} \times \frac{world_size - 1}{world_size} \approx \text{size}
+$$
 
 ---
 

@@ -27,11 +27,16 @@ Let $r_t(\theta) = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)}$ be the p
 
 The PPO-Clip objective is:
 
-$$ L^{CLIP}(\theta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(\theta) \hat{A}_t,\ g(\epsilon, \hat{A}_t) \right) \right] $$
+$$
+ L^{CLIP}(\theta) = \hat{\mathbb{E}}_t \left[ \min\left( r_t(\theta) \hat{A}_t,\ g(\epsilon, \hat{A}_t) \right) \right] 
+$$
 
 where the clipping function is:
 
-$$ g(\epsilon, A) = \begin{cases} (1 + \epsilon) A & A \geq 0 \\ (1 - \epsilon) A & A < 0 \end{cases} $$
+$$
+ g(\epsilon, A) = \begin{cases} (1 + \epsilon) A & A \geq 0 \\ (1 - \epsilon) A & A < 0 \end{cases} 
+$$
+
 This simplified form (from SpinningUp) is equivalent to the original paper's $\min(r_t A_t,\ \text{clip}(r_t, 1-\epsilon, 1+\epsilon) A_t)$ but makes the intent clearer.
 
 >[!question] Why `min()` on top of clipping?
@@ -51,9 +56,11 @@ This simplified form (from SpinningUp) is equivalent to the original paper's $\m
 > - Overshoot is still penalized even though you're outside the clip band
 > 
 > Equivalently, you could write it with a conditional — only clip the side that would let the objective keep improving:
-> 
-> $$ L_t = \begin{cases} \min(r_t,\ 1+\epsilon), A_t & A_t > 0 \\ \max(r_t,\ 1-\epsilon), A_t & A_t < 0 \end{cases} $$
-> 
+>
+> $$
+>  L_t = \begin{cases} \min(r_t,\ 1+\epsilon), A_t & A_t > 0 \\ \max(r_t,\ 1-\epsilon), A_t & A_t < 0 \end{cases} 
+> $$
+>
 > The `min()` formulation is just a branchless way to express this.
 
 
@@ -70,7 +77,9 @@ This simplified form (from SpinningUp) is equivalent to the original paper's $\m
 
 Instead of clipping, penalize KL directly:
 
-$$ L^{KLPEN}(\theta) = \hat{\mathbb{E}}_t\left[ r_t \hat{A}_t - \beta \cdot D_{KL}[\pi_{\theta_k} | \pi_\theta] \right] $$
+$$
+ L^{KLPEN}(\theta) = \hat{\mathbb{E}}_t\left[ r_t \hat{A}_t - \beta \cdot D_{KL}[\pi_{\theta_k} | \pi_\theta] \right] 
+$$
 
 $\beta$ is adjusted each update:
 
@@ -85,7 +94,9 @@ $\beta$ is adjusted each update:
 
 The full objective often adds an entropy term:
 
-$$ L = L^{CLIP} - c_1 L^{VF} + c_2 H[\pi_\theta] $$
+$$
+ L = L^{CLIP} - c_1 L^{VF} + c_2 H[\pi_\theta] 
+$$
 
 where $H[\pi_\theta] = -\sum_a \pi_\theta(a|s) \log \pi_\theta(a|s)$.
 

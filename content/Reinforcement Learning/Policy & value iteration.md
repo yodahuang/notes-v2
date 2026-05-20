@@ -29,7 +29,11 @@ Note now policy iteration and evaluation are in one step and we keep looping.
 One may ask "hey why does this work though"? See [this video](https://www.youtube.com/watch?v=XpbLq7rIJAA&list=PLqYmG7hTraZDVH599EItlEWsUOsJbAodm&index=4&pp=iAQB). We can show that the bellman update can be formulated as Bellman operator, and the operator is a $\gamma$-contraction mapping, meaning it converges to the unique fixed point.
 
 It's also covered in CS 285, lecture 7. 
-$$\begin{aligned} \mathcal{B}V = \max_{\mathbf{a}} r_{\mathbf{a}} + \gamma \mathcal{T}_{\mathbf{a}}V \end{aligned}$$
+
+$$
+\begin{aligned} \mathcal{B}V = \max_{\mathbf{a}} r_{\mathbf{a}} + \gamma \mathcal{T}_{\mathbf{a}}V \end{aligned}
+$$
+
 - $r_{\mathbf{a}}$: stacked vector of rewards at all states for action $\mathbf{a}$
 - $\mathcal{T}_{\mathbf{a}}$: matrix of transitions for action $\mathbf{a}$ such that $\mathcal{T}_{\mathbf{a},i,j} = p(\mathbf{s}' = i | \mathbf{s} = j, \mathbf{a})$
 

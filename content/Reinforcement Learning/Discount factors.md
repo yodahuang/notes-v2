@@ -26,4 +26,5 @@ option 2:
 $$
 \nabla_{\theta}J(\theta) \approx \frac{1}{N} \sum_{i=1}^{N} \left( \sum_{t=1}^{T} \nabla_{\theta} \log \pi_{\theta}(\mathbf{a}_{i,t}|\mathbf{s}_{i,t}) \right) \left( \sum_{t=1}^{T} \gamma^{t-1} r(\mathbf{s}_{i,t'}, \mathbf{a}_{i,t'}) \right)
 $$
+
 If you work out the math and expand it, option 2 is the more correct one since it also penalize previous decisions, not only reward. In practice, we use option 1 though, since we want our policy to run infinitely long and we want average reward really, so option 1 may be a be a better choice. 

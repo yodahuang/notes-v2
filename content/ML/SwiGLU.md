@@ -40,7 +40,6 @@ Each hidden neuron is activated independently — the nonlinearity just threshol
 In SwiGLU, the nonlinearity is **multiplicative between two learned projections**:
 
 $$
-
 f(x) = W_2 \big(\phi(W_1 x) \odot W_3 x\big)
 $$Each hidden unit becomes $\phi(a_i(x)) \cdot b_i(x)$ — a product of two different linear functions of the input. This creates second-order feature interactions _before_ the down-projection, which is fundamentally more expressive than elementwise activation alone.
 

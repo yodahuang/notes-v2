@@ -31,7 +31,11 @@ A2: After one gradient step, the change in activation should be $\Theta(1)$
 From conversation with Claude Sonnet 4.6.
 ### Back to SVD
 Any matrix $W \in \mathbb{R}^{m \times n}$ can be decomposed as:
-$$W = U \Sigma V^\top$$
+
+$$
+W = U \Sigma V^\top
+$$
+
 where:
 
 - $U \in \mathbb{R}^{m \times m}$ — orthogonal matrix (output directions)
@@ -42,7 +46,9 @@ Those diagonal entries $\sigma_i$ are the **singular values**.
 
 Every matrix is just "rotate → stretch → rotate":
 
-$$x \xrightarrow{V^\top} \text{rotate input} \xrightarrow{\Sigma} \text{stretch each axis} \xrightarrow{U} \text{rotate output}$$
+$$
+x \xrightarrow{V^\top} \text{rotate input} \xrightarrow{\Sigma} \text{stretch each axis} \xrightarrow{U} \text{rotate output}
+$$
 
 The singular values are the **stretch factors** along each axis. So:
 
@@ -52,13 +58,18 @@ The singular values are the **stretch factors** along each axis. So:
 And the spectral norm is just the largest singlular value, it directly measures the maximum amplification a layer applies to any input direction.
 
 The paper shows that the training can be stable if that spectral norm
+
 $$
 ||w|| = \Theta(\sqrt{\frac{\text{fan}_\text{out}}{\text{fan}_{\text{in}}}})
 $$
+
 and then some more derivations.
 ## In practice
 
-$$\begin{aligned} \textbf{Initialization: } & \text{Set to } \Theta \left( \frac{1}{\sqrt{n_{l-1}}} \min \left( 1, \sqrt{\frac{n_l}{n_{l-1}}} \right) \right) \\ \textbf{Learning rates: } & \text{Set to } \frac{n_l}{n_{l-1}} \quad \text{(for Adam } \frac{1}{n_{l-1}}\text{)} \end{aligned}$$
+$$
+\begin{aligned} \textbf{Initialization: } & \text{Set to } \Theta \left( \frac{1}{\sqrt{n_{l-1}}} \min \left( 1, \sqrt{\frac{n_l}{n_{l-1}}} \right) \right) \\ \textbf{Learning rates: } & \text{Set to } \frac{n_l}{n_{l-1}} \quad \text{(for Adam } \frac{1}{n_{l-1}}\text{)} \end{aligned}
+$$
+
 [[Cerebras GPT]] uses this and offers nice tables.
 
 I find this implementation quite interesting: [ezmup](https://github.com/cloneofsimo/ezmup). Different from the official implementation:

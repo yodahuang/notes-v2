@@ -14,7 +14,9 @@ Adam (Adaptive Moment Estimation) combines two ideas: **momentum** and **adaptiv
 
 Instead of following the raw gradient, maintain a running average of past gradients:
 
-$$m_t = \beta_1 m_{t-1} + (1 - \beta_1) g_t$$
+$$
+m_t = \beta_1 m_{t-1} + (1 - \beta_1) g_t
+$$
 
 This smooths out noisy gradient directions and accelerates movement along consistent directions.
 
@@ -22,17 +24,23 @@ This smooths out noisy gradient directions and accelerates movement along consis
 
 Maintain a running average of squared gradients:
 
-$$v_t = \beta_2 v_{t-1} + (1 - \beta_2) g_t^2$$
+$$
+v_t = \beta_2 v_{t-1} + (1 - \beta_2) g_t^2
+$$
 
 $v_t$ estimates $\mathbb{E}[g^2]$ — the typical squared gradient magnitude for each parameter. Its square root $\sqrt{v_t}$ is a proxy for the **typical gradient scale** of that parameter.
 
 ### The Update Rule
 
-$$\theta \leftarrow \theta - \frac{\eta}{\sqrt{v_t} + \epsilon} \cdot m_t$$
+$$
+\theta \leftarrow \theta - \frac{\eta}{\sqrt{v_t} + \epsilon} \cdot m_t
+$$
 
 This can be rewritten as:
 
-$$\Delta\theta \propto \frac{m_t}{\sqrt{v_t}} \approx \frac{\mathbb{E}[g]}{\sqrt{\mathbb{E}[g^2]}}$$
+$$
+\Delta\theta \propto \frac{m_t}{\sqrt{v_t}} \approx \frac{\mathbb{E}[g]}{\sqrt{\mathbb{E}[g^2]}}
+$$
 
 > [!question] Why divide by $\sqrt{\mathbb{E}[g^2]}$ and not $\mathbb{E}[g]$?
 > 
@@ -46,7 +54,9 @@ $$\Delta\theta \propto \frac{m_t}{\sqrt{v_t}} \approx \frac{\mathbb{E}[g]}{\sqrt
 
 In second-order optimization (Newton's method), you'd divide by the Hessian:
 
-$$\Delta\theta = -H^{-1} g$$
+$$
+\Delta\theta = -H^{-1} g
+$$
 
 The Hessian is expensive. But $\mathbb{E}[g^2]$ is a cheap, diagonal, gradient-based proxy:
 
@@ -69,7 +79,9 @@ Both moments are initialized to zero: $m_0 = 0,\ v_0 = 0$.
 
 After the first step:
 
-$$m_1 = \beta_1 \cdot 0 + (1-\beta_1) g_1 = (1-\beta_1) g_1$$
+$$
+m_1 = \beta_1 \cdot 0 + (1-\beta_1) g_1 = (1-\beta_1) g_1
+$$
 
 With $\beta_1 = 0.9$, that's $m_1 = 0.1 \cdot g_1$ — massively underestimating the true gradient. The zero initialization **bleeds into the estimate**.
 
@@ -77,11 +89,15 @@ With $\beta_1 = 0.9$, that's $m_1 = 0.1 \cdot g_1$ — massively underestimating
 
 After $t$ steps, the running average satisfies:
 
-$$\mathbb{E}[m_t] = \mathbb{E}[g] \cdot (1 - \beta_1^t)$$
+$$
+\mathbb{E}[m_t] = \mathbb{E}[g] \cdot (1 - \beta_1^t)
+$$
 
 Divide it out:
 
-$$\hat{m}_t = \frac{m_t}{1 - \beta_1^t}$$
+$$
+\hat{m}_t = \frac{m_t}{1 - \beta_1^t}
+$$
 
 Now $\mathbb{E}[\hat{m}_t] = \mathbb{E}[g]$. Unbiased. Same correction applies to $v_t$ with $\beta_2$.
 
@@ -112,7 +128,9 @@ Naively, L2 regularization adds $\lambda\theta$ to the gradient, which then gets
 
 ### The Fix: Decouple Weight Decay
 
-$$\theta \leftarrow \theta - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \cdot \hat{m}_t - \eta \lambda \theta$$
+$$
+\theta \leftarrow \theta - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \cdot \hat{m}_t - \eta \lambda \theta
+$$
 
 The weight decay term $\eta\lambda\theta$ is applied **directly to the weights**, not mixed into the gradient before adaptive scaling. Every parameter gets shrunk by the same proportional amount regardless of gradient history.
 

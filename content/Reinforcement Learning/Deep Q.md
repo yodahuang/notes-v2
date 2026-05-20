@@ -26,6 +26,7 @@ $$
 
 
 
+
 \Delta\mathbf{w} = \left(R_{i+1} + \gamma \max_{a} q_{\mathbf{w}^{-}}(S_{i+1}, a) - q_{\mathbf{w}}(S_i, A_i)\right) \nabla_{\mathbf{w}}q_{\mathbf{w}}(S_i, A_i)
 
 $$

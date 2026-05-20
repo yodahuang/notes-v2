@@ -27,7 +27,9 @@ Human labels are _relative_ — "$y_w$ is better than $y_l$" — not absolute sc
 
 We want $P(y_w \succ y_l \mid x)$ as a function of $r_\phi$. The natural choice: take the difference $r_w - r_l \in \mathbb{R}$ and squash it into $(0,1)$ with a sigmoid. This is the **Bradley-Terry model**:
 
-$$P(y_w \succ y_l \mid x) = \sigma(r_\phi(x, y_w) - r_\phi(x, y_l))$$
+$$
+P(y_w \succ y_l \mid x) = \sigma(r_\phi(x, y_w) - r_\phi(x, y_l))
+$$
 
 The sigmoid does exactly one job: reduce the difference to a probability. A consequence is that absolute scale becomes irrelevant — $(100, 99)$ and $(1, 0)$ give the same difference, same probability, same loss. Only the gap matters, which is faithful to what humans actually told us.
 
@@ -35,7 +37,9 @@ The sigmoid does exactly one job: reduce the difference to a probability. A cons
 
 Maximize the likelihood of the observed preferences over the dataset → take log → negate:
 
-$$\mathcal{L}_R(r_\phi, \mathcal{D}) = -\mathbb{E}_{(x,y_w,y_l)\sim\mathcal{D}} \left[ \log \sigma(r_\phi(x, y_w) - r_\phi(x, y_l)) \right]$$
+$$
+\mathcal{L}_R(r_\phi, \mathcal{D}) = -\mathbb{E}_{(x,y_w,y_l)\sim\mathcal{D}} \left[ \log \sigma(r_\phi(x, y_w) - r_\phi(x, y_l)) \right]
+$$
 
 #### Relation to logistic regression
 
@@ -48,11 +52,15 @@ With $z := r_w - r_l$ this is $-\log \sigma(z)$, identical to logistic regressio
 
 ## RL Fine-Tuning Objective
 
-$$\max_{\pi_\theta} \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi_\theta(y|x)} \left[ r_\phi(x,y) \right] - \beta D_\text{KL}[\pi_\theta(y|x) | \pi_\text{ref}(y|x)]$$
+$$
+\max_{\pi_\theta} \mathbb{E}_{x \sim \mathcal{D}, y \sim \pi_\theta(y|x)} \left[ r_\phi(x,y) \right] - \beta D_\text{KL}[\pi_\theta(y|x) | \pi_\text{ref}(y|x)]
+$$
 
 In practice the reward is folded in as:
 
-$$r(x,y) = r_\phi(x,y) - \beta(\log \pi_\theta(y|x) - \log \pi_\text{ref}(y|x))$$
+$$
+r(x,y) = r_\phi(x,y) - \beta(\log \pi_\theta(y|x) - \log \pi_\text{ref}(y|x))
+$$
 
 ### Two different [[KL Divergence|KL]]s. 
 
@@ -108,6 +116,8 @@ For LLM token generation you could apply this: instead of sampling one token, ta
 
 The *log-derivative* trick sidesteps differentiating through the sample entirely:
 
-$$\nabla_\theta \mathbb{E}_{y \sim \pi_\theta}[r(y)] = \mathbb{E}_{y \sim \pi_\theta}[r(y) \nabla_\theta \log \pi_\theta(y)]$$
+$$
+\nabla_\theta \mathbb{E}_{y \sim \pi_\theta}[r(y)] = \mathbb{E}_{y \sim \pi_\theta}[r(y) \nabla_\theta \log \pi_\theta(y)]
+$$
 
 Roll out real tokens → get real reward → weight the log-prob gradient by reward. No backprop through sampling needed. The critic in actor-critic is just variance reduction on this (advantage = $r(y) - V(x)$ instead of raw $r(y)$).

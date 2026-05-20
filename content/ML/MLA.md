@@ -38,9 +38,17 @@ Let $d$ = `d_model`, $h$ = num heads, $d_h = d/h$ per-head dim.
 |Shrink K/V heads|$2d_c$|Reduced (small heads)|
 |**MLA**|$d_c$|**Full rank** (decompressed)|
 
-**Compression:** $$c_{KV} = x W_{DKV}, \quad W_{DKV} \in \mathbb{R}^{d \times d_c}$$
+**Compression:**
 
-**Decompression:** $$K = c_{KV} W_{UK}, \quad V = c_{KV} W_{UV}, \quad W_{UK}, W_{UV} \in \mathbb{R}^{d_c \times d}$$
+$$
+c_{KV} = x W_{DKV}, \quad W_{DKV} \in \mathbb{R}^{d \times d_c}
+$$
+
+**Decompression:**
+
+$$
+K = c_{KV} W_{UK}, \quad V = c_{KV} W_{UV}, \quad W_{UK}, W_{UV} \in \mathbb{R}^{d_c \times d}
+$$
 
 ## Is it equivalent to just shrinking K/V?
 
@@ -50,11 +58,15 @@ Let $d$ = `d_model`, $h$ = num heads, $d_h = d/h$ per-head dim.
 
 Naive MLA does 2 BMMs to get K and V before attention — worse than standard MHA. The trick: **absorb the up-projection weights into Q and output projection**.
 
-$$\text{scores} = Q W_{UK}^\top C_{KV}^\top = \underbrace{(Q W_{UK}^\top)}_{Q'} C_{KV}^\top$$
+$$
+\text{scores} = Q W_{UK}^\top C_{KV}^\top = \underbrace{(Q W_{UK}^\top)}_{Q'} C_{KV}^\top
+$$
 
 So redefine $Q' = Q W_{UK}^\top$ (merged into $W_Q$, done once), then attention runs directly against cached latents $C_{KV}$:
 
-$$\text{out} = \text{softmax}(Q' C_{KV}^\top) \cdot C_{KV} W_{UV}^\top$$
+$$
+\text{out} = \text{softmax}(Q' C_{KV}^\top) \cdot C_{KV} W_{UV}^\top
+$$
 
 where $W_{UV}^\top$ is absorbed into the output projection $W_O$.
 
