@@ -11,7 +11,7 @@ SSD stands for "Single Shot MultiBox Detector".
 
 Generate a bunch of boxes to look at at different scale. For each of them, output class confidence + offset to the shape of the default box. Compute the loss by matching each box with ground truth box and do regression.
 
-The classifier is a 3*3 conv kernel.
+The classifier is a $3*3$ conv kernel.
 
 ![[ssd_anchors.png]]
 

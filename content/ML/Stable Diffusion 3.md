@@ -4,6 +4,8 @@ pdf: "[[stable_diffusion_3.pdf]]"
 year: 2024
 Arxiv: https://arxiv.org/abs/2403.03206
 original title: Scaling Rectified Flow Transformers for High-Resolution Image Synthesis
+aliases:
+  - MMDiT
 ---
 ---
 
@@ -99,16 +101,21 @@ The 77-token limit on CLIP comes from its fixed positional embedding table (76 c
 > 
 > But there is no ablation isolating `c_vec`'s contribution while keeping `c_ctxt`. It was inherited from SDXL (found empirically to help) and never seriously questioned. The timestep needs to live _somewhere_ global — adaLN is the natural home — and `c_vec` is just concatenated to it cheaply.
 
-### 2.3 MMDiT as Hard-Coded 2-Expert MoE
+### 2.3 MMDiT as Co-Attending Independent Streams
 
-The dual-stream design is cleanly understood as a **hard-routed Mixture of Experts by modality**:
+The dual-stream design is often loosely described as a hard-routed MoE, but the analogy is imprecise and worth unpacking. There is a spectrum of parameter sharing:
 
-- Text tokens → text expert weights (Q, K, V, FFN)
-- Image tokens → image expert weights (separate Q, K, V, FFN)
-- Routing: 100% hard, determined by token type — no learned router
-- Cross-expert interaction: shared attention score matrix — both streams' keys and queries concatenated before softmax
+| | QKV | Attention context | FFN |
+|---|---|---|---|
+| Standard MoE | Shared | Shared | Separate (routed) |
+| **MMDiT / Pi0** | **Separate per modality** | **Shared (K, V concatenated)** | **Separate per modality** |
+| Fully separate | Separate | Separate | Separate |
 
-Structurally identical to [[Pi 0]]'s action/observation expert split: VLM backbone handles observation tokens, action expert handles action tokens, interact only through attention. The two modalities have sufficiently different statistical distributions that separate weight matrices are worth the cost — but joint attention is still needed for cross-modal grounding.
+MMDiT is actually *more separated* than standard MoE, not a variant of it. Standard MoE's logic is: tokens live in one shared representation space (shared QKV), but per-position computation specializes (separate FFN). MMDiT says: modalities have such different statistical characters that even the projection into Q/K/V space should be separate — but they still need to cross-attend.
+
+The only joint operation is the attention context: each stream's K and V are concatenated before softmax, so every token (text or image) attends over the full combined key-value set. A better name than "MoE" is **co-attending independent streams** — two fully independent weight sets that read each other's working memory through attention.
+
+[[Pi 0]] uses the exact same mechanism — separate QKV weights per expert, concatenated for a single joint attention pass. See [[Pi 0]] for implementation details and the distinction between the paper's "blockwise causal mask" framing and what the code actually does.
 
 ### 2.4 Improved Text Encoders and Synthetic Captions
 

@@ -1,10 +1,10 @@
 ---
 aliases:
+  - π0.5-KI
 Arxiv:
 pdf: "[[pi05_KI.pdf]]"
 original title: "Knowledge Insulating Vision-Language-ActionModels: Train Fast, Run Fast, Generalize Better"
 date: 2026-01-18
-tags:
 year: 2025
 ---
 ![[pi_0_5_ki_comparison.png]]

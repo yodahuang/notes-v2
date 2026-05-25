@@ -21,11 +21,36 @@ The model structure is heavily inspired by [[TransFusion]] for supervising conti
 
 And then in inference the VLM output is just discarded.
 
-As is shown in the image, they used a pre-trained VLM, [[PaliGemma]]. We then added an action expert, but note, it's still on transformer. 
+As is shown in the image, they used a pre-trained VLM, [[PaliGemma]]. We then added an action expert, but note, it’s still on transformer. 
 
 > Attention mask. π0 uses a blockwise causal attention mask with 3 blocks: $[I^{1}_{t}, \dots I^{n}_{t}, l_t]$, $[q_t]$, and $[a^\tau_t , \dots, a^\tau_{t+H-1}]$. Within each block, there is full bidirectional attention, whereas the tokens in each block cannot attend to the tokens in future blocks. The first block includes the input modalities from PaliGemma’s VLM pre-training, which are prevented from attending to future blocks (which include new inputs) to minimize distribution shift from said pre-training. The robot state qt is its own block because it does not change with each flow matching integration step; preventing it from attending to the final block allows its corresponding keys and values to be cached during sampling. The final block corresponds to the noisy actions $A^\tau_t$ , which can attend to the full input sequence.
 
 [[pi0.pdf#page=15&selection=408,0,476,46|pi0, page 15]]
+
+### Implementation: co-attending independent streams
+
+The paper’s "blockwise causal mask" framing describes the *access policy* — which tokens can see which — not a separate architectural component. The actual mechanism, confirmed in [openpi](https://github.com/Physical-Intelligence/openpi) (`src/openpi/models/gemma.py`), is the same as [[Stable Diffusion 3|MMDiT]]:
+
+1. Each expert computes Q, K, V with its **own weights** (VLM: `attn`, action expert: `attn_1`)
+2. Q, K, V are **concatenated** across both experts into a single sequence
+3. One standard attention computation runs over the full concatenated sequence
+4. The blockwise causal pattern is just a **boolean attention mask** on the logits
+
+```python
+qkvs = []
+for x, config in zip(xs, self.configs):   # one iteration per expert
+    qkvs.append(qkv_einsum(config.weights, x))
+
+q, k, v = (jnp.concatenate(y, axis=1) for y in zip(*qkvs))
+# → standard attention with attn_mask applied
+```
+
+The different hidden widths (VLM: 2048, action expert: 1024) are fine because both project to the same `head_dim` before the dot-product, then back to their own width for the FFN. The naming convention (`attn` vs `attn_1`) is what lets the PaliGemma checkpoint load without any remapping.
+
+The blockwise causal mask itself encodes three practical choices:
+- VLM tokens cannot attend to action tokens → preserves PaliGemma’s pretraining distribution
+- State token `q_t` cannot attend to action tokens → its K/V can be cached across flow-matching steps
+- Action tokens attend to everything → they have full context for denoising
 
 > We sample τ from a shifted beta distribution that emphasizes lower timesteps (corresponding to noisier actions), and does not sample timesteps at all above a cutoff value s. We use s = 0.999 in our experiments.
 

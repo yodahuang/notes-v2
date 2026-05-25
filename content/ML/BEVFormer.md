@@ -2,10 +2,12 @@
 date: 2022-09-05
 Arxiv: https://arxiv.org/abs/2203.17270
 pdf: "[[bevformer.pdf]]"
+original title: "BEVFormer: Learning Bird's-Eye-View Representation from Multi-Camera Images via Spatiotemporal Transformers"
+year: 2022
 ---
 BEVFormer: Learning Bird’s-Eye-View Representation from Multi-Camera Images via Spatiotemporal Transformers
 
-- [Zhihu link (I know, why would anyone use Zhihu?)]()
+- [Zhihu link (I know, why would anyone use Zhihu?)](https://zhuanlan.zhihu.com/p/495819042)
 
 The network's core representation is in BEV view (BEV query), it uses temporal self attention + spatial cross attention. The author states that they are inspired by Tesla's video spatial transformer.
 ![[bev_former_overview.png]]
@@ -14,7 +16,7 @@ The network's core representation is in BEV view (BEV query), it uses temporal s
 ## BEV Queries
 A grid-shaped learnable parameters $Q \in \mathbb{R}^{H\times W \times C}$ , each cell correspond to real world geometry.
 ## Spatial Cross-Attetion
-This part is like [[BEV baseline]], but it does not just grab context from CNN embedding. Instead, it attend on multiple cameras. It's not global attention. Instead, it uses [[Deformable Attention]], only interaction with small regions of interest. The reference points are sampled from the lifted pillar. 
+This part is like [[BEV baseline]], but it does not just grab context from CNN embedding. Instead, it attend on multiple cameras. It's not global attention. Instead, it uses [[Deformable DETR|deformable attention]], only interaction with small regions of interest. The reference points are sampled from the lifted pillar. 
 
 $$
 SCA(Q_{P,}F_{t)}= \frac{1}{|\mathcal{V}_{\text{hit}}|} \sum_{i\in\mathcal{V_{\text{hit}}}}\sum\limits^{N_{ref}}_{j=1}\text{DeformAttn}(Q_{P}, \mathcal{P}(p, i, j), F^i_t)

@@ -1,10 +1,8 @@
 ---
-aliases: 
 Arxiv: https://arxiv.org/abs/2301.08739
 pdf: "[[flatformer.pdf]]"
 original title: "FlatFormer: Flattened Window Attention for Efficient Point Cloud Transformer"
 date: 2025-04-04
-tags: 
 year: 2023
 ---
 Makes [[SST (Single Stride 3D Detector)|SST]] faster. If they are from the same lab, the name would just be FastSST.
@@ -39,3 +37,8 @@ There's also [[Swin Transformer]] style window shift, where the window got shift
 > Interestingly, despite the fact that our sorting strategy does not guarantee the windows to be geometrically regular as in SST, FlatFormer still consistently outperforms SST in all three classes.
 
 [[flatformer.pdf#page=7&selection=233,0,236,18|flatformer, page 7]]. So the author doesn't understand why either. There's also an ablation study shows using group size with $85\%$ of window size provide the better result.
+
+> [!note] Lineage
+> I feel it also shares the same idea with [[MLP Mixer]]:  two complementary cheap operations compose into global coverage, without needing explicit long-range attention or hierarchical pooling.
+
+

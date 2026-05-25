@@ -55,58 +55,10 @@ Training is **strictly separate** — the VAE is fully trained and frozen before
 
 ### Stage 1: Train the VAE
 
-Identical to [[VQGAN]]'s recipe. Four loss terms:
+Identical to [[VQGAN]]'s four-loss recipe (L1 + [[LPIPS]] + PatchGAN + KL) — see those notes for the details. Two LDM-specific points:
 
-$$
-\mathcal{L}_\text{VAE} = \mathcal{L}_\text{rec} + \lambda_\text{perc}\mathcal{L}_\text{perc} + \lambda_\text{adv}\mathcal{L}_\text{adv} + \lambda_\text{KL}\mathcal{L}_\text{KL}
-$$
-
-|Loss|Purpose|
-|---|---|
-|L1 reconstruction|Pixel-level fidelity|
-|LPIPS (perceptual)|Semantic sharpness via pretrained VGG features|
-|PatchGAN adversarial|Local realism; prevents blurring that LPIPS misses|
-|KL regularization ($\lambda \sim 10^{-6}$)|Keeps latent magnitude bounded for diffusion; not a tight bottleneck|
-
-#### L1 Reconstruction
-
-Straightforward pixel-level L1 between input $x$ and reconstruction $\hat{x} = \mathcal{D}(\mathcal{E}(x))$. Necessary but insufficient — L1 minimization is equivalent to maximizing a Laplacian likelihood, which averages over uncertainty and produces blurry outputs wherever the decoder is unsure.
-
-#### LPIPS — Learned Perceptual Image Patch Similarity
-
-**Paper:** Zhang et al. 2018, "The Unreasonable Effectiveness of Deep Features as a Perceptual Metric"
-
-**The problem with pixel-space losses:** L1/L2 in pixel space is a poor proxy for perceptual similarity. A 1-pixel spatial shift produces high L2 error but looks identical to a human. Conversely, two images can have low L2 distance but look completely different.
-
-**How it works:** Pass both $x$ and $\hat{x}$ through a pretrained network (VGG or AlexNet), extract intermediate feature maps at multiple layers, compute L2 distance in that feature space, then take a weighted sum across layers:
-
-$$
-\mathcal{L}_\text{LPIPS} = \sum_l w_l \| \phi_l(x) - \phi_l(\hat{x}) \|_2^2
-$$
-
-The weights $w_l$ are learned on a dataset of human perceptual judgments (humans rating which of two distortions looks more similar to a reference). The intuition: if two images activate the same intermediate CNN features, they look similar to a human — texture, structure, and semantics are captured rather than pixel coincidence.
-
-> [!note]
-> LPIPS penalizes semantic deviation well but still allows some blurring — it's computed over spatial averages of feature maps. This is why the adversarial loss is still needed on top.
-
-#### PatchGAN — Patch-Based Adversarial Loss
-
-**Paper:** Isola et al. 2017, "Image-to-Image Translation with Conditional Adversarial Networks" (pix2pix)
-
-**The problem:** A full-image discriminator (real/fake for the whole image) is expensive and gives a single weak gradient signal. It also tends to focus on global structure and ignore local texture.
-
-**How it works:** The discriminator is a fully convolutional network that produces a **spatial grid of real/fake scores**, each score corresponding to a local patch of the input image (e.g. 70×70 pixels). Loss is averaged across all patches:
-
-$$
-\mathcal{L}_\text{adv} = \mathbb{E}[\log D(x)] + \mathbb{E}[\log(1 - D(\hat{x}))]
-$$
-
-where $D$ outputs a grid, not a scalar. The VAE decoder (generator) must fool **every patch independently** — it cannot hide blurriness in any local region. This specifically targets the high-frequency local texture that L1 and LPIPS both fail to enforce.
-
-> [!tip] Why PatchGAN complements LPIPS
-> LPIPS catches semantic/structural deviations. PatchGAN catches local sharpness failures. They cover different failure modes of pure reconstruction losses, which is why both are needed.
-
-The KL weight is intentionally tiny — this is almost a plain autoencoder, not a true [[VAE]] information bottleneck. The goal is well-normalized latents, not compression.
+- The KL weight is intentionally tiny ($\lambda \sim 10^{-6}$) — this is almost a plain autoencoder, not a true [[Variational Autoencoder|VAE]] information bottleneck. The goal is well-normalized latents for diffusion, not compression.
+- VAE training is fully frozen before diffusion begins. No joint training.
 
 > [!warning] Why not train jointly?
 > Diffusion gradients flowing into the encoder would push it toward smooth, easy-to-denoise latents — destroying reconstruction quality. The PatchGAN adversarial training also requires careful balance that external losses would destabilize.
@@ -133,4 +85,15 @@ The paper ablates both VQ-regularized and KL-regularized autoencoders. Common co
 |KL-reg|Weak KL penalty|**Continuous**|
 
 **Stable Diffusion (SD 1.x / 2.x) uses the KL-reg variant** — a continuous 4-channel latent at 8× spatial compression. VQ is in the ablations. SD3/FLUX moved to 16-channel continuous latents (still KL-reg, same recipe).
+
+
+> [!question] With such a weak KL, what stops the latent space from having holes or being unsamplable?
+> 
+> Nothing — and that's fine. The diffusion model is trained directly on real encoded latents $z = \mathcal{E}(x)$, so it learns $p(z)$ from the actual data distribution, not from a prescribed prior. At generation time it denoises from Gaussian noise *toward wherever the real latents live*, never sampling the VAE latent space arbitrarily. 
+> 
+> The VAE only needs to satisfy two properties: 
+> (1) **reconstructable** — $\mathcal{D}(\mathcal{E}(x)) \approx x$, enforced by the reconstruction + perceptual + adversarial losses; 
+> (2) **diffusion-learnable** — smooth and bounded enough for a denoising network to learn the score field over it, which the weak KL (preventing magnitude explosion) and reconstruction losses (enforcing local continuity) together ensure.
+>  
+> The shape of the distribution is otherwise unconstrained. All generative structure lives in the diffusion model, not the VAE.
 

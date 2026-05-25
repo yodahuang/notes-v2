@@ -122,5 +122,5 @@ Generation:
 | -------------------------------- | --------------------------- | ------------------------------------- | ----------------------------------- |
 | [[Variational Autoencoder\|VAE]] | Continuous Gaussian         | Fixed $\mathcal{N}(0,I)$              | Sample from prior, decode           |
 | VQ-VAE                           | Discrete codebook           | Uniform → learned separately          | Sample from learned prior, decode   |
-| [[Latent Diffusion Model\|LDM]]  | Continuous (VQ-regularized) | Learned diffusion process             | Iterative denoising in latent space |
+| [[Latent Diffusion Models\|LDM]] | Continuous (VQ-regularized) | Learned diffusion process             | Iterative denoising in latent space |
 | DALL-E 1                         | Discrete (dVAE tokens)      | Transformer over joint token sequence | Autoregressive                      |

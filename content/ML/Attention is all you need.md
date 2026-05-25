@@ -1,12 +1,12 @@
 ---
 aliases:
   - OG Transformer
+  - Multi-Head Attention
 Arxiv: https://arxiv.org/abs/1706.03762
 pdf: "[[attention_is_all_you_need.pdf]]"
 updated: 2024-04-07
 date: 2020-09-06
 ---
-
 To really understand what's going on, see Andrej's [Neural Networks: Zero to Hero](https://karpathy.ai/zero-to-hero.html) lecture. Specifically, [Lecture 7: Lecture 7: Let's build GPT: from scratch, in code, spelled out.](https://www.youtube.com/watch?v=kCc8FmEb1nY) Obviously GPT-2 is basically this, but using a lot of data.
 ## Input, output and loss
  Suppose we use the very basic character tokenizer, that maps every letter / symbol into some int.
