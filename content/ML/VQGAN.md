@@ -4,7 +4,14 @@ aliases:
 Arxiv: https://arxiv.org/abs/2012.09841
 year: 2020
 original title: Taming Transformers for High-Resolution Image Synthesis
+date: 2026-05-16
 ---
+---
+
+Created with conversation with Claude Sonnet 4.6
+
+---
+
 
 VQGAN trains a discrete autoencoder with a VQ codebook bottleneck (like [[VQ-VAE]]) under an adversarial + perceptual loss recipe, then fits an autoregressive transformer prior over the resulting tokens for generation. Its lasting contribution is the **VAE training recipe** — adopted by every modern latent-space generator from [[Latent Diffusion Models|LDM]] to [[Stable Diffusion 3|SD3]] to FLUX, even when the discrete bottleneck is dropped.
 

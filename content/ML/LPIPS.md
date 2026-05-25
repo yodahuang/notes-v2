@@ -4,6 +4,12 @@ aliases:
 Arxiv: https://arxiv.org/abs/1801.03924
 year: 2018
 original title: The Unreasonable Effectiveness of Deep Features as a Perceptual Metric
+date: 2026-05-16
+---
+---
+
+Created with discussion with Claude Sonnet 4.6
+
 ---
 
 A perceptual similarity loss computed in the feature space of a pretrained network. The standard reconstruction loss for image generators where pixel-space L1/L2 is inadequate.

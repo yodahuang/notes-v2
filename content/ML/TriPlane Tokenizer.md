@@ -5,6 +5,11 @@ year: 2025
 original title: Efficient Multi-Camera Tokenization with Triplanes for End-to-End Driving
 pdf: "[[triplane_tokenizer.pdf]]"
 ---
+---
+
+Created with conversation with Claude Sonnet 4.6
+
+---
 ## Ideas
 ![[triplane-tokenizer-overview.png]]
 
