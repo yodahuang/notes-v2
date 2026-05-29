@@ -23,7 +23,7 @@ There are two variants: **PPO-Clip** (primary) and **PPO-Penalty** (adaptive KL)
 
 ## The Clipped Surrogate Objective
 
-Let $r_t(\theta) = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)}$ be the probability ratio. The raw (unclipped) surrogate is just $r_t A_t$ — this is $L^{CPI}$, the policy gradient objective with importance sampling.
+Let $r_t(\theta) = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)}$ be the probability ratio. $\theta_k$ is the **frozen behavioral policy** — the parameters that generated the current rollout batch $\mathcal{D}_k$; it stays pinned throughout all inner SGD epochs, with $k$ only incrementing when new trajectories are collected. The raw (unclipped) surrogate is just $r_t A_t$ — this is $L^{CPI}$, the policy gradient objective with importance sampling.
 
 The PPO-Clip objective is:
 

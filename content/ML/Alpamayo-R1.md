@@ -49,7 +49,7 @@ Prior AV reasoning datasets produce traces that look reasonable but don't connec
 
 A model trained on these learns to *sound* plausible without learning to reason. The fix is constraint design: anchor every trace to an explicit driving decision from a closed taxonomy (~15 longitudinal options × ~15 lateral, see Table 1), and require all causal factors to come only from the observable history window.
 
-![[Pasted image 20260525094801.png]]
+![[alpamayo_reasoning_issues.png]]
 
 > [!note] Closed decisions ≠ closed reasoning
 > The *conclusion* is a fixed vocabulary; that's what aligns the trace to the trajectory. The *reasoning path* (which causal factors, how they interact) stays open-ended natural language. The expressive-power concern only applies to the decision label, not the trace. Closer to supervised classification on the action with free-form rationale than to a templated reasoning chain.

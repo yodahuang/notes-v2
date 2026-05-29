@@ -1,5 +1,7 @@
 ---
 date: 2026-02-05
+aliases:
+  - cfg
 ---
 
 Related: [[Flow Matching]], [[Score matching]].
