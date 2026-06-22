@@ -1,0 +1,60 @@
+<svg width="100%" viewBox="0 0 680 600" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>SONIC two-level hierarchy: goal sources, encoders, universal token, control decoder, robot</title>
+<desc>Interchangeable high-level goal sources (kinematic planner, VR teleoperation, GEM, VLA) each produce a kinematic motion target. Per-modality encoders map them into a shared FSQ token z. The control decoder D_c plus proprioception turn z into 29-dim PD joint targets at 50 Hz. The VLA bypasses the encoders and streams tokens directly.</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,'Segoe UI',sans-serif}
+.arw{stroke:var(--line);stroke-width:1.6;fill:none}
+.arwd{stroke:var(--line);stroke-width:1.4;fill:none;stroke-dasharray:5 4}
+.box{stroke-width:1.1}
+.r-p{fill:var(--pf);stroke:var(--ps)}.r-t{fill:var(--tf);stroke:var(--ts)}.r-g{fill:var(--gf);stroke:var(--gs)}.r-gn{fill:var(--gnf);stroke:var(--gns)}.r-or{fill:var(--orf);stroke:var(--ors)}
+.k-p{fill:var(--pt)}.k-t{fill:var(--tt)}.k-g{fill:var(--gt)}.k-gn{fill:var(--gnt)}.k-or{fill:var(--ort)}
+.m-p{fill:var(--ps)}.m-t{fill:var(--ts)}.m-g{fill:var(--gs)}.m-gn{fill:var(--gns)}.m-or{fill:var(--ors)}
+.title{font-size:14.5px;font-weight:500}.sub{font-size:11.5px}.hdr{font-size:14px;font-weight:600}
+.cap{font-size:11.5px;font-style:italic;fill:var(--muted)}.capb{font-size:13px;font-weight:600;fill:var(--ink)}
+.leg{font-size:12px;fill:var(--legend)}.tag{font-size:13px;font-weight:600}
+.band-hi{stroke:var(--bhi);stroke-width:1;fill:none;stroke-dasharray:5 4}.band-lo{stroke:var(--blo);stroke-width:1;fill:none;stroke-dasharray:5 4}
+:root{--ink:#20201a;--muted:#56554f;--line:#73726c;--legend:#5f5e5a;--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;--tf:#e1f5ee;--ts:#0f6e56;--tt:#085041;--gf:#f1efe8;--gs:#5f5e5a;--gt:#444441;--gnf:#e6f4e6;--gns:#23783c;--gnt:#155a2d;--orf:#faefde;--ors:#a86210;--ort:#7a460a;--bhi:#b9b3d8;--blo:#9fc7bb}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--muted:#cbc9c0;--line:#a8a69d;--legend:#cbc9c0;--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;--tf:#0e3b33;--ts:#46b89c;--tt:#c2ece0;--gf:#34332e;--gs:#a3a199;--gt:#d8d6cc;--gnf:#123c21;--gns:#54bd73;--gnt:#c5e9cd;--orf:#3f2b0d;--ors:#dca044;--ort:#f5dcae;--bhi:#6f64b3;--blo:#46967f}}
+</style>
+</defs>
+
+<rect x="6" y="50" width="668" height="64" rx="12" class="band-hi"/>
+<text x="16" y="42" class="capb">HIGH LEVEL · goal sources — what motion should happen (kinematic, no physics)</text>
+<rect x="6" y="126" width="668" height="450" rx="12" class="band-lo"/>
+<text x="16" y="143" class="capb">LOW LEVEL · universal tracker  π(a | sᵖₜ, g) — PPO, physics and balance  (= DeepMimic, scaled)</text>
+
+<rect x="16" y="58" width="152" height="48" rx="9" class="box r-g"/><text x="92" y="80" text-anchor="middle" class="title k-g">Kinematic planner</text><text x="92" y="97" text-anchor="middle" class="sub m-g">→ Eᵣ (robot)</text>
+<rect x="180" y="58" width="152" height="48" rx="9" class="box r-g"/><text x="256" y="80" text-anchor="middle" class="title k-g">VR teleoperation</text><text x="256" y="97" text-anchor="middle" class="sub m-g">whole-body / 3-point</text>
+<rect x="344" y="58" width="152" height="48" rx="9" class="box r-g"/><text x="420" y="80" text-anchor="middle" class="title k-g">GEM</text><text x="420" y="97" text-anchor="middle" class="sub m-g">text · video · music</text>
+<rect x="508" y="58" width="152" height="48" rx="9" class="box r-g"/><text x="584" y="80" text-anchor="middle" class="title k-g">VLA</text><text x="584" y="97" text-anchor="middle" class="sub m-g">predicts token directly</text>
+
+<line x1="92" y1="106" x2="210" y2="170" class="arw" marker-end="url(#a)"/>
+<line x1="256" y1="106" x2="312" y2="170" class="arw" marker-end="url(#a)"/>
+<line x1="420" y1="106" x2="432" y2="170" class="arw" marker-end="url(#a)"/>
+
+<path d="M584 106 L584 311 L502 311" class="arwd" marker-end="url(#a)"/>
+<text x="584" y="201" text-anchor="middle" class="cap">VLA: token-only</text>
+<text x="584" y="216" text-anchor="middle" class="cap">streaming</text>
+<text x="584" y="231" text-anchor="middle" class="cap">(skips encoders)</text>
+
+<rect x="120" y="170" width="440" height="52" rx="9" class="box r-t"/><text x="340" y="194" text-anchor="middle" class="title k-t">Per-modality encoders   Eᵣ · Eₕ · Eₘ</text><text x="340" y="212" text-anchor="middle" class="sub m-t">thin MLPs, each maps its input format into the shared latent</text>
+<line x1="340" y1="222" x2="340" y2="285" class="arw" marker-end="url(#a)"/>
+
+<text x="92" y="300" text-anchor="middle" class="cap">FSQ token z =</text>
+<text x="92" y="314" text-anchor="middle" class="cap">source-agnostic</text>
+<text x="92" y="328" text-anchor="middle" class="cap">interface</text>
+<rect x="180" y="285" width="320" height="52" rx="9" class="box r-p"/><text x="340" y="309" text-anchor="middle" class="title k-p">FSQ quantizer  →  token z</text><text x="340" y="327" text-anchor="middle" class="sub m-p">2 × 32 dim (64 total), discrete</text>
+<line x1="340" y1="337" x2="340" y2="400" class="arw" marker-end="url(#a)"/>
+
+<rect x="20" y="400" width="128" height="52" rx="9" class="box r-g"/><text x="84" y="424" text-anchor="middle" class="title k-g">sᵖₜ</text><text x="84" y="442" text-anchor="middle" class="sub m-g">10-frame history</text>
+<line x1="148" y1="426" x2="180" y2="426" class="arw" marker-end="url(#a)"/>
+
+<rect x="180" y="400" width="320" height="52" rx="9" class="box r-t"/><text x="340" y="424" text-anchor="middle" class="title k-t">D<tspan baseline-shift="sub" font-size="0.72em">c</tspan> — control decoder</text><text x="340" y="442" text-anchor="middle" class="sub m-t">aₜ = D<tspan baseline-shift="sub" font-size="0.72em">c</tspan>(z, sᵖₜ)</text>
+<line x1="340" y1="452" x2="340" y2="510" class="arw" marker-end="url(#a)"/>
+
+<rect x="160" y="510" width="360" height="50" rx="9" class="box r-g"/><text x="340" y="533" text-anchor="middle" class="title k-g">Robot · 29-dim PD joint targets</text><text x="340" y="551" text-anchor="middle" class="sub m-g">50 Hz · single frame · closed loop</text>
+
+<text x="340" y="592" text-anchor="middle" class="leg">Purple = token · Teal = learned net · Gray = data / I-O · dashed = VLA bypass</text>
+</svg>

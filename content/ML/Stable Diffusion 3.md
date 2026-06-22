@@ -44,7 +44,7 @@ $\lambda$ is the natural axis for measuring difficulty: each unit of $\lambda$ c
 
 ### 1.3 Why Log-Normal Specifically
 
-If prediction difficulty is roughly uniform per unit of $\lambda$ — each octave of SNR deserves equal training — then we want $\lambda$ uniformly distributed. Since $\lambda = 2,\text{logit}(t)$, pulling $\lambda \sim \mathcal{U}$ back through the change of variables gives $t$ distributed as **logit-normal**: place a Gaussian on $\text{logit}(t)$, then invert.
+If prediction difficulty is roughly uniform per unit of $\lambda$ — each octave of SNR deserves equal training — then we want $\lambda$ uniformly distributed. Since $\lambda = 2\text{logit}(t)$, pulling $\lambda \sim \mathcal{U}$ back through the change of variables gives $t$ distributed as **logit-normal**: place a Gaussian on $\text{logit}(t)$, then invert.
 
 Concretely, the density is:
 

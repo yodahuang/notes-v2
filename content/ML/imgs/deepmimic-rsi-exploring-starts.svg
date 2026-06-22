@@ -1,0 +1,43 @@
+<svg width="100%" viewBox="0 0 680 300" role="img" xmlns="http://www.w3.org/2000/svg" font-family="&quot;Anthropic Sans&quot;, -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif">
+<title>Reference State Initialization as exploring starts</title>
+<desc>Two timelines of one clip, phase 0 to 1. Without RSI every episode starts at phase 0, so the policy almost never reaches the landing region near the end and gets no learning signal there. With RSI episodes start at a random phase spread across the whole clip, so the hard end states including the landing are visited and graded.</desc>
+<defs>
+<marker id="dn" viewBox="0 0 10 10" refX="5" refY="8" markerWidth="6" markerHeight="6" orient="0"><path d="M1 2L5 8L9 2" fill="none" stroke="rgb(175,169,236)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+
+<!-- Row A : without RSI -->
+<text x="20" y="95" font-size="13" font-weight="500" fill="rgb(211,209,199)">Without RSI</text>
+<text x="20" y="112" font-size="11" fill="rgb(180,178,169)">frame 0 only</text>
+<rect x="140" y="84" width="460" height="34" rx="6" fill="rgb(68,68,65)" stroke="rgb(120,118,112)" stroke-width="1"/>
+<!-- landing dead zone -->
+<rect x="499" y="84" width="101" height="34" rx="6" fill="rgb(58,30,30)" stroke="rgb(150,90,90)" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="549" y="101" text-anchor="middle" dominant-baseline="central" font-size="10.5" fill="rgb(196,150,150)">landing</text>
+<text x="549" y="74" text-anchor="middle" font-size="10.5" fill="rgb(196,150,150)">never reached — no signal</text>
+<!-- all starts at phase 0 -->
+<line x1="144" y1="64" x2="144" y2="82" stroke="rgb(175,169,236)" stroke-width="1.6" marker-end="url(#dn)"/>
+<line x1="150" y1="64" x2="150" y2="82" stroke="rgb(175,169,236)" stroke-width="1.6" marker-end="url(#dn)"/>
+<line x1="156" y1="64" x2="156" y2="82" stroke="rgb(175,169,236)" stroke-width="1.6" marker-end="url(#dn)"/>
+<text x="166" y="60" text-anchor="start" font-size="11" fill="rgb(175,169,236)">every episode starts here (φ=0)</text>
+
+<!-- Row B : with RSI -->
+<text x="20" y="225" font-size="13" font-weight="500" fill="rgb(211,209,199)">With RSI</text>
+<text x="20" y="242" font-size="11" fill="rgb(180,178,169)">random φ ∈ [0,1]</text>
+<rect x="140" y="214" width="460" height="34" rx="6" fill="rgb(68,68,65)" stroke="rgb(120,118,112)" stroke-width="1"/>
+<!-- landing reachable -->
+<rect x="499" y="214" width="101" height="34" rx="6" fill="rgb(114,36,62)" stroke="rgb(237,147,177)" stroke-width="1"/>
+<text x="549" y="231" text-anchor="middle" dominant-baseline="central" font-size="10.5" fill="rgb(244,192,209)">landing</text>
+<text x="549" y="204" text-anchor="middle" font-size="10.5" fill="rgb(237,147,177)">now visited &amp; graded</text>
+<!-- starts spread across -->
+<line x1="168" y1="194" x2="168" y2="212" stroke="rgb(175,169,236)" stroke-width="1.6" marker-end="url(#dn)"/>
+<line x1="241" y1="194" x2="241" y2="212" stroke="rgb(175,169,236)" stroke-width="1.6" marker-end="url(#dn)"/>
+<line x1="324" y1="194" x2="324" y2="212" stroke="rgb(175,169,236)" stroke-width="1.6" marker-end="url(#dn)"/>
+<line x1="407" y1="194" x2="407" y2="212" stroke="rgb(175,169,236)" stroke-width="1.6" marker-end="url(#dn)"/>
+<line x1="480" y1="194" x2="480" y2="212" stroke="rgb(175,169,236)" stroke-width="1.6" marker-end="url(#dn)"/>
+<line x1="554" y1="194" x2="554" y2="212" stroke="rgb(175,169,236)" stroke-width="1.6" marker-end="url(#dn)"/>
+<text x="370" y="190" text-anchor="middle" font-size="11" fill="rgb(175,169,236)">episodes start anywhere along the clip</text>
+
+<!-- phase axis -->
+<text x="140" y="272" text-anchor="middle" font-size="11" fill="rgb(180,178,169)">φ = 0</text>
+<text x="370" y="272" text-anchor="middle" font-size="11" fill="rgb(180,178,169)">φ = 0.5</text>
+<text x="600" y="272" text-anchor="middle" font-size="11" fill="rgb(180,178,169)">φ = 1</text>
+</svg>
