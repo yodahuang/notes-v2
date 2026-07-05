@@ -70,39 +70,74 @@ $$
 
 $$
 
-Changes from single-scale:
+Changes from single-scale: $L$ feature levels, a normalized reference point rescaled per level by $\phi_l$, and each head now sampling $LK$ locations with one softmax across all of them.
 
-- $L$ feature levels (e.g. $L=4$ from ResNet C3–C5 + one extra strided conv).
-- Reference point $\hat{p}_q \in [0,1]^2$ is normalized; $\phi_l(\hat{p}_q)$ rescales it to pixel coords at level $l$.
-- Attention weights $A_{mlqk}$ are now softmaxed over all $L \times K$ combinations per head.
-- Each head samples $LK$ total locations, routing freely across scales.
+### Building the pyramid (A.2)
 
-## Encoder vs decoder usage
+No FPN. C3–C5 each go through a $1{\times}1$ conv to $C=256$, plus a fourth level ($L=4$) from a $3{\times}3$ stride-2 conv on C5 (stride 64). The "multi-scale input" is just four channel-aligned projections of backbone stages:
 
-**Encoder** — each pixel is its own query and reference point. A learned scale-level embedding $e_l$ distinguishes which feature level each pixel comes from. FPN not used — multi-scale attention already exchanges cross-level information.
+![[deformable_detr_multiscale_construction.png]]
 
-**Decoder cross-attention** — $N$ object queries; reference point $\hat{p}_q = \sigma(Wz_q)$ predicted from query embedding. Box predictions are relative offsets w.r.t. the reference point, not absolute coordinates (see A.3).
+### Why the normalized reference point is the glue
 
-**Decoder self-attention** — standard attention, unchanged (only $N$ queries, cost is small).
+A single query must address four feature maps of different resolutions with one coordinate — that's the whole reason $\hat{p}_q$ lives in $[0,1]^2$ and $\phi_l$ just unnormalizes it per level. Each head then predicts a *separate* set of $K$ offsets per level (in that level's pixel units), and one softmax spans all $L \times K$ weights:
+
+![[msdeformattn_cross_scale.svg|680]]
+
+> [!important] The cross-level softmax is the FPN replacement
+> Because the softmax spans levels, scale selection is soft and learned per query — a small-object query can put nearly all its weight on the stride-8 level. Cross-scale routing lives in the attention weights, not in a fixed top-down pathway. Ablation: adding FPN on top gives nothing.
+
+### The token view (encoder)
+
+The encoder input is literally the flattened pixels of all four levels concatenated into one sequence (~20k+ tokens — this is why linear complexity mattered). No patchification; the tokens *are* the conv feature vectors. Each pixel-token is its own query, with its own location as reference point, and gets **two** positional signals:
+
+1. a fixed sinusoidal 2D encoding of its normalized location, and
+2. a learned **scale-level embedding** $e_l$ (same vector for every token of level $l$).
+
+Both are needed because the normalized coordinate is scale-blind: pixel $(0.5, 0.5)$ at stride 8 and stride 32 would otherwise be positionally identical. And since DeformAttn has no query–key dot product, positional embeddings act only through the query side — they shape which offsets/weights a query predicts, never any key matching.
+
+In the decoder, only cross-attention uses MSDeformAttn (queries → encoder tokens); self-attention among the $N$ object queries stays standard (cost is small).
 
 ## Decoder object queries and the reference point
 
-In [[DETR]], the $N$ object queries carry no spatial information — specialization emerges implicitly through bipartite matching over hundreds of epochs. Deformable DETR makes spatial grounding **explicit**: the reference point $\hat{p}_q = \sigma(Wz_q)$ gives each query a 2D anchor from the start.
+In [[DETR]], the $N$ object queries carry no spatial information — specialization emerges implicitly through bipartite matching over hundreds of epochs. Deformable DETR keeps the same idea — learned, image-independent priors — but makes the spatial part **explicit**: the reference point $\hat{p}_q = \sigma(Wz_q)$ is a deterministic function of the fixed query embedding, so after training each query has a fixed anchor point, identical for every image. The $N=300$ queries are effectively 300 learned anchor locations (later work — Anchor DETR, DAB-DETR — just parameterizes queries as anchors directly).
 
-The two-stage variant pushes further — spatial grounding comes entirely from the encoder:
+> [!info] Where this sits in the DETR family — see [[DAB-DETR]] Fig. 8
+> [[DAB-DETR]]'s comparison figure lines up all six variants. Panel (e) is Deformable DETR — note it already carries an explicit **reference point** (`ref`, in orange) into deformable cross-attention but still passes a high-dimensional learned query for content. Panel (f), DAB-Deformable-DETR, keeps the deformable sampling untouched and only swaps that query for a dynamic 4D anchor box (in purple), feeding both a reference point *and* a reference size $(w,h)$ — the two mechanisms are orthogonal, which is why they compose in ~10 lines of code.
+
+![[detr_family_comparison.png]]
+
+### Boxes are residuals on the reference point (A.3)
+
+The detection head does **not** predict absolute coordinates. The box center is a residual in inverse-sigmoid space:
+
+$$\hat{b}_q = \{\sigma(b_{qx} + \sigma^{-1}(\hat{p}_{qx})),\ \sigma(b_{qy} + \sigma^{-1}(\hat{p}_{qy})),\ \sigma(b_{qw}),\ \sigma(b_{qh})\}$$
+
+The reference point is literally the initial guess of the box center — the same point the query attends around is the point its box is anchored to, so "where I look" and "what I predict" are spatially locked together. The paper credits this correlation for faster convergence. (The linear layers predicting reference points and offsets train at 0.1× the base LR.)
+
+> [!note] Multiple objects at one location?
+> Nothing hard-assigns a query to a region: the box residual and sampling offsets are unconstrained, so a query can drift far from its anchor. De-duplication is DETR's original mechanism — decoder **self-attention** (kept standard for exactly this) plus Hungarian matching pushing colliding queries onto different targets. No NMS anywhere.
+
+## Two-stage: an encoder-only detector proposes the queries
+
+Motivation: one-stage anchors are content-blind — predicted from embeddings that have seen no image, they can only be well-spread priors. Two-stage lets the encoder propose them, RPN-style but end-to-end:
+
+- **Stage 1 = dense per-pixel detection on the encoder output.** A detection head (3-layer FFN box regressor + binary foreground classifier) is applied to *every* encoder token — output is $\text{batch} \times \sum_l H_l W_l$ boxes, each anchored at its own pixel with a level-dependent base scale $s = 0.05 \cdot 2^{l-1}$ (the FPN-detector "level implies size" convention, smuggled back in). Trained with the same Hungarian loss, directly on the encoder — no decoder involved.
+- **Why not just make every pixel a decoder query?** Decoder self-attention is quadratic in query count; tens of thousands of pixel-queries are infeasible. Hence: dense proposals → top-300 by score (**no NMS** — redundant proposals are deliberately let through for the decoder to sort out).
+- **Stage 2 initialization:** the proposal box becomes the initial box for iterative refinement, and the query's positional embedding is set to the positional encoding of the proposal coordinates — both anchor and query content derive from the encoder.
 
 | Variant | Reference point source | Query $z_q$ source |
 |---|---|---|
 | [[DETR]] | none — fully implicit | learned embedding |
-| Deformable DETR (1-stage) | $\sigma(W z_q)$ | learned embedding |
-| Deformable DETR (2-stage) | encoder proposal center | encoder feature at proposal |
+| Deformable DETR (1-stage) | $\sigma(W z_q)$ — fixed per query | learned embedding |
+| Deformable DETR (2-stage) | encoder proposal center | pos-enc of proposal coords |
 
 > [!note] The progression
-> DETR trusts queries to figure out space implicitly. One-stage gives them an explicit anchor. Two-stage doesn't trust the queries at all — the "elegant slot" idea is quietly retired.
+> DETR trusts queries to figure out space implicitly. One-stage gives them an explicit anchor. Two-stage doesn't trust the queries at all — the "elegant slot" idea is quietly retired. Gains are additive (Table 1): 43.8 → 45.4 (+refinement) → 46.2 AP (+two-stage), concentrated in small objects.
 
 ## Iterative bounding box refinement (§4.2)
 
-Each of the $D=6$ decoder layers refines the box from the previous layer rather than predicting independently. The reference point for layer $d$ is the box center predicted by layer $d-1$, and sampling offsets are modulated by that box's predicted width/height — so the attention window shrinks as the box tightens. Detection heads are not shared across layers. See A.4 for the full formula and stop-gradient details.
+Each of the $D=6$ decoder layers refines the box from the previous layer rather than predicting independently. The reference point for layer $d$ is the box center predicted by layer $d-1$, and sampling offsets are modulated by that box's predicted width/height — so the attention window shrinks as the box tightens. Detection heads are not shared across layers. Gradients are blocked through the inverse-sigmoid of the previous box (RAFT-style detach, for stability), and offset-prediction biases are initialized at $\frac{1}{2K}$ scale so initial samples fall inside the previous layer's box. See A.4 for the full formula.
 
 ## Relation to deformable convolution
 

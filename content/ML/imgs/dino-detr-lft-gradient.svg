@@ -1,0 +1,93 @@
+<svg width="100%" viewBox="0 0 700 330" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Look forward twice: the two ways layer i's output reaches layer i+1</title>
+<desc>Layer i's refined box splits into a detached copy that stably seeds layer i+1's deformable sampling, and an undetached copy that builds layer i+1's prediction so its loss backpropagates into layer i.</desc>
+<defs>
+<marker id="ag" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}
+.box{stroke-width:1.2}
+.r-p{fill:var(--pf);stroke:var(--ps)}.k-p{fill:var(--pt)}
+.r-t{fill:var(--tf);stroke:var(--ts)}.k-t{fill:var(--tt)}
+.r-d{fill:var(--df);stroke:var(--ds)}.k-d{fill:var(--dt)}
+.r-g{fill:var(--gf);stroke:var(--gs)}.k-g{fill:var(--gt)}
+.a-fwd{stroke:var(--line);stroke-width:1.8;fill:none}
+.a-grad{stroke:var(--grad);stroke-width:2;fill:none}
+.a-gradd{stroke:var(--grad);stroke-width:2;fill:none;stroke-dasharray:6 4}
+.title{font-size:14px;font-weight:500}.sub{font-size:11px}
+.lab{font-size:11.5px;fill:var(--legend)}.labg{font-size:11.5px;fill:var(--grad);font-weight:500}
+.leg{font-size:12px;fill:var(--legend)}
+:root{--line:#73726c;--legend:#5f5e5a;--grad:#5e8f2f;
+--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;
+--tf:#e2f2f0;--ts:#1f8a7a;--tt:#12695d;
+--df:#efeee9;--ds:#8f8d84;--dt:#54524b;
+--gf:#eef6e6;--gs:#5e8f2f;--gt:#446a1f}
+@media (prefers-color-scheme:dark){:root{--line:#a8a69d;--legend:#cbc9c0;--grad:#a3d072;
+--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;
+--tf:#123c37;--ts:#4fc7b4;--tt:#8fe3d6;
+--df:#33322c;--ds:#9a988f;--dt:#d6d3ca;
+--gf:#26361a;--gs:#a3d072;--gt:#c4e6a0}}
+</style>
+</defs>
+
+<!-- return gradient (drawn first, sits behind boxes) -->
+<path class="a-gradd" d="M622 138 V64 H82 V140" marker-end="url(#ag)"/>
+<text class="labg" x="352" y="56" text-anchor="middle">ℒᵢ₊₁ gradient reaches layer i  (handoff quality)</text>
+
+<!-- ── top row, all centered on y=163 ── -->
+<!-- Layer i -->
+<rect class="box r-t" x="36" y="140" width="92" height="46" rx="6"/>
+<text class="title k-t" x="82" y="168" text-anchor="middle">Layer i</text>
+
+<!-- b'_i undetached -->
+<rect class="box r-p" x="196" y="138" width="118" height="50" rx="6"/>
+<text class="title k-p" x="255" y="159" text-anchor="middle">b′ᵢ</text>
+<text class="sub k-p" x="255" y="176" text-anchor="middle">refined, undetached</text>
+
+<!-- prediction -->
+<rect class="box r-p" x="398" y="138" width="120" height="50" rx="6"/>
+<text class="title k-p" x="458" y="159" text-anchor="middle">bᵢ₊₁ prediction</text>
+<text class="sub k-p" x="458" y="176" text-anchor="middle">Update(b′ᵢ, Δbᵢ₊₁)</text>
+
+<!-- Loss -->
+<rect class="box r-g" x="576" y="138" width="92" height="50" rx="6"/>
+<text class="title k-g" x="622" y="168" text-anchor="middle">ℒᵢ₊₁</text>
+
+<!-- ── bottom row, centered on y=259 ── -->
+<!-- b_i detached -->
+<rect class="box r-d" x="196" y="236" width="118" height="46" rx="6"/>
+<text class="title k-d" x="255" y="255" text-anchor="middle">bᵢ = Detach(b′ᵢ)</text>
+<text class="sub k-d" x="255" y="271" text-anchor="middle">gradient blocked</text>
+
+<!-- Layer i+1 -->
+<rect class="box r-t" x="398" y="236" width="96" height="46" rx="6"/>
+<text class="title k-t" x="446" y="264" text-anchor="middle">Layer i+1</text>
+
+<!-- ── arrows ── -->
+<!-- A: Layer i -> b'_i -->
+<line class="a-fwd" x1="128" y1="163" x2="192" y2="163" marker-end="url(#ag)"/>
+<text class="lab" x="160" y="155" text-anchor="middle">Δbᵢ</text>
+
+<!-- B: b'_i -> b_i (detach) -->
+<line class="a-fwd" x1="255" y1="188" x2="255" y2="232" marker-end="url(#ag)"/>
+
+<!-- C: b_i -> Layer i+1 (sampling ref) -->
+<line class="a-fwd" x1="314" y1="259" x2="394" y2="259" marker-end="url(#ag)"/>
+<text class="lab" x="354" y="251" text-anchor="middle">sampling ref</text>
+
+<!-- D: b'_i -> prediction (undetached, gradient path) -->
+<line class="a-grad" x1="314" y1="163" x2="394" y2="163" marker-end="url(#ag)"/>
+<text class="labg" x="356" y="155" text-anchor="middle">undetached</text>
+
+<!-- E: Layer i+1 -> prediction (Δb_{i+1}) -->
+<line class="a-fwd" x1="446" y1="236" x2="446" y2="192" marker-end="url(#ag)"/>
+<text class="lab" x="454" y="214" text-anchor="start">Δbᵢ₊₁</text>
+
+<!-- F: prediction -> Loss -->
+<line class="a-grad" x1="518" y1="163" x2="572" y2="163" marker-end="url(#ag)"/>
+
+<!-- legend -->
+<line class="a-fwd" x1="40" y1="312" x2="72" y2="312"/>
+<text class="leg" x="78" y="316">detached — stable deformable sampling, no gradient</text>
+<line class="a-grad" x1="420" y1="312" x2="452" y2="312"/>
+<text class="leg" x="458" y="316">undetached — carries gradient</text>
+</svg>

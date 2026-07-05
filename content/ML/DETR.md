@@ -8,7 +8,7 @@ original title: End-to-End Object Detection with Transformers
 ---
 ---
 
-Note original written by me and updated by Claude Sonnet 4.6 when revisiting
+Note original written by me and updated by Claude Sonnet 4.6 when revisiting, and then again updated by Fable 5 when revisiting again.
 
 ---
 
@@ -77,16 +77,36 @@ The class term switches to **log-probability** (standard cross-entropy) for the 
 
 ## Object Queries: Learned Detection Slots
 
-The paper calls these "learnt positional encodings," but that framing is misleading. A better mental model:
+The paper calls these "learnt positional encodings," and that framing is exactly right mechanically — but the decoder query is really **two separate tensors** that are easy to conflate:
 
-- The decoder is permutation-invariant — if you fed the same vector $N$ times, you'd get $N$ identical outputs. The $N$ object queries are $N$ *different* learned parameters that break this symmetry, giving each decoder slot a distinct starting point.
-- They are **not** spatial anchors. Unlike [[SSD]] or [[Faster R-CNN]] anchors (hand-crafted grids at fixed positions, scales, aspect ratios), object queries have no hardcoded spatial meaning. Their specialization is entirely emergent from training.
-- Figure 7 of the paper shows what they actually learn: each slot develops a soft bias toward certain regions and box sizes — some prefer upper-left, some prefer large image-spanning boxes — but this is a trained prior, not a designed one. There is no strong class-specialization per slot either (the paper verifies this with the 24-giraffe generalization experiment).
-- They are added to the decoder input at **every attention layer** (both self-attention among queries and cross-attention to the encoder output). Through **cross-attention**, each query reads the encoder's global image representation to figure out what object to claim. Through **self-attention** among the 100 queries, each slot sees what the other slots are already claiming — this is what prevents duplicate detections, replacing NMS.
+- **Decoder embedding $X$** — the content part. This is just the decoder's ordinary residual stream (self-attn → cross-attn → FFN with residual adds). It is **initialized to zero** (Appendix A.3: *"the decoder receives queries (initially set to zero), output positional encoding (object queries), and encoder memory"*) — there is no autoregressive input token to seed it, so content is built up purely by attending to the image. After the first cross-attention, $X$ is a weighted combination of encoder features, i.e. it lives in the same space as image features.
+- **Object query $P$** — the positional part. A fixed learned parameter per slot (100 of them), the same at every layer. It encodes *slot identity* the way sinusoidal PE encodes pixel location.
+
+**How $P$ is injected** (Appendix A.1, Eq. 7, and Fig. 10): positional encodings are added to **Q and K only, never V** — at *every* attention layer, exactly like the encoder's spatial PE (Appendix A.4: the best variant adds sine PE at every attention layer):
+
+| Attention | Q | K | V |
+|---|---|---|---|
+| Decoder self-attn | $X + P$ | $X + P$ | $X$ |
+| Decoder cross-attn | $X + P$ | $\text{mem} + \text{spatial PE}$ | $\text{mem}$ |
+
+where $\text{mem}$ is the encoder output. So "object query" = "positional encoding, but for slot identity instead of pixel location" — the paper's line *"similarly to the encoder, we add them to the input of each attention layer"* is saying it's the same trick, applied to break decoder permutation symmetry.
+
+![[detr_decoder_query_composition.svg|690]]
+
+Why the symmetry-breaking matters: the decoder is permutation-invariant — if you fed the same vector $N$ times, you'd get $N$ identical outputs. The $N$ distinct $P$ vectors give each slot a different starting point. Through **cross-attention**, each query reads the encoder's global image representation to figure out what object to claim; through **self-attention** among the 100 queries, each slot sees what the others are claiming — this is what prevents duplicates, replacing NMS.
+
+> [!note] "Not spatial anchors" — interpretation, not a paper quote
+> The paper never says this verbatim; it's a synthesis supported by two pieces of evidence. Fig. 7: each slot learns several *modes* (soft biases toward regions and box sizes, nearly all slots also having a mode for large image-spanning boxes) — messier and more overlapping than a hand-designed anchor grid like [[SSD]] or [[Faster R-CNN]], where each anchor has one fixed scale/aspect/location. And the 24-giraffe generalization experiment, which the paper says *"confirms that there is no strong class-specialization in each object query."* The specialization is a trained prior, not a designed one. ([[DAB-DETR]] later reframes $P$ as explicit anchor-box coordinates precisely because it behaves like a positional encoding.)
+
 ![[detr_figure7.png]]
 
-> [!tip] Why "object queries," not "positional embeddings"
-> The paper's own ablation confirms they are load-bearing: output positional encodings (object queries) cannot be removed, while spatial positional encodings in the *encoder* can be dropped with only a 1.3 AP drop. Their spatial/size biases are entirely emergent, not designed — the "positional" framing is misleading.
+> [!tip] Load-bearing, unlike encoder PE
+> The paper's ablation shows object queries cannot be removed, while the *encoder's* spatial positional encodings can be dropped with only a 1.3 AP loss. Mechanically they are positional encodings (added to Q/K at every layer); what they encode — slot identity with emergent, not designed, spatial biases — is what earns the different name.
+
+> [!info] The clearest picture of this $X$ vs $P$ split is in [[DAB-DETR]]
+> DAB-DETR's Fig. 2 draws exactly the decomposition above — encoder self-attention (query = image feature + spatial PE) vs. decoder cross-attention (query = decoder embedding $X$ + learnable query $P$), highlighting in purple that the *only* structural difference is the query. Its Fig. 8 then places DETR (panel a) beside every follow-up that reworks $P$, and argues $P$ is the root cause of DETR's slow convergence.
+
+![[detr_encoder_vs_decoder_attn.png]]
 
 ## Final Prediction: Direct Regression
 
@@ -168,3 +188,6 @@ inputs = torch.randn(1, 3, 800, 1200)
 logits, bboxes = detr(inputs)
 ```
 For clarity it uses learnt positional encodings in the encoder instead of fixed, and positional encodings are added to the input only instead of at each transformer layer. Making these changes requires going beyond PyTorch implementation of transformers, which hampers readability.
+
+> [!warning] This snippet is not DETR's real decoder
+> `tgt = self.query_pos.unsqueeze(1)` — the object queries are fed in *as* the decoder input, once. There is no separate zero-initialized decoder embedding, and stock `nn.Transformer` never re-adds anything at later layers. So the snippet conflates $X$ (content, init 0) and $P$ (object queries, re-added to Q/K at every layer) into a single tensor. The real implementation passes `tgt = torch.zeros_like(query_embed)` and sums `query_pos` into Q and K inside every attention layer.

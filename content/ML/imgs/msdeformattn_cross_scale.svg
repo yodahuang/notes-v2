@@ -1,0 +1,101 @@
+<svg width="100%" viewBox="0 0 680 400" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Multi-scale deformable attention: one normalized reference point addresses all levels</title>
+<desc>A normalized reference point is rescaled onto four feature levels of different resolutions; each head samples K points per level and a single softmax spans all L times K weights.</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}
+.box{stroke-width:1.1}.arw{stroke:var(--line);stroke-width:1.6;fill:none}
+.grid{fill:var(--gf);stroke:var(--gs);stroke-width:1}
+.gline{stroke:var(--gs);stroke-width:0.5;opacity:0.55}
+.r-p{fill:var(--pf);stroke:var(--ps)}.k-p{fill:var(--pt)}
+.r-t{fill:var(--tf);stroke:var(--ts)}.k-t{fill:var(--tt)}
+.ref{fill:var(--ref)}.smp{fill:var(--smp)}
+.dash{stroke:var(--ref);stroke-width:1.2;stroke-dasharray:4 3;fill:none}
+.title{font-size:14.5px;font-weight:500;fill:var(--ink)}
+.sub{font-size:11.5px;fill:var(--ink)}
+.leg{font-size:12px;fill:var(--legend)}
+:root{--ink:#20201a;--line:#73726c;--legend:#5f5e5a;
+--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;
+--tf:#e3f2f0;--ts:#1f7a6e;--tt:#155e55;
+--gf:#f2f1ec;--gs:#a3a199;--ref:#c2410c;--smp:#15803d}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--line:#a8a69d;--legend:#cbc9c0;
+--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;
+--tf:#173733;--ts:#4fb3a5;--tt:#a7ded6;
+--gf:#26261f;--gs:#6e6d66;--ref:#fb923c;--smp:#4ade80}}
+</style>
+</defs>
+
+<!-- Query + reference point -->
+<rect class="box r-p" x="18" y="150" width="128" height="66" rx="8"/>
+<text class="title k-p" x="82" y="177" text-anchor="middle">query z<tspan baseline-shift="sub" font-size="0.72em">q</tspan></text>
+<text class="sub k-p" x="82" y="198" text-anchor="middle">p̂<tspan baseline-shift="sub" font-size="0.72em">q</tspan> ∈ [0,1]²</text>
+<text class="leg" x="82" y="236" text-anchor="middle">one normalized point</text>
+
+<!-- phi arrows fan out -->
+<path class="arw" d="M150 168 C 190 130, 210 90, 246 72" marker-end="url(#a)"/>
+<path class="arw" d="M150 178 C 190 165, 210 152, 246 146" marker-end="url(#a)"/>
+<path class="arw" d="M150 190 C 190 205, 210 222, 246 230" marker-end="url(#a)"/>
+<path class="arw" d="M150 200 C 190 250, 210 290, 246 312" marker-end="url(#a)"/>
+<text class="leg" x="196" y="196" text-anchor="middle">φ<tspan baseline-shift="sub" font-size="0.72em">l</tspan>(p̂<tspan baseline-shift="sub" font-size="0.72em">q</tspan>)</text>
+
+<!-- Level 1: stride 8, largest -->
+<g>
+<rect class="grid" x="250" y="24" width="112" height="84"/>
+<path class="gline" d="M250 45 h112 M250 66 h112 M250 87 h112 M278 24 v84 M306 24 v84 M334 24 v84"/>
+<circle class="ref" cx="317" cy="57" r="4"/>
+<circle class="smp" cx="296" cy="41" r="3"/><circle class="smp" cx="338" cy="49" r="3"/><circle class="smp" cx="305" cy="80" r="3"/><circle class="smp" cx="342" cy="88" r="3"/>
+<path class="dash" d="M317 57 L296 41 M317 57 L338 49 M317 57 L305 80 M317 57 L342 88"/>
+<text class="leg" x="374" y="70">x¹ (stride 8)</text>
+</g>
+
+<!-- Level 2: stride 16 -->
+<g>
+<rect class="grid" x="250" y="122" width="72" height="54"/>
+<path class="gline" d="M250 140 h72 M250 158 h72 M274 122 v54 M298 122 v54"/>
+<circle class="ref" cx="293" cy="143" r="4"/>
+<circle class="smp" cx="279" cy="132" r="3"/><circle class="smp" cx="308" cy="137" r="3"/><circle class="smp" cx="285" cy="160" r="3"/><circle class="smp" cx="310" cy="166" r="3"/>
+<path class="dash" d="M293 143 L279 132 M293 143 L308 137 M293 143 L285 160 M293 143 L310 166"/>
+<text class="leg" x="374" y="152">x² (stride 16)</text>
+</g>
+
+<!-- Level 3: stride 32 -->
+<g>
+<rect class="grid" x="250" y="196" width="48" height="36"/>
+<path class="gline" d="M250 208 h48 M250 220 h48 M266 196 v36 M282 196 v36"/>
+<circle class="ref" cx="279" cy="210" r="4"/>
+<circle class="smp" cx="269" cy="203" r="3"/><circle class="smp" cx="290" cy="206" r="3"/><circle class="smp" cx="273" cy="222" r="3"/><circle class="smp" cx="291" cy="227" r="3"/>
+<path class="dash" d="M279 210 L269 203 M279 210 L290 206 M279 210 L273 222 M279 210 L291 227"/>
+<text class="leg" x="374" y="218">x³ (stride 32)</text>
+</g>
+
+<!-- Level 4: stride 64 -->
+<g>
+<rect class="grid" x="250" y="288" width="34" height="26"/>
+<path class="gline" d="M250 297 h34 M250 306 h34 M261 288 v26 M272 288 v26"/>
+<circle class="ref" cx="270" cy="298" r="4"/>
+<circle class="smp" cx="263" cy="293" r="2.6"/><circle class="smp" cx="278" cy="295" r="2.6"/><circle class="smp" cx="266" cy="307" r="2.6"/><circle class="smp" cx="279" cy="310" r="2.6"/>
+<path class="dash" d="M270 298 L263 293 M270 298 L278 295 M270 298 L266 307 M270 298 L279 310"/>
+<text class="leg" x="374" y="304">x⁴ (stride 64)</text>
+</g>
+
+<!-- arrows to softmax box -->
+<path class="arw" d="M460 66 C 500 90, 510 120, 522 150" marker-end="url(#a)"/>
+<path class="arw" d="M460 148 C 495 155, 505 160, 522 166" marker-end="url(#a)"/>
+<path class="arw" d="M460 214 C 495 202, 505 196, 522 186" marker-end="url(#a)"/>
+<path class="arw" d="M460 300 C 500 272, 510 240, 522 204" marker-end="url(#a)"/>
+
+<!-- softmax / weighted sum -->
+<rect class="box r-t" x="526" y="138" width="136" height="90" rx="8"/>
+<text class="title k-t" x="594" y="166" text-anchor="middle">softmax over</text>
+<text class="title k-t" x="594" y="186" text-anchor="middle">all L×K weights</text>
+<text class="sub k-t" x="594" y="210" text-anchor="middle">→ weighted sum</text>
+<text class="leg" x="594" y="252" text-anchor="middle">scale selection is</text>
+<text class="leg" x="594" y="268" text-anchor="middle">learned per query</text>
+
+<!-- legend -->
+<circle class="ref" cx="264" cy="356" r="4"/>
+<text class="leg" x="274" y="360">reference point φ<tspan baseline-shift="sub" font-size="0.72em">l</tspan>(p̂<tspan baseline-shift="sub" font-size="0.72em">q</tspan>)</text>
+<circle class="smp" cx="430" cy="356" r="3"/>
+<text class="leg" x="440" y="360">K sampled points (per head, per level)</text>
+</svg>

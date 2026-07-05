@@ -64,6 +64,34 @@ This simplified form (from SpinningUp) is equivalent to the original paper's $\m
 > The `min()` formulation is just a branchless way to express this.
 
 
+## On the notation $L$: it's a pseudo-loss
+
+$L^{CLIP}$, $L^{CPI}$, etc. are **surrogate objectives**, not the true RL objective. The true objective is the expected return $J(\theta)$; $L$ is a differentiable stand-in whose gradient is *engineered* to point in a useful direction. Optimizers minimize, so in code the policy "loss" is the **negated batch mean** of the surrogate:
+
+$$
+L_{\text{policy}} = -\frac{1}{N}\sum_t \min\!\big(r_t \hat{A}_t,\ g(\epsilon, \hat{A}_t)\big)
+$$
+
+The mathematical object has an expectation $\hat{\mathbb{E}}_t$; the minibatch mean is just its Monte Carlo estimate.
+
+> [!important] Why no [[Score function|REINFORCE log-derivative trick]] here?
+> The whole reason REINFORCE needs the trick is that its expectation is taken **over $\pi_\theta$ itself** — the sampling distribution depends on the very parameters we differentiate. You can't push $\nabla_\theta$ through $\mathbb{E}_{a\sim\pi_\theta}[\cdot]$ directly, so you rewrite $\nabla_\theta \pi_\theta = \pi_\theta \nabla_\theta \log \pi_\theta$ to turn the gradient *back* into an expectation you can sample.
+>
+> PPO's surrogate is an expectation over the **frozen** $\pi_{\theta_k}$ (see [[Importance sampling corrections]]):
+>
+> $$ L^{CPI}(\theta) = \mathbb{E}_{(s,a)\sim\pi_{\theta_k}}\!\left[ r_t(\theta)\,\hat{A}_t \right] $$
+>
+> The distribution we sample from **does not depend on $\theta$**. So we can just sample directly and move the gradient inside — no trick needed:
+>
+> $$ \nabla_\theta L^{CPI} = \mathbb{E}_{\pi_{\theta_k}}\!\left[ \hat{A}_t\, \nabla_\theta r_t(\theta) \right] $$
+>
+> That's the conceptual leap from on-policy PG to importance-sampled surrogates: **fix the sampling distribution first, then correct the mismatch with the ratio $r_t$.**
+
+> [!note] The score function reappears anyway
+> Even though we never *invoke* the trick, differentiating the ratio reconstructs it. Since $r_t = \exp(\log\pi_\theta - \log\pi_{\theta_k})$ and $\pi_{\theta_k}$ is constant, $\nabla_\theta r_t = r_t\, \nabla_\theta \log\pi_\theta$. Evaluated at $\theta=\theta_k$ where $r_t=1$, the surrogate gradient collapses to $\mathbb{E}[\hat{A}_t \nabla_\theta \log\pi_\theta]$ — **exactly the policy gradient**. So PPO's gradient equals vanilla PG in a neighborhood of $\theta_k$; clipping only changes what happens once the inner SGD epochs drift $r_t$ far from 1.
+>
+> (Aside: the `exp(logp_new - logp_old)` in code is *not* logits→probabilities — that's softmax. It's recovering the probability *ratio* $\pi_\theta/\pi_{\theta_k}$ from log-probs in a numerically stable way.)
+
 ## Why This Works Better Than TRPO in Practice
 
 - See [[TRPO#Limitations of TRPO]]

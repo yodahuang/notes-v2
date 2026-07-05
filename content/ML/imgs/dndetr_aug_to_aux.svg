@@ -1,0 +1,93 @@
+<svg width="100%" viewBox="0 0 720 400" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Augmentation turned into an auxiliary output</title>
+<desc>A corrupted ground-truth query and learnable queries pass through the same shared decoder; the corrupted path has a trivial low-variance reconstruction target while the learnable path uses high-variance Hungarian matching, with an attention mask blocking leakage between them.</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}
+.box{stroke-width:1.2}
+.arw{stroke:var(--line);stroke-width:1.7;fill:none}
+.arw-p{stroke:var(--ps);stroke-width:1.7;fill:none}
+.arw-g{stroke:var(--gs);stroke-width:1.7;fill:none}
+.r-p{fill:var(--pf);stroke:var(--ps)}.t-p{fill:var(--pt)}
+.r-g{fill:var(--gf);stroke:var(--gs)}.t-g{fill:var(--gt)}
+.r-k{fill:var(--kf);stroke:var(--ks)}.t-k{fill:var(--kt)}
+.r-grn{fill:var(--grnf);stroke:var(--grns)}.t-grn{fill:var(--grnt)}
+.title{font-size:14px;font-weight:600}
+.sub{font-size:11.5px;fill:var(--ink)}
+.lab{font-size:12px;font-weight:600;fill:var(--ink)}
+.leg{font-size:11.5px;fill:var(--legend)}
+.mask{fill:none;stroke:var(--orange);stroke-width:1.6;stroke-dasharray:5 4}
+.masktxt{font-size:11px;font-weight:600;fill:var(--orange)}
+:root{--ink:#20201a;--line:#73726c;--legend:#5f5e5a;
+--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;
+--gf:#efeee9;--gs:#73726c;--gt:#403f39;
+--kf:#e2f3f0;--ks:#1f8f81;--kt:#166b60;
+--grnf:#e6f4e6;--grns:#3f8f42;--grnt:#2c6c2f;
+--orange:#c26a1c}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--line:#a8a69d;--legend:#cbc9c0;
+--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;
+--gf:#33322c;--gs:#a8a69d;--gt:#d7d5cc;
+--kf:#123b36;--ks:#4fc3b2;--kt:#8fe0d3;
+--grnf:#1d3d1f;--grns:#6fbf72;--grnt:#a9e0ab;
+--orange:#e0954a}}
+</style>
+</defs>
+
+<!-- ===== auxiliary (denoising) path : top ===== -->
+<text class="lab t-p" x="20" y="34">Auxiliary path  (denoising)</text>
+
+<rect class="box r-g" x="20" y="48" width="120" height="40" rx="6"/>
+<text class="sub" x="80" y="66" text-anchor="middle">GT box + label</text>
+<text class="sub" x="80" y="80" text-anchor="middle">(this image)</text>
+
+<rect class="box r-p" x="185" y="48" width="130" height="40" rx="6"/>
+<text class="t-p" x="250" y="66" text-anchor="middle" font-size="11.5" font-weight="600">corrupt (jitter box,</text>
+<text class="t-p" x="250" y="80" text-anchor="middle" font-size="11.5" font-weight="600">flip label)</text>
+
+<line class="arw" x1="140" y1="68" x2="181" y2="68" marker-end="url(#a)"/>
+
+<!-- ===== matching path : bottom ===== -->
+<text class="lab t-g" x="20" y="316">Main path  (matching)</text>
+
+<rect class="box r-g" x="20" y="330" width="120" height="40" rx="6"/>
+<text class="sub" x="80" y="348" text-anchor="middle">N learnable</text>
+<text class="sub" x="80" y="362" text-anchor="middle">queries</text>
+
+<rect class="box r-g" x="185" y="330" width="130" height="40" rx="6"/>
+<text class="sub" x="250" y="348" text-anchor="middle">unknown label,</text>
+<text class="sub" x="250" y="362" text-anchor="middle">random anchor</text>
+
+<line class="arw" x1="140" y1="350" x2="181" y2="350" marker-end="url(#a)"/>
+
+<!-- ===== shared decoder ===== -->
+<rect class="box r-k" x="360" y="150" width="120" height="120" rx="8"/>
+<text class="t-k title" x="420" y="200" text-anchor="middle">Shared</text>
+<text class="t-k title" x="420" y="218" text-anchor="middle">decoder</text>
+<text class="t-k" x="420" y="240" text-anchor="middle" font-size="11" font-weight="500">(one set of weights,</text>
+<text class="t-k" x="420" y="253" text-anchor="middle" font-size="11" font-weight="500">one forward pass)</text>
+
+<!-- feeds into decoder -->
+<path class="arw-p" d="M315 68 C 340 68 340 175 356 178" marker-end="url(#a)"/>
+<path class="arw-g" d="M315 350 C 340 350 340 242 356 240" marker-end="url(#a)"/>
+
+<!-- attention mask barrier -->
+<line class="mask" x1="342" y1="120" x2="342" y2="300"/>
+<text class="masktxt" x="336" y="300" text-anchor="end">attention</text>
+<text class="masktxt" x="336" y="314" text-anchor="end">mask ✕</text>
+
+<!-- ===== targets / losses ===== -->
+<rect class="box r-grn" x="540" y="158" width="160" height="46" rx="6"/>
+<text class="t-grn" x="620" y="177" text-anchor="middle" font-size="11.5" font-weight="600">reconstruction loss</text>
+<text class="t-grn" x="620" y="192" text-anchor="middle" font-size="11" font-weight="500">target known → low variance</text>
+
+<rect class="box r-grn" x="540" y="216" width="160" height="46" rx="6"/>
+<text class="t-grn" x="620" y="235" text-anchor="middle" font-size="11.5" font-weight="600">Hungarian loss</text>
+<text class="t-grn" x="620" y="250" text-anchor="middle" font-size="11" font-weight="500">must match → high variance</text>
+
+<path class="arw" d="M480 190 C 505 185 512 181 536 181" marker-end="url(#a)"/>
+<path class="arw" d="M480 230 C 505 235 512 239 536 239" marker-end="url(#a)"/>
+
+<!-- caption at very bottom -->
+<text class="leg" x="360" y="392" text-anchor="middle">Same gradient step: a stable target (top) regularizes the noisy matching target (bottom).</text>
+</svg>

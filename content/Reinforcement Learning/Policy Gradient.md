@@ -56,6 +56,7 @@ Now look at Maximum likelihood, say we are doing [[Imitation Learning]]:
 $$
 	\nabla_{\theta}J_{ML}(\theta)\approx\frac{1}{N}\sum^N_{i=1}(\sum^T_{t=1}\nabla_{\theta}\log\pi_{\theta}(a_{i,t}|s_{i,t}))
 $$
+Note the $\log$ here come from the fact that sum of log is the same as the product of likelihood.
 
 Well that's very much just our REINFORCE formula, but just without the $r$ bit. You can say policy gradient is weighting the experience with the reward received, trial and error.
 

@@ -1,0 +1,108 @@
+<svg width="100%" viewBox="0 0 680 430" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>DAB-DETR query composition and modulated cross-attention</title>
+<desc>How a DAB-DETR decoder query is built from a content embedding and an anchor-derived positional embedding, and where the two positional modulations (content-gated scale and width/height division) act.</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}
+.box{stroke-width:1.1}
+.arw{stroke:var(--line);stroke-width:1.6;fill:none}
+.arw-p{stroke:var(--ps);stroke-width:1.6;fill:none}
+.r-p{fill:var(--pf);stroke:var(--ps)}
+.r-k{fill:var(--kf);stroke:var(--ks)}
+.r-d{fill:var(--df);stroke:var(--ds)}
+.r-o{fill:var(--of);stroke:var(--os)}
+.t-p{fill:var(--pt)}.t-k{fill:var(--kt)}.t-d{fill:var(--dt)}.t-o{fill:var(--ot)}
+.title{font-size:13.5px;font-weight:500}
+.sub{font-size:11px;fill:var(--ink)}
+.lab{font-size:11.5px;fill:var(--ink)}
+.leg{font-size:11.5px;fill:var(--legend)}
+.op{font-size:15px;font-weight:600;fill:var(--ink)}
+.hdr{font-size:12px;font-weight:600;fill:var(--legend);letter-spacing:.04em}
+:root{--ink:#20201a;--line:#73726c;--legend:#5f5e5a;
+--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;
+--kf:#e2f5f0;--ks:#1f8f78;--kt:#136350;
+--df:#f0efe9;--ds:#8a887f;--dt:#4a483f;
+--of:#fdeede;--os:#c77d29;--ot:#8a5410}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--line:#a8a69d;--legend:#cbc9c0;
+--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;
+--kf:#123b34;--ks:#3fbfa2;--kt:#8fe6d2;
+--df:#2a2924;--ds:#a8a69d;--dt:#d8d6cd;
+--of:#3a2a12;--os:#e0a052;--ot:#f2c98a}}
+</style>
+</defs>
+
+<!-- ============ STAGE 1: query construction (Eq 4) ============ -->
+<text x="22" y="26" class="hdr">BUILDING THE QUERY  (Eq. 4)</text>
+
+<!-- anchor box -->
+<rect class="box r-d" x="22" y="44" width="132" height="46" rx="6"/>
+<text x="88" y="64" text-anchor="middle" class="title t-d">Anchor A<tspan baseline-shift="sub" font-size="0.72em">q</tspan></text>
+<text x="88" y="80" text-anchor="middle" class="sub">(x<tspan baseline-shift="sub" font-size="0.72em">q</tspan>, y<tspan baseline-shift="sub" font-size="0.72em">q</tspan>, w<tspan baseline-shift="sub" font-size="0.72em">q</tspan>, h<tspan baseline-shift="sub" font-size="0.72em">q</tspan>)</text>
+
+<!-- content query C_q -->
+<rect class="box r-p" x="22" y="140" width="132" height="44" rx="6"/>
+<text x="88" y="160" text-anchor="middle" class="title t-p">Content C<tspan baseline-shift="sub" font-size="0.72em">q</tspan></text>
+<text x="88" y="176" text-anchor="middle" class="sub">decoder embedding</text>
+
+<!-- PE(x_q,y_q) -->
+<rect class="box r-p" x="212" y="44" width="120" height="46" rx="6"/>
+<text x="272" y="64" text-anchor="middle" class="title t-p">PE(x<tspan baseline-shift="sub" font-size="0.72em">q</tspan>, y<tspan baseline-shift="sub" font-size="0.72em">q</tspan>)</text>
+<text x="272" y="80" text-anchor="middle" class="sub">sinusoidal, ∈ ℝᴰ</text>
+<path class="arw" d="M154 67 H210" marker-end="url(#a)"/>
+
+<!-- MLP csq -->
+<rect class="box r-k" x="212" y="140" width="120" height="44" rx="6"/>
+<text x="272" y="160" text-anchor="middle" class="title t-k">MLP<tspan baseline-shift="super" font-size="0.7em">(csq)</tspan></text>
+<text x="272" y="176" text-anchor="middle" class="sub">→ scale vector</text>
+<path class="arw-p" d="M154 162 H210" marker-end="url(#a)"/>
+
+<!-- element-wise multiply node -->
+<circle class="box r-p" cx="392" cy="67" r="15"/>
+<circle cx="392" cy="67" r="3.4" fill="var(--ps)"/>
+<path class="arw-p" d="M332 67 H375" marker-end="url(#a)"/>
+<path class="arw-p" d="M332 155 C 360 130, 372 95, 380 80" marker-end="url(#a)"/>
+<text x="392" y="102" text-anchor="middle" class="sub">content-gated</text>
+<text x="392" y="116" text-anchor="middle" class="sub">positional half</text>
+
+<!-- Cat -->
+<rect class="box r-p" x="470" y="44" width="118" height="52" rx="6"/>
+<text x="529" y="66" text-anchor="middle" class="title t-p">Query Q<tspan baseline-shift="sub" font-size="0.72em">q</tspan></text>
+<text x="529" y="83" text-anchor="middle" class="sub">Cat(C<tspan baseline-shift="sub" font-size="0.72em">q</tspan> , ·)</text>
+<path class="arw-p" d="M407 67 H468" marker-end="url(#a)"/>
+<path class="arw-p" d="M154 172 C 300 200, 500 200, 529 100" marker-end="url(#a)"/>
+
+<!-- divider -->
+<line x1="22" y1="212" x2="658" y2="212" stroke="var(--line)" stroke-width="0.8" stroke-dasharray="4 4"/>
+
+<!-- ============ STAGE 2: modulated cross-attn logit (Eq 6) ============ -->
+<text x="22" y="240" class="hdr">MODULATED CROSS-ATTENTION LOGIT  (Eq. 6)</text>
+
+<!-- content term -->
+<rect class="box r-p" x="22" y="262" width="180" height="52" rx="6"/>
+<text x="112" y="284" text-anchor="middle" class="title t-p">C<tspan baseline-shift="sub" font-size="0.72em">q</tspan> · F<tspan baseline-shift="sub" font-size="0.72em">x,y</tspan></text>
+<text x="112" y="301" text-anchor="middle" class="sub">content term (the “evidence”)</text>
+
+<text x="222" y="294" text-anchor="middle" class="op">+</text>
+
+<!-- positional / prior term -->
+<rect class="box r-o" x="248" y="252" width="410" height="72" rx="6"/>
+<text x="453" y="272" text-anchor="middle" class="title t-o">positional term  —  Gaussian-like prior</text>
+<text x="453" y="294" text-anchor="middle" class="lab">PE(x)·PE(x<tspan baseline-shift="sub" font-size="0.72em">q</tspan>) · <tspan class="t-k" font-weight="600">w<tspan baseline-shift="sub" font-size="0.72em">q,ref</tspan> ⁄ w<tspan baseline-shift="sub" font-size="0.72em">q</tspan></tspan>  +  PE(y)·PE(y<tspan baseline-shift="sub" font-size="0.72em">q</tspan>) · <tspan class="t-k" font-weight="600">h<tspan baseline-shift="sub" font-size="0.72em">q,ref</tspan> ⁄ h<tspan baseline-shift="sub" font-size="0.72em">q</tspan></tspan></text>
+<text x="453" y="313" text-anchor="middle" class="sub">per-axis temperature: bump widens for large boxes, sharpens for small</text>
+
+<!-- annotation: w_ref from MLP -->
+<rect class="box r-k" x="248" y="352" width="200" height="40" rx="6"/>
+<text x="348" y="369" text-anchor="middle" class="title t-k">w<tspan baseline-shift="sub" font-size="0.72em">q,ref</tspan> , h<tspan baseline-shift="sub" font-size="0.72em">q,ref</tspan> = σ(MLP(C<tspan baseline-shift="sub" font-size="0.72em">q</tspan>))</text>
+<text x="348" y="384" text-anchor="middle" class="sub">learned calibration (content only)</text>
+<path class="arw" d="M330 352 V326" marker-end="url(#a)"/>
+
+<!-- annotation: w_q from anchor -->
+<rect class="box r-d" x="470" y="352" width="188" height="40" rx="6"/>
+<text x="564" y="369" text-anchor="middle" class="title t-d">w<tspan baseline-shift="sub" font-size="0.72em">q</tspan> , h<tspan baseline-shift="sub" font-size="0.72em">q</tspan>  from anchor A<tspan baseline-shift="sub" font-size="0.72em">q</tspan></text>
+<text x="564" y="384" text-anchor="middle" class="sub">the box’s actual size</text>
+<path class="arw" d="M560 352 V326" marker-end="url(#a)"/>
+
+<!-- legend -->
+<text x="22" y="418" class="leg">purple = token / query · teal = learned net · gray = anchor data · orange = the DAB-DETR prior</text>
+</svg>
