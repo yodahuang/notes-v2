@@ -1,0 +1,62 @@
+<svg width="100%" viewBox="0 0 680 300" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Query selection lineage: static vs dynamic content and position</title>
+<desc>Three stages of DETR-family query initialization. DETR/DAB/DN keep both content and position static. DINO makes position dynamic but content static. Mask DINO makes both dynamic, reverting to the two-stage Deformable DETR scheme DINO had backed away from.</desc>
+<defs>
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}
+.box{stroke-width:1.1}
+.col{fill:none;stroke:var(--line);stroke-width:1;opacity:.5;stroke-dasharray:3 3}
+.r-s{fill:var(--df);stroke:var(--ds)}
+.r-d{fill:var(--pf);stroke:var(--ps)}
+.hd{font-size:13.5px;font-weight:500;fill:var(--ink)}
+.hsub{font-size:10.5px;fill:var(--legend)}
+.row{font-size:11.5px;fill:var(--ink)}
+.cell{font-size:11.5px;font-weight:500}
+.s-t{fill:var(--dt)}.d-t{fill:var(--pt)}
+.leg{font-size:11.5px;fill:var(--legend)}
+:root{--ink:#20201a;--line:#73726c;--legend:#5f5e5a;
+--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;
+--df:#efeeea;--ds:#9b9a92;--dt:#6f6e67}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--line:#a8a69d;--legend:#cbc9c0;
+--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;
+--df:#2a2a26;--ds:#77766e;--dt:#b6b5ac}}
+</style>
+</defs>
+
+<!-- row labels -->
+<text class="row" x="150" y="112" text-anchor="end">Position query</text>
+<text class="row" x="150" y="168" text-anchor="end">Content query</text>
+
+<!-- column headers -->
+<text class="hd" x="270" y="40" text-anchor="middle">DETR / DAB / DN</text>
+<text class="hsub" x="270" y="56" text-anchor="middle">static queries</text>
+<text class="hd" x="430" y="40" text-anchor="middle">DINO</text>
+<text class="hsub" x="430" y="56" text-anchor="middle">mixed query selection</text>
+<text class="hd" x="592" y="40" text-anchor="middle">Mask DINO</text>
+<text class="hsub" x="592" y="56" text-anchor="middle">= 2-stage Deformable</text>
+
+<!-- DETR/DAB/DN col -->
+<rect class="box r-s" x="196" y="90" width="148" height="42" rx="6"/>
+<text class="cell s-t" x="270" y="115" text-anchor="middle">static / learned</text>
+<rect class="box r-s" x="196" y="146" width="148" height="42" rx="6"/>
+<text class="cell s-t" x="270" y="171" text-anchor="middle">static / learned</text>
+
+<!-- DINO col -->
+<rect class="box r-d" x="358" y="90" width="144" height="42" rx="6"/>
+<text class="cell d-t" x="430" y="115" text-anchor="middle">dynamic (top-K)</text>
+<rect class="box r-s" x="358" y="146" width="144" height="42" rx="6"/>
+<text class="cell s-t" x="430" y="171" text-anchor="middle">static / learned</text>
+
+<!-- Mask DINO col -->
+<rect class="box r-d" x="518" y="90" width="148" height="42" rx="6"/>
+<text class="cell d-t" x="592" y="115" text-anchor="middle">dynamic (top-K)</text>
+<rect class="box r-d" x="518" y="146" width="148" height="42" rx="6"/>
+<text class="cell d-t" x="592" y="171" text-anchor="middle">dynamic (top-K)</text>
+
+<!-- the flip highlight -->
+<rect x="512" y="140" width="160" height="54" rx="8" fill="none" stroke="var(--ps)" stroke-width="1.8"/>
+
+<text class="leg" x="20" y="238">The flip: DINO's ablation found dynamic content <tspan font-style="italic">worse</tspan> (noisy early tokens = ambiguous content), so kept it static.</text>
+<text class="leg" x="20" y="258">Mask DINO reverts to dynamic-both — unexplained, but plausibly rescued because the same token now</text>
+<text class="leg" x="20" y="278">carries mask supervision, forcing richer content than a class score alone. Not isolated in any ablation.</text>
+</svg>

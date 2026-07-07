@@ -1,0 +1,75 @@
+<svg width="100%" viewBox="0 0 680 320" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Hybrid matching: joint cost matrix over class, box and mask</title>
+<desc>One query's class, box and mask predictions are compared against one target's label, box and mask, and all cost terms are summed into a single cell of one cost matrix, solved by one Hungarian assignment — so the pairing must be good on all three modalities at once.</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}
+.box{stroke-width:1.1}
+.arw{stroke:var(--line);stroke-width:1.6;fill:none}
+.r-p{fill:var(--pf);stroke:var(--ps)}
+.r-g{fill:var(--gf);stroke:var(--gs)}
+.r-o{fill:var(--of);stroke:var(--os)}
+.title{font-size:13.5px;font-weight:500;fill:var(--ink)}
+.k-p{fill:var(--pt)}.k-g{fill:var(--gt)}.k-o{fill:var(--ot)}
+.sub{font-size:11px;fill:var(--ink)}
+.mono{font-size:12px;fill:var(--ink)}
+.plus{font-size:15px;fill:var(--legend)}
+.leg{font-size:11.5px;fill:var(--legend)}
+:root{--ink:#20201a;--line:#73726c;--legend:#5f5e5a;
+--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;
+--gf:#e5f3e8;--gs:#3f8a5a;--gt:#2c6b42;
+--of:#fbeee0;--os:#c07a2b;--ot:#8f5613}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--line:#a8a69d;--legend:#cbc9c0;
+--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;
+--gf:#173521;--gs:#6db98a;--gt:#a7e6bd;
+--of:#3a2a15;--os:#d9a25b;--ot:#f0c98a}}
+</style>
+</defs>
+
+<!-- query i -->
+<rect class="box r-p" x="20" y="40" width="150" height="96" rx="8"/>
+<text class="title k-p" x="95" y="62" text-anchor="middle">query i</text>
+<text class="sub" x="95" y="84" text-anchor="middle">pred class</text>
+<text class="sub" x="95" y="102" text-anchor="middle">pred box</text>
+<text class="sub" x="95" y="120" text-anchor="middle">pred mask</text>
+
+<!-- target j -->
+<rect class="box r-g" x="20" y="184" width="150" height="96" rx="8"/>
+<text class="title k-g" x="95" y="206" text-anchor="middle">target j</text>
+<text class="sub" x="95" y="228" text-anchor="middle">label</text>
+<text class="sub" x="95" y="246" text-anchor="middle">box</text>
+<text class="sub" x="95" y="264" text-anchor="middle">mask</text>
+<text class="leg" x="95" y="298" text-anchor="middle">one instance,</text>
+<text class="leg" x="95" y="314" text-anchor="middle">shared index j</text>
+
+<!-- cost terms -->
+<text class="mono" x="248" y="90">cost_class</text>
+<text class="plus" x="330" y="91" text-anchor="middle">+</text>
+<text class="mono" x="352" y="90">cost_box</text>
+<text class="plus" x="430" y="91" text-anchor="middle">+</text>
+<text class="mono" x="452" y="90">cost_giou</text>
+<text class="plus" x="248" y="130">+</text>
+<text class="mono" x="268" y="130">cost_mask</text>
+<text class="plus" x="352" y="130">+</text>
+<text class="mono" x="372" y="130">cost_dice</text>
+
+<path class="arw" d="M170 96 L 236 92" marker-end="url(#a)"/>
+<path class="arw" d="M170 224 C 210 200, 210 150, 244 128" marker-end="url(#a)"/>
+
+<!-- combined cell -->
+<rect class="box r-o" x="250" y="164" width="120" height="52" rx="8"/>
+<text class="title k-o" x="310" y="188" text-anchor="middle">C[i, j]</text>
+<text class="sub" x="310" y="206" text-anchor="middle">one summed cost</text>
+<path class="arw" d="M310 138 L 310 162" marker-end="url(#a)"/>
+
+<!-- Hungarian -->
+<rect class="box r-p" x="452" y="150" width="150" height="80" rx="8"/>
+<text class="title k-p" x="527" y="178" text-anchor="middle">one Hungarian</text>
+<text class="title k-p" x="527" y="196" text-anchor="middle">assignment</text>
+<text class="sub" x="527" y="216" text-anchor="middle">over full C matrix</text>
+<path class="arw" d="M370 190 L 450 190" marker-end="url(#a)"/>
+
+<text class="leg" x="20" y="26">The innovation is in matching (step 1), not the loss sum (step 2): bundling all three costs before assignment</text>
+<text class="leg" x="640" y="270" text-anchor="end">forces a pairing good on class, box AND mask at once — Table 13: box-only 44.4/40.5, both 44.5/41.4.</text>
+</svg>
