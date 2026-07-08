@@ -21,6 +21,28 @@ PPO asks the same question as [[TRPO]]: how do we take the biggest possible impr
 
 There are two variants: **PPO-Clip** (primary) and **PPO-Penalty** (adaptive KL). This note focuses on PPO-Clip.
 
+## Where the trust region comes from: CPI → TRPO → PPO
+
+The whole family rests on one bound from **Conservative Policy Iteration** (Kakade & Langford, 2002) — this is what the superscript in $L^{CPI}$ refers to. CPI's original move was to update the policy *conservatively*, mixing $\pi_{new} = (1-\alpha)\pi_{old} + \alpha\pi'$ instead of greedily replacing it, so the state distribution can't lurch in one step. TRPO later recast that idea in KL terms as a bound:
+
+$$
+\eta(\pi) \ge L^{CPI}(\pi) - C\,\max_s \mathrm{KL}\big[\pi_{\theta_k}(\cdot|s)\,\|\,\pi(\cdot|s)\big]
+$$
+
+- $\eta(\pi)$ is the **true** return — what you'd actually measure by running $\pi$ in the environment. Computing it exactly needs fresh on-policy rollouts *from $\pi$ itself*, which you don't have mid-update.
+- $L^{CPI}(\pi) = \mathbb{E}_{\pi_{\theta_k}}[r_t\hat{A}_t]$ is the **surrogate** — computable from the frozen batch, but only trustworthy near $\pi_{\theta_k}$ (it reweights the *action* distribution via $r_t$ but ignores the *state*-distribution shift the new policy would cause).
+- The bound quantifies exactly how far the surrogate can drift from the truth, as a function of how much the policy moved. Maximize the RHS and true improvement is *guaranteed* — that's the whole reason to keep $\pi$ close to $\pi_{\theta_k}$.
+
+Note it's $\max_s$ KL, not mean — a genuine worst-case/pessimistic bound, since a single state where the policy lurches can blow up the true gap. TRPO already softens this to *mean* KL in practice (the max is intractable), the first of several places theory gets traded for tractability.
+
+> [!note] Penalty vs. constraint — and why you can't just solve for β
+> The bound is literally a **penalty**: maximize $L^{CPI} - \beta\,\mathrm{KL}$. That's an unconstrained [Lagrangian](https://en.wikipedia.org/wiki/Lagrange_multiplier), with $\beta$ the multiplier on a KL constraint. Duality says *some* $\beta^*$ reproduces any hard KL-radius $\delta$ exactly — so in theory penalty and constraint are equivalent. In practice you can't pick $\beta^*$ in closed form:
+> - It depends on the **local curvature of KL** (the Fisher matrix) around $\theta_k$, which shifts as training moves through parameter space.
+> - It depends on the **scale of the advantages** — raw reward-derived units, wildly different across tasks (rewards in $[-1,1]$ vs. the thousands).
+> - So a $\beta$ tuned early is the wrong $\beta$ later, *within a single run*.
+>
+> This is exactly why **TRPO uses a hard constraint** (maximize $L^{CPI}$ s.t. $\overline{\mathrm{KL}} \le \delta$), enforced numerically with conjugate gradient + line search — it never has to guess $\beta$. [[#PPO-Penalty (Adaptive KL)|PPO-Penalty]] instead keeps the penalty form but makes $\beta$ *adaptive*. **PPO-Clip drops the KL machinery entirely** and gets the trust-region effect from the loss shape instead.
+
 ## The Clipped Surrogate Objective
 
 Let $r_t(\theta) = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)}$ be the probability ratio. $\theta_k$ is the **frozen behavioral policy** — the parameters that generated the current rollout batch $\mathcal{D}_k$; it stays pinned throughout all inner SGD epochs, with $k$ only incrementing when new trajectories are collected. The raw (unclipped) surrogate is just $r_t A_t$ — this is $L^{CPI}$, the policy gradient objective with importance sampling.
@@ -38,6 +60,10 @@ $$
 $$
 
 This simplified form (from SpinningUp) is equivalent to the original paper's $\min(r_t A_t,\ \text{clip}(r_t, 1-\epsilon, 1+\epsilon) A_t)$ but makes the intent clearer.
+
+![[ppo-clip-objective.svg|660]]
+
+The shape is the whole idea: the objective tracks the unclipped line $r_t A_t$ near $r=1$ (the dot), then goes flat on the side where more movement would *help* — so there's no gradient reward for pushing past the band. On the side where more movement would *hurt*, the line (penalty) stays live.
 
 >[!question] Why `min()` on top of clipping?
 > Clipping alone just flatlines the objective at the boundary — it stops rewarding further movement, but doesn't penalize overshooting. The `min()` makes it a **pessimistic lower bound**: it reintroduces the worse (unclipped) value whenever you've moved so far that it's worse than the clipped version.
@@ -101,6 +127,11 @@ The mathematical object has an expectation $\hat{\mathbb{E}}_t$; the minibatch m
 > The theoretical bound is extremely loose. What matters empirically is "does this update move in a good direction without destabilizing training?" Clipping is a robust heuristic for this. PPO also benefits from the *multiple SGD epochs* squeezing more signal from each batch of environment data, which TRPO simply can't do. The complexity TRPO pays for its guarantee buys very little in practice.
 > I pressed Sonnet 4.6 really hard and it admit it's all empirical.
 
+> [!question] Why can PPO run multiple SGD epochs on one batch, but TRPO can't?
+> Not spelled out in the paper, but the reason is structural. TRPO builds each update from a **one-shot local approximation**: it linearizes $L^{CPI}$ and puts a quadratic (Fisher) model on the KL, both expanded around $\theta_k$, then solves that subproblem *once* via conjugate gradient + line search. After a single step those Taylor expansions are stale — to step again you'd have to re-linearize and re-run CG, which is a *whole new* TRPO update, not a cheap extra epoch.
+>
+> PPO-Clip's objective is the **exact** nonlinear function of $\theta$ everywhere — nothing is expanded around $\theta_k$, only the frozen $\pi_{\theta_k}$ in the denominator of $r_t$ is fixed. So you can take Adam step after Adam step on the same batch, recomputing $r_t(\theta)$ each time; the clip keeps every step honest because the flat region lives in the objective's *shape at every $\theta$*, not in a local model that expires after one step. This off-policy reuse is what the importance ratio is for — the clip is just the safety valve that stops the reuse from drifting too far (paper uses ~3–15 epochs).
+
 ## PPO-Penalty (Adaptive KL)
 
 Instead of clipping, penalize KL directly:
@@ -132,6 +163,23 @@ This prevents **policy collapse** — gradient descent naturally wants to concen
 
 This is the same regularization intuition as **load balancing loss in [[Mixture of Experts]]**: the primary objective has no incentive to maintain diversity, so you add a term that explicitly fights the degenerate low-entropy solution. The difference is what "collapse" means — MoE collapses across experts for a token; policy gradient collapses across actions for a state.
 
+## Advantage estimation: truncated GAE
+
+The algorithm box below says "any method of advantage estimation" — in practice that's **truncated GAE**, and the "truncated" part is what makes PPO's rollout loop work. Rather than waiting for an episode to *terminate* before you can compute $\hat{A}_t$, you run the policy for a fixed $T$ steps ($T \ll$ episode length) and **bootstrap** the unseen future with the value function:
+
+$$
+\hat{A}_t = -V(s_t) + r_t + \gamma r_{t+1} + \cdots + \gamma^{T-t-1}r_{T-1} + \underbrace{\gamma^{T-t}V(s_T)}_{\text{bootstrap at the cutoff}}
+$$
+
+That last term is the whole trick: it stands in for "everything after $T$," so you can update from a $T$-step segment without ever seeing the episode end. This is what lets PPO (a) train recurrent policies on fixed-length contiguous segments, and (b) update frequently on long or non-episodic tasks. The formula above is the $\lambda=1$ special case; general GAE blends every within-window $n$-step estimator, $\hat{A}_t = \sum_{l} (\gamma\lambda)^l \delta_{t+l}$ with $\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)$.
+
+> [!note] What GAE buys over a fixed n-step TD return
+> Both are the [[Bias-variance tradeoff|MC↔TD]] dial; GAE just refuses to commit to one $n$. An $n$-step return forces a hard cutoff — step $n$ is "real reward," step $n{+}1$ is bootstrapped away, an artificial discontinuity. GAE instead takes an **exponentially-weighted average of all** $n$-step estimators, so influence fades gradually. Concretely:
+> - **One continuous, transferable knob** $\lambda \in [0,1]$ instead of an integer $n$ whose "right" value swings by orders of magnitude across environments (5 vs. 500). $\lambda \in [0.9, 0.99]$ works almost everywhere.
+> - **Graceful degradation** — a bad $n$ can wreck an estimator; GAE isn't betting everything on one horizon, so it's robust to the value function being mediocre early in training.
+>
+> Cost is a cheap linear-time backward pass over the segment. $n$-step TD (any $n$) and Monte Carlo are literally its $\lambda\to 0$ and $\lambda\to 1$ limits.
+
 ```pseudo
 \begin{algorithm}
 \begin{algorithmic}
@@ -150,3 +198,11 @@ This is the same regularization intuition as **load balancing loss in [[Mixture 
 \end{algorithmic}
 \end{algorithm}
 ```
+
+## The honest read: clip is a heuristic, not a theorem
+
+Worth remembering when the mystique wears off: the paper never proves $L^{CLIP}$ *inherits* the monotonic-improvement guarantee that justified the whole CPI/TRPO trust-region story. The only formal claim it makes about the clip is a single sentence in Section 3, right after eq. (7):
+
+> $L^{CLIP}(\theta) = L^{CPI}(\theta)$ to first order around $\theta_{old}$ (i.e., where $r = 1$) … they become different as $\theta$ moves away from $\theta_{old}$.
+
+That's asserted, not derived — but it's easy to verify: at $\theta_k$ every $r_t = 1$, sitting at the center of the clip band where `clip` is the identity, so $L^{CLIP}$ and $L^{CPI}$ (and their gradients) coincide in a neighborhood. It's the same fact the [[#The score function reappears anyway|score-function callout]] uses to show PPO's gradient *equals* vanilla policy gradient near $\theta_k$. Everything past first order is empirical: $\epsilon = 0.2$, "clip the ratio not log-space" (they tried log-space, report "no better," and say nothing more), the epoch count — all justified by the Table 1 ablation across 7 MuJoCo tasks, not by a bound. So yes: the honest one-line summary is *"this is plausible given TRPO's backdrop, we tried it, it works great, and we're not going to prove it."* Characteristic of that era of deep RL — TRPO is the rigorous one; PPO explicitly trades the rigor for simplicity and empirical performance, which is the stated goal in the abstract.
