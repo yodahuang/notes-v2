@@ -52,4 +52,35 @@ $$
 \tilde{u}_t(x|y) = (1-w)u_t^{\text{target}}(x) + wu_t^{\text{target}}(x|y)
 $$
 
-Our model can produce both $u(x)$ and $u(x|y)$ since it can treat $u(x) = u(x|\emptyset)$ . We'll hack our label so that with some probability $\eta$ it output this empty thing.
+Our model can produce both $u(x)$ and $u(x|y)$ since it can treat $u(x) = u(x|\emptyset)$. During training, we replace the condition with this empty label with probability $\eta$, teaching the same network both branches.
+
+### Why $w>1$ is meaningful—but still empirical
+
+The conditional-unconditional difference is not an arbitrary direction. In score space,
+
+$$
+u_t(x|y)-u_t(x)\propto\nabla_x\log p_t(y|x),
+$$
+
+so increasing $w$ moves more aggressively toward states recognizable as condition $y$. Equivalently, the guided score corresponds to a tilted distribution of the rough form
+
+$$
+\tilde p_w(x|y)\propto p(x)\,p(y|x)^w.
+$$
+
+$w=1$ recovers ordinary conditional sampling; $w>1$ sharpens the condition, usually trading diversity for alignment or fidelity. The direction has a probabilistic justification, but the best scale is empirical.
+
+### CFG is a local operation
+
+CFG combines **instantaneous** scores or velocity vectors. For a small step, linearly mixing two tangents is a sensible first-order update. It does not follow that we can linearly mix the endpoints of two long, curved trajectories:
+
+$$
+\operatorname{Flow}[u+w(u_y-u)]
+\neq
+\operatorname{Flow}[u]
++w\bigl(\operatorname{Flow}[u_y]-\operatorname{Flow}[u]\bigr).
+$$
+
+The flow operator is nonlinear because the vector field is reevaluated at every intermediate state. The two sides agree to first order for an infinitesimal step, but can diverge over a long interval.
+
+[[Shortcut models]] makes this concrete. It applies CFG to the small-step base dynamics, then trains large shortcuts to imitate compositions of those already-guided steps. Direct CFG is not applied again to the large shortcut endpoint; the chosen guidance scale is baked into the shortcut hierarchy during training.

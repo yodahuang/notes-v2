@@ -1,0 +1,38 @@
+<svg width="100%" viewBox="0 0 680 330" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Local flow steps versus one large Euler step in a two-mode distribution</title>
+<desc>A two-panel diagram shows a one-step tangent collapsing samples to the mean, while repeated small local steps bend toward two data modes.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}.panel{fill:var(--panel);stroke:var(--border);stroke-width:1}.axis{stroke:var(--axis);stroke-width:1.1}.guide{stroke:var(--guide);stroke-width:1;stroke-dasharray:4 4}.bad{stroke:var(--orange);stroke-width:2.2;fill:none;marker-end:url(#arrow)}.good{stroke:var(--teal);stroke-width:2.3;fill:none;marker-end:url(#arrow)}.mode{fill:var(--purple);stroke:var(--purple-s);stroke-width:1.2}.noise{fill:var(--gray);stroke:var(--gray-s);stroke-width:1.1}.mean{fill:var(--orange);stroke:var(--orange-s);stroke-width:1.1}.title{font-size:14.5px;font-weight:600;fill:var(--ink)}.label{font-size:12px;fill:var(--ink)}.sub{font-size:11.5px;fill:var(--legend)}.math{font-family:Georgia,'Times New Roman',serif;font-size:13px;fill:var(--ink)}:root{--ink:#20201a;--legend:#5f5e5a;--panel:#faf9f6;--border:#d3d1ca;--axis:#898780;--guide:#c9c6bd;--purple:#d9d6fe;--purple-s:#534ab7;--teal:#1f9d8a;--orange:#d97706;--orange-s:#9a4f00;--gray:#deddd8;--gray-s:#73726c}@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--legend:#cbc9c0;--panel:#262521;--border:#55534c;--axis:#a8a69d;--guide:#5f5d56;--purple:#413979;--purple-s:#a99df0;--teal:#66d4c3;--orange:#f0a54a;--orange-s:#ffc078;--gray:#484741;--gray-s:#aaa89f}}
+</style>
+</defs>
+<rect class="panel" x="8" y="8" width="322" height="312" rx="12"/>
+<rect class="panel" x="350" y="8" width="322" height="312" rx="12"/>
+<text class="title" x="28" y="38">One large Euler step</text>
+<text class="sub" x="28" y="58">The initial tangent is treated as the whole trip</text>
+<line class="axis" x1="42" y1="258" x2="304" y2="258"/>
+<line class="guide" x1="173" y1="78" x2="173" y2="276"/>
+<circle class="mode" cx="74" cy="258" r="8"/><circle class="mode" cx="272" cy="258" r="8"/>
+<text class="math" x="61" y="284">−2</text><text class="math" x="265" y="284">+2</text>
+<circle class="noise" cx="114" cy="111" r="7"/><circle class="noise" cx="232" cy="111" r="7"/>
+<text class="math" x="92" y="94">x₀&lt;0</text><text class="math" x="214" y="94">x₀&gt;0</text>
+<path class="bad" d="M114 121 C123 158 145 203 169 246"/>
+<path class="bad" d="M232 121 C223 158 201 203 177 246"/>
+<circle class="mean" cx="173" cy="258" r="8"/>
+<text class="label" x="127" y="304">both land at the mean</text>
+<text class="math" x="137" y="229">u₀(x)=−x</text>
+<text class="title" x="370" y="38">Repeated local steps</text>
+<text class="sub" x="370" y="58">Reevaluate the field as position becomes informative</text>
+<line class="axis" x1="384" y1="258" x2="646" y2="258"/>
+<line class="guide" x1="515" y1="78" x2="515" y2="276"/>
+<circle class="mode" cx="416" cy="258" r="8"/><circle class="mode" cx="614" cy="258" r="8"/>
+<text class="math" x="403" y="284">−2</text><text class="math" x="607" y="284">+2</text>
+<circle class="noise" cx="456" cy="111" r="7"/><circle class="noise" cx="574" cy="111" r="7"/>
+<path class="good" d="M456 121 C471 156 479 178 470 199 C461 222 439 238 421 250"/>
+<path class="good" d="M574 121 C559 156 551 178 560 199 C569 222 591 238 609 250"/>
+<circle class="noise" cx="470" cy="165" r="4.5"/><circle class="noise" cx="560" cy="165" r="4.5"/>
+<circle class="noise" cx="461" cy="215" r="4.5"/><circle class="noise" cx="569" cy="215" r="4.5"/>
+<text class="label" x="389" y="304">small differences survive, then select a mode</text>
+<text class="math" x="473" y="147">h≪1</text>
+</svg>
