@@ -1,0 +1,67 @@
+<svg width="100%" viewBox="0 0 680 426" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>BC, GCBC, and CFGRL as three guidance strengths</title>
+<desc>An explicit advantage label or an implicit hindsight goal conditions one flow policy, whose unconditional and conditional fields yield BC at weight zero, GCBC at weight one, and amplified policy improvement above one.</desc>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+  <style>
+    text{font-family:'Anthropic Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+    .box{stroke-width:1.15}.arw{stroke:var(--line);stroke-width:1.55;fill:none;marker-end:url(#arrow)}
+    .branch{stroke:var(--line2);stroke-width:1.25;fill:none;stroke-dasharray:4 4}
+    .r-gray{fill:var(--gf);stroke:var(--gs)}.k-gray{fill:var(--gt)}
+    .r-teal{fill:var(--tf);stroke:var(--ts)}.k-teal{fill:var(--tt)}
+    .r-purple{fill:var(--pf);stroke:var(--ps)}.k-purple{fill:var(--pt)}
+    .r-orange{fill:var(--of);stroke:var(--os)}.k-orange{fill:var(--ot)}
+    .title{font-size:15px;font-weight:600;fill:var(--ink)}
+    .head{font-size:13.5px;font-weight:600}.body{font-size:11.5px}.eq{font-size:12px;font-family:'STIX Two Math','Times New Roman',serif}
+    .caption{font-size:11.5px;fill:var(--legend)}.small{font-size:10.7px}
+    :root{--ink:#20201a;--line:#73726c;--line2:#aaa8a0;--legend:#5f5e5a;--gf:#f2f1ed;--gs:#88867e;--gt:#393832;--tf:#e1f5f2;--ts:#2a7f78;--tt:#175e59;--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;--of:#faeeda;--os:#b86b18;--ot:#854f0b}
+    @media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--line:#a8a69d;--line2:#77756e;--legend:#cbc9c0;--gf:#30302c;--gs:#8f8d85;--gt:#e0ded7;--tf:#153f3c;--ts:#5dc3b8;--tt:#b7eee8;--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;--of:#4a3016;--os:#e09a4d;--ot:#f6d3a5}}
+  </style>
+</defs>
+
+<text x="340" y="25" text-anchor="middle" class="title">One conditional policy, three sampling regimes</text>
+
+<rect x="34" y="48" width="255" height="72" rx="10" class="box r-orange"/>
+<text x="52" y="70" class="head k-orange">Explicit optimality</text>
+<text x="52" y="91" class="body k-orange">Offline RL: learn Q and V</text>
+<text x="52" y="108" class="eq k-orange">o = 1[A(s,a) ≥ 0]</text>
+
+<rect x="391" y="48" width="255" height="72" rx="10" class="box r-purple"/>
+<text x="409" y="70" class="head k-purple">Implicit optimality</text>
+<text x="409" y="91" class="body k-purple">GCBC: sample a reached future goal g</text>
+<text x="409" y="108" class="eq k-purple">p<tspan baseline-shift="super" font-size="0.72em">γ</tspan>(g|s,a) ∝ Q(s,a,g)</text>
+
+<path d="M161 120V147H301" class="arw"/>
+<path d="M519 120V147H379" class="arw"/>
+
+<rect x="214" y="146" width="252" height="84" rx="12" class="box r-teal"/>
+<text x="340" y="171" text-anchor="middle" class="head k-teal">Conditional flow policy</text>
+<text x="340" y="193" text-anchor="middle" class="eq k-teal">v<tspan baseline-shift="sub" font-size="0.72em">u</tspan> = v<tspan baseline-shift="sub" font-size="0.72em">θ</tspan>(a<tspan baseline-shift="sub" font-size="0.72em">t</tspan>,t,s,∅)</text>
+<text x="340" y="214" text-anchor="middle" class="eq k-teal">v<tspan baseline-shift="sub" font-size="0.72em">c</tspan> = v<tspan baseline-shift="sub" font-size="0.72em">θ</tspan>(a<tspan baseline-shift="sub" font-size="0.72em">t</tspan>,t,s,o)</text>
+
+<path d="M340 230V258" class="arw"/>
+<path d="M340 258H113V280" class="arw"/>
+<path d="M340 258V280" class="arw"/>
+<path d="M340 258H567V280" class="arw"/>
+
+<rect x="23" y="280" width="180" height="102" rx="11" class="box r-gray"/>
+<text x="113" y="305" text-anchor="middle" class="head k-gray">BC · w = 0</text>
+<text x="113" y="328" text-anchor="middle" class="eq k-gray">v<tspan baseline-shift="sub" font-size="0.72em">guided</tspan> = v<tspan baseline-shift="sub" font-size="0.72em">u</tspan></text>
+<text x="113" y="351" text-anchor="middle" class="body k-gray">Imitate all behavior</text>
+<text x="113" y="369" text-anchor="middle" class="small k-gray">Reference action prior</text>
+
+<rect x="250" y="280" width="180" height="102" rx="11" class="box r-purple"/>
+<text x="340" y="305" text-anchor="middle" class="head k-purple">GCBC · w = 1</text>
+<text x="340" y="328" text-anchor="middle" class="eq k-purple">v<tspan baseline-shift="sub" font-size="0.72em">guided</tspan> = v<tspan baseline-shift="sub" font-size="0.72em">c</tspan></text>
+<text x="340" y="351" text-anchor="middle" class="body k-purple">Condition on where actions led</text>
+<text x="340" y="369" text-anchor="middle" class="small k-purple">π ∝ π̂ Q</text>
+
+<rect x="477" y="280" width="180" height="102" rx="11" class="box r-orange"/>
+<text x="567" y="305" text-anchor="middle" class="head k-orange">CFGRL · w &gt; 1</text>
+<text x="567" y="328" text-anchor="middle" class="eq k-orange">v<tspan baseline-shift="sub" font-size="0.72em">u</tspan> + w(v<tspan baseline-shift="sub" font-size="0.72em">c</tspan> − v<tspan baseline-shift="sub" font-size="0.72em">u</tspan>)</text>
+<text x="567" y="351" text-anchor="middle" class="body k-orange">Amplify the same direction</text>
+<text x="567" y="369" text-anchor="middle" class="small k-orange">π<tspan baseline-shift="sub" font-size="0.72em">w</tspan> ∝ π̂ Q<tspan baseline-shift="super" font-size="0.72em">w</tspan></text>
+
+<path d="M113 395H567" class="branch"/>
+<text x="340" y="417" text-anchor="middle" class="caption">w changes at inference; the learned conditional policy stays fixed</text>
+</svg>

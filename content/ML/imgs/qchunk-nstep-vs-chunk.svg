@@ -1,0 +1,155 @@
+<svg width="100%" viewBox="0 0 680 509" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Naive n-step return versus Q-chunking backup</title><desc>The same five-step replayed segment. Naive n-step conditions Q on only the first action, so four behavior-policy actions bias the target; Q-chunking conditions on all five actions, so the replayed rewards are exactly the outcome asked about, and the current policy only enters at the bootstrap at s t+5.</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="hatch-bg"/><path d="M0 0V6" class="hatch-ln"/></pattern>
+
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}
+.s{font-size:0.72em}.b{font-weight:600}
+.box{stroke-width:1.1}.chip{stroke-width:1}.dash{stroke-dasharray:5 4}
+.arw{stroke:var(--line);stroke-width:1.5;fill:none}
+.band{fill:none;stroke:var(--band);stroke-width:1.2}
+.ax{stroke:var(--line);stroke-width:1.2;fill:none}.tk{stroke:var(--line);stroke-width:1}
+.ln{stroke:var(--line);stroke-width:1.2;fill:none}
+.cell{fill:var(--gf);stroke:var(--gs);stroke-width:0.8}
+.hatch-bg{fill:var(--pf)}.hatch-ln{stroke:var(--ps);stroke-width:1.6;opacity:0.35}
+.hatch{fill:url(#hatch);stroke:var(--ps);stroke-width:1.2}
+.cross{stroke:var(--os);stroke-width:2;fill:none}
+.r-g{fill:var(--gf);stroke:var(--gs)}.k-g{fill:var(--gt)}.f-g{fill:var(--gf)}.d-g{fill:var(--gs)}.s-g{stroke:var(--gs);fill:none}.bar-g{fill:var(--gf);stroke:var(--gs);stroke-width:0.7}
+.r-t{fill:var(--tf);stroke:var(--ts)}.k-t{fill:var(--tt)}.f-t{fill:var(--tf)}.d-t{fill:var(--ts)}.s-t{stroke:var(--ts);fill:none}.bar-t{fill:var(--tf);stroke:var(--ts);stroke-width:0.7}
+.r-p{fill:var(--pf);stroke:var(--ps)}.k-p{fill:var(--pt)}.f-p{fill:var(--pf)}.d-p{fill:var(--ps)}.s-p{stroke:var(--ps);fill:none}.bar-p{fill:var(--pf);stroke:var(--ps);stroke-width:0.7}
+.r-e{fill:var(--ef);stroke:var(--es)}.k-e{fill:var(--et)}.f-e{fill:var(--ef)}.d-e{fill:var(--es)}.s-e{stroke:var(--es);fill:none}.bar-e{fill:var(--ef);stroke:var(--es);stroke-width:0.7}
+.r-o{fill:var(--of);stroke:var(--os)}.k-o{fill:var(--ot)}.f-o{fill:var(--of)}.d-o{fill:var(--os)}.s-o{stroke:var(--os);fill:none}.bar-o{fill:var(--of);stroke:var(--os);stroke-width:0.7}
+.hd{font-size:15px;font-weight:600;fill:var(--ink)}.title{font-size:14px;font-weight:600}.sub{font-size:11.5px}.lead{font-size:13.5px;font-weight:600;fill:var(--ink)}.ex{font-size:12.5px;fill:var(--body)}.leg{font-size:12px;fill:var(--legend)}.legb{font-size:12px;font-weight:600;fill:var(--ink)}.ct{font-size:11.5px}.tiny{font-size:11px;fill:var(--legend)}.tinyb{font-size:11px;font-weight:600;fill:var(--ink)}.micro{font-size:9px;fill:var(--legend)}
+.b-e{stroke:var(--es);stroke-width:1.6;fill:none}.b-o{stroke:var(--os);stroke-width:1.6;fill:none}
+.ghost{fill:var(--pf);stroke:var(--ps);stroke-width:0.9;opacity:0.55}
+.lossln{stroke:var(--os);stroke-width:1.4;fill:none;stroke-dasharray:4 3}
+:root{--ink:#20201a;--body:#3d3d38;--line:#73726c;--legend:#5f5e5a;--band:#c9c7bf;--gf:#f1efe8;--gs:#888780;--gt:#2c2c2a;--tf:#e1f5ee;--ts:#0f6e56;--tt:#085041;--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;--ef:#eaf3de;--es:#3b6d11;--et:#27500a;--of:#faece7;--os:#993c1d;--ot:#712b13}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--body:#d3d1c8;--line:#a8a69d;--legend:#cbc9c0;--band:#5a5953;--gf:#2c2c2a;--gs:#b4b2a9;--gt:#e9e7e0;--tf:#0f3a30;--ts:#5dcaa5;--tt:#c9efe2;--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;--ef:#213414;--es:#8fc75a;--et:#d6ecbf;--of:#3d1f14;--os:#e8835e;--ot:#f6cfbf}}
+</style>
+</defs>
+<g transform="translate(4 4)">
+<rect class="band" x="0" y="0" width="672" height="230" rx="10"/>
+<g transform="translate(12 12)">
+<text class="hd" x="0" y="14.8">Naive n-step return:  Q(s<tspan class="s" baseline-shift="sub">t</tspan>, a<tspan class="s" baseline-shift="sub">t</tspan>)</text>
+<g transform="translate(0 30.7)">
+<text class="lead" x="0" y="13.4">“Take a<tspan class="s" baseline-shift="sub">t</tspan>, then follow π.” The replay followed μ instead.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">Only the first action is part of the question. The next four were chosen by whoever filled the buffer, so the</text>
+<text class="ex" x="0" y="29.2">reward sum describes μ’s continuation, not π’s.</text>
+</g>
+<g transform="translate(0 68.6)">
+<rect class="chip r-g" x="0" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="23" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t</tspan></text>
+<path class="arw" d="M48 41L85 41" marker-end="url(#a)"/>
+<rect class="chip r-e" x="50" y="64" width="34" height="22" rx="11"/>
+<text class="ct k-e" x="67" y="79" text-anchor="middle">a<tspan class="s" baseline-shift="sub">t</tspan></text>
+<text class="tiny" x="67" y="104" text-anchor="middle">r<tspan class="s" baseline-shift="sub">t</tspan></text>
+<rect class="chip r-g" x="88" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="111" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t+1</tspan></text>
+<path class="arw" d="M136 41L173 41" marker-end="url(#a)"/>
+<rect class="chip r-o" x="138" y="64" width="44" height="22" rx="11"/>
+<text class="ct k-o" x="160" y="79" text-anchor="middle">a<tspan class="s" baseline-shift="sub">t+1</tspan></text>
+<text class="tiny" x="160" y="104" text-anchor="middle">r<tspan class="s" baseline-shift="sub">t+1</tspan></text>
+<rect class="chip r-g" x="176" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="199" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t+2</tspan></text>
+<path class="arw" d="M224 41L261 41" marker-end="url(#a)"/>
+<rect class="chip r-o" x="226" y="64" width="44" height="22" rx="11"/>
+<text class="ct k-o" x="248" y="79" text-anchor="middle">a<tspan class="s" baseline-shift="sub">t+2</tspan></text>
+<text class="tiny" x="248" y="104" text-anchor="middle">r<tspan class="s" baseline-shift="sub">t+2</tspan></text>
+<rect class="chip r-g" x="264" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="287" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t+3</tspan></text>
+<path class="arw" d="M312 41L349 41" marker-end="url(#a)"/>
+<rect class="chip r-o" x="314" y="64" width="44" height="22" rx="11"/>
+<text class="ct k-o" x="336" y="79" text-anchor="middle">a<tspan class="s" baseline-shift="sub">t+3</tspan></text>
+<text class="tiny" x="336" y="104" text-anchor="middle">r<tspan class="s" baseline-shift="sub">t+3</tspan></text>
+<rect class="chip r-g" x="352" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="375" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t+4</tspan></text>
+<path class="arw" d="M400 41L437 41" marker-end="url(#a)"/>
+<rect class="chip r-o" x="402" y="64" width="44" height="22" rx="11"/>
+<text class="ct k-o" x="424" y="79" text-anchor="middle">a<tspan class="s" baseline-shift="sub">t+4</tspan></text>
+<text class="tiny" x="424" y="104" text-anchor="middle">r<tspan class="s" baseline-shift="sub">t+4</tspan></text>
+<rect class="chip r-g" x="440" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="463" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t+5</tspan></text>
+<path class="arw" d="M488 41L509 41" marker-end="url(#a)"/>
+<g transform="translate(512 22)">
+<rect class="box r-p" x="0" y="0" width="84.1" height="40.1" rx="8"/>
+<g transform="translate(7 4)">
+<text class="ct k-p" x="0" y="11.4">γ<tspan class="s" baseline-shift="super">5</tspan> Q(s<tspan class="s" baseline-shift="sub">t+5</tspan>, a′)</text>
+<g transform="translate(0 16.9)">
+<text class="tiny k-p" x="0" y="10.9">a′ ∼ π</text>
+</g>
+</g>
+</g>
+<path class="b-e" d="M50 26V20H84V26"/>
+<text class="tiny k-e" x="67" y="16" text-anchor="middle">conditioned</text>
+<path class="b-o" d="M138 26V20H446V26"/>
+<text class="tiny k-o" x="292" y="16" text-anchor="middle">picked by μ, but Q<tspan class="s" baseline-shift="super">π</tspan> assumes π picks them → biased</text>
+</g>
+</g>
+</g>
+<g transform="translate(0 242)">
+<rect class="band" x="0" y="0" width="672" height="230" rx="10"/>
+<g transform="translate(12 12)">
+<text class="hd" x="0" y="14.8">Q-chunking:  Q(s<tspan class="s" baseline-shift="sub">t</tspan>, a<tspan class="s" baseline-shift="sub">t</tspan> … a<tspan class="s" baseline-shift="sub">t+4</tspan>)</text>
+<g transform="translate(0 30.7)">
+<text class="lead" x="0" y="13.4">“Execute exactly these five, then follow π.”</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">Every action that produced the rewards is now part of the question. The reward sum answers it exactly,</text>
+<text class="ex" x="0" y="29.2">and π only enters at the bootstrap. Same 5× faster propagation.</text>
+</g>
+<g transform="translate(0 68.6)">
+<rect class="chip r-g" x="0" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="23" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t</tspan></text>
+<path class="arw" d="M48 41L85 41" marker-end="url(#a)"/>
+<rect class="chip r-e" x="50" y="64" width="34" height="22" rx="11"/>
+<text class="ct k-e" x="67" y="79" text-anchor="middle">a<tspan class="s" baseline-shift="sub">t</tspan></text>
+<text class="tiny" x="67" y="104" text-anchor="middle">r<tspan class="s" baseline-shift="sub">t</tspan></text>
+<rect class="chip r-g" x="88" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="111" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t+1</tspan></text>
+<path class="arw" d="M136 41L173 41" marker-end="url(#a)"/>
+<rect class="chip r-e" x="138" y="64" width="44" height="22" rx="11"/>
+<text class="ct k-e" x="160" y="79" text-anchor="middle">a<tspan class="s" baseline-shift="sub">t+1</tspan></text>
+<text class="tiny" x="160" y="104" text-anchor="middle">r<tspan class="s" baseline-shift="sub">t+1</tspan></text>
+<rect class="chip r-g" x="176" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="199" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t+2</tspan></text>
+<path class="arw" d="M224 41L261 41" marker-end="url(#a)"/>
+<rect class="chip r-e" x="226" y="64" width="44" height="22" rx="11"/>
+<text class="ct k-e" x="248" y="79" text-anchor="middle">a<tspan class="s" baseline-shift="sub">t+2</tspan></text>
+<text class="tiny" x="248" y="104" text-anchor="middle">r<tspan class="s" baseline-shift="sub">t+2</tspan></text>
+<rect class="chip r-g" x="264" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="287" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t+3</tspan></text>
+<path class="arw" d="M312 41L349 41" marker-end="url(#a)"/>
+<rect class="chip r-e" x="314" y="64" width="44" height="22" rx="11"/>
+<text class="ct k-e" x="336" y="79" text-anchor="middle">a<tspan class="s" baseline-shift="sub">t+3</tspan></text>
+<text class="tiny" x="336" y="104" text-anchor="middle">r<tspan class="s" baseline-shift="sub">t+3</tspan></text>
+<rect class="chip r-g" x="352" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="375" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t+4</tspan></text>
+<path class="arw" d="M400 41L437 41" marker-end="url(#a)"/>
+<rect class="chip r-e" x="402" y="64" width="44" height="22" rx="11"/>
+<text class="ct k-e" x="424" y="79" text-anchor="middle">a<tspan class="s" baseline-shift="sub">t+4</tspan></text>
+<text class="tiny" x="424" y="104" text-anchor="middle">r<tspan class="s" baseline-shift="sub">t+4</tspan></text>
+<rect class="chip r-g" x="440" y="30" width="46" height="22" rx="11"/>
+<text class="ct k-g" x="463" y="45" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t+5</tspan></text>
+<path class="arw" d="M488 41L509 41" marker-end="url(#a)"/>
+<g transform="translate(512 22)">
+<rect class="box r-p" x="0" y="0" width="85.5" height="40.1" rx="8"/>
+<g transform="translate(7 4)">
+<text class="ct k-p" x="0" y="11.4">γ<tspan class="s" baseline-shift="super">5</tspan> Q(s<tspan class="s" baseline-shift="sub">t+5</tspan>, A′)</text>
+<g transform="translate(0 16.9)">
+<text class="tiny k-p" x="0" y="10.9">chunk A′ ∼ π</text>
+</g>
+</g>
+</g>
+<path class="b-e" d="M50 26V20H446V26"/>
+<text class="tiny k-e" x="248" y="16" text-anchor="middle">all five conditioned: no policy left inside the reward sum → unbiased</text>
+</g>
+</g>
+</g>
+</g>
+<g transform="translate(0 484.1)">
+<text class="leg" x="0" y="11.9">Same buffer segment, same reward sum. Only what Q is conditioned on differs.</text>
+</g>
+</g>
+</svg>

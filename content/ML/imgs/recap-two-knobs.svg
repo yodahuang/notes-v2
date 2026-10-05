@@ -1,0 +1,68 @@
+<svg width="100%" viewBox="0 0 680 314" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Two knobs for sharpening: epsilon at training time, beta at test time</title>
+<desc>Left: a histogram of advantages with the CFGRL threshold at zero and RECAP's percentile threshold epsilon_l further right; only samples above it are labeled positive. Right: unconditional, conditional, and beta-sharpened action densities; larger beta narrows and shifts the distribution beyond the conditional mode.</desc>
+<defs>
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}
+.hd{font-size:14.5px;font-weight:600;fill:var(--ink)}
+.leg{font-size:12px;fill:var(--legend)}.legb{font-size:12px;font-weight:600}
+.ax{stroke:var(--line);stroke-width:1.2;fill:none}
+.neg{fill:var(--of);stroke:var(--os);stroke-width:0.8}.pos{fill:var(--ef);stroke:var(--es);stroke-width:0.8}
+.k-o{fill:var(--ot)}.k-e{fill:var(--et)}.k-p{fill:var(--pt)}.k-g{fill:var(--gt)}
+.th{stroke:var(--ps);stroke-width:1.6;stroke-dasharray:5 3}.th0{stroke:var(--line);stroke-width:1.2;stroke-dasharray:2 3}
+.cu{fill:none;stroke:var(--gs);stroke-width:2}.cc{fill:none;stroke:var(--es);stroke-width:2.2}.cb{fill:none;stroke:var(--ps);stroke-width:2.2;stroke-dasharray:6 3}
+.s{font-size:0.72em}
+:root{--ink:#20201a;--line:#73726c;--legend:#5f5e5a;--gs:#888780;--gt:#2c2c2a;
+--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;--ef:#eaf3de;--es:#3b6d11;--et:#27500a;--of:#faece7;--os:#993c1d;--ot:#712b13}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--line:#a8a69d;--legend:#cbc9c0;--gs:#b4b2a9;--gt:#e9e7e0;
+--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;--ef:#213414;--es:#8fc75a;--et:#d6ecbf;--of:#3d1f14;--os:#e8835e;--ot:#f6cfbf}}
+</style>
+</defs>
+<text class="hd" x="10" y="22">Training time: ε<tspan class="s" baseline-shift="sub">ℓ</tspan> decides what counts as “good”</text>
+<path class="ax" d="M24 200H316"/>
+<rect class="neg" x="25.0" y="197.3" width="11.3" height="2.7"/>
+<rect class="neg" x="38.3" y="194.7" width="11.3" height="5.3"/>
+<rect class="neg" x="51.5" y="190.1" width="11.3" height="9.9"/>
+<rect class="neg" x="64.8" y="182.8" width="11.3" height="17.2"/>
+<rect class="neg" x="78.1" y="172.0" width="11.3" height="28.0"/>
+<rect class="neg" x="91.4" y="157.7" width="11.3" height="42.3"/>
+<rect class="neg" x="104.6" y="140.3" width="11.3" height="59.7"/>
+<rect class="neg" x="117.9" y="121.3" width="11.3" height="78.7"/>
+<rect class="neg" x="131.2" y="103.3" width="11.3" height="96.7"/>
+<rect class="neg" x="144.5" y="89.0" width="11.3" height="111.0"/>
+<rect class="neg" x="157.7" y="81.0" width="11.3" height="119.0"/>
+<rect class="neg" x="171.0" y="81.0" width="11.3" height="119.0"/>
+<rect class="neg" x="184.3" y="89.0" width="11.3" height="111.0"/>
+<rect class="pos" x="197.5" y="103.3" width="11.3" height="96.7"/>
+<rect class="pos" x="210.8" y="121.3" width="11.3" height="78.7"/>
+<rect class="pos" x="224.1" y="140.3" width="11.3" height="59.7"/>
+<rect class="pos" x="237.4" y="157.7" width="11.3" height="42.3"/>
+<rect class="pos" x="250.6" y="172.0" width="11.3" height="28.0"/>
+<rect class="pos" x="263.9" y="182.8" width="11.3" height="17.2"/>
+<rect class="pos" x="277.2" y="190.1" width="11.3" height="9.9"/>
+<rect class="pos" x="290.5" y="194.7" width="11.3" height="5.3"/>
+<rect class="pos" x="303.7" y="197.3" width="11.3" height="2.7"/>
+<path class="th0" d="M170.0 204V62"/>
+<path class="th" d="M196.5 204V50"/>
+<text class="leg" x="166.0" y="72" text-anchor="end">CFGRL: ε = 0</text>
+<text class="legb k-p" x="201.5" y="58">RECAP: ε<tspan class="s" baseline-shift="sub">ℓ</tspan> = percentile</text>
+<text class="legb k-o" x="28" y="220">“Advantage: negative”</text>
+<text class="legb k-e" x="316" y="220" text-anchor="end">“positive”</text>
+<text class="leg" x="170.0" y="236" text-anchor="middle">advantage A(oₜ, aₜ, ℓ) of dataset samples</text>
+<text class="leg" x="10" y="264">Fixed fraction positive per task: ~30% pretrain,</text>
+<text class="leg" x="10" y="281">~40% fine-tune, ~10% for the t-shirt task.</text>
+<text class="leg" x="10" y="298">Moves the FAST-token head and the flow expert.</text>
+<text class="hd" x="360" y="22">Test time: β decides how hard to push</text>
+<path class="ax" d="M374 200H670"/>
+<path class="cu" d="M374.0 199.4L375.8 199.3L377.7 199.2L379.6 199.1L381.4 199.0L383.2 198.9L385.1 198.8L386.9 198.7L388.8 198.5L390.6 198.3L392.5 198.2L394.4 198.0L396.2 197.8L398.1 197.5L399.9 197.3L401.8 197.0L403.6 196.7L405.4 196.4L407.3 196.1L409.1 195.7L411.0 195.3L412.9 194.9L414.7 194.4L416.6 194.0L418.4 193.4L420.2 192.9L422.1 192.3L423.9 191.7L425.8 191.1L427.6 190.4L429.5 189.7L431.4 188.9L433.2 188.1L435.1 187.3L436.9 186.4L438.8 185.5L440.6 184.6L442.4 183.6L444.3 182.6L446.1 181.6L448.0 180.5L449.9 179.4L451.7 178.2L453.6 177.1L455.4 175.9L457.2 174.6L459.1 173.4L460.9 172.1L462.8 170.8L464.6 169.5L466.5 168.2L468.4 166.9L470.2 165.6L472.1 164.3L473.9 163.0L475.8 161.7L477.6 160.4L479.4 159.2L481.3 157.9L483.1 156.7L485.0 155.5L486.9 154.4L488.7 153.3L490.6 152.2L492.4 151.2L494.2 150.3L496.1 149.4L498.0 148.5L499.8 147.7L501.6 147.0L503.5 146.4L505.3 145.8L507.2 145.4L509.1 145.0L510.9 144.6L512.8 144.4L514.6 144.2L516.5 144.2L518.3 144.2L520.1 144.3L522.0 144.4L523.9 144.7L525.7 145.0L527.5 145.4L529.4 145.9L531.2 146.5L533.1 147.2L535.0 147.9L536.8 148.7L538.6 149.5L540.5 150.4L542.4 151.4L544.2 152.4L546.0 153.5L547.9 154.6L549.8 155.7L551.6 156.9L553.5 158.1L555.3 159.4L557.2 160.6L559.0 161.9L560.9 163.2L562.7 164.5L564.5 165.8L566.4 167.1L568.2 168.4L570.1 169.8L572.0 171.0L573.8 172.3L575.7 173.6L577.5 174.8L579.4 176.0L581.2 177.2L583.0 178.4L584.9 179.5L586.8 180.7L588.6 181.7L590.4 182.8L592.3 183.8L594.1 184.7L596.0 185.7L597.9 186.6L599.7 187.4L601.5 188.3L603.4 189.0L605.2 189.8L607.1 190.5L609.0 191.2L610.8 191.8L612.6 192.4L614.5 193.0L616.4 193.5L618.2 194.0L620.0 194.5L621.9 195.0L623.8 195.4L625.6 195.8L627.5 196.1L629.3 196.4L631.2 196.8L633.0 197.0L634.8 197.3L636.7 197.6L638.5 197.8L640.4 198.0L642.2 198.2L644.1 198.4L646.0 198.5L647.8 198.7L649.7 198.8L651.5 198.9L653.3 199.0L655.2 199.1L657.0 199.2L658.9 199.3L660.8 199.4L662.6 199.5L664.5 199.5L666.3 199.6L668.2 199.6L670.0 199.7"/>
+<path class="cc" d="M374.0 200.0L375.8 200.0L377.7 200.0L379.6 200.0L381.4 200.0L383.2 200.0L385.1 200.0L386.9 200.0L388.8 200.0L390.6 200.0L392.5 200.0L394.4 200.0L396.2 200.0L398.1 200.0L399.9 200.0L401.8 200.0L403.6 200.0L405.4 200.0L407.3 200.0L409.1 200.0L411.0 200.0L412.9 200.0L414.7 200.0L416.6 200.0L418.4 200.0L420.2 200.0L422.1 200.0L423.9 200.0L425.8 200.0L427.6 200.0L429.5 200.0L431.4 200.0L433.2 200.0L435.1 200.0L436.9 200.0L438.8 200.0L440.6 200.0L442.4 200.0L444.3 199.9L446.1 199.9L448.0 199.9L449.9 199.9L451.7 199.9L453.6 199.8L455.4 199.8L457.2 199.7L459.1 199.7L460.9 199.6L462.8 199.5L464.6 199.4L466.5 199.2L468.4 199.1L470.2 198.9L472.1 198.7L473.9 198.4L475.8 198.1L477.6 197.7L479.4 197.2L481.3 196.7L483.1 196.1L485.0 195.5L486.9 194.7L488.7 193.8L490.6 192.8L492.4 191.7L494.2 190.5L496.1 189.1L498.0 187.6L499.8 185.9L501.6 184.0L503.5 182.0L505.3 179.8L507.2 177.4L509.1 174.9L510.9 172.2L512.8 169.3L514.6 166.3L516.5 163.1L518.3 159.8L520.1 156.4L522.0 152.9L523.9 149.3L525.7 145.7L527.5 142.0L529.4 138.4L531.2 134.8L533.1 131.3L535.0 127.9L536.8 124.6L538.6 121.6L540.5 118.7L542.4 116.1L544.2 113.8L546.0 111.8L547.9 110.1L549.8 108.7L551.6 107.7L553.5 107.1L555.3 106.9L557.2 107.1L559.0 107.6L560.9 108.6L562.7 109.9L564.5 111.5L566.4 113.5L568.2 115.8L570.1 118.4L572.0 121.2L573.8 124.2L575.7 127.5L577.5 130.8L579.4 134.3L581.2 137.9L583.0 141.5L584.9 145.2L586.8 148.8L588.6 152.4L590.4 155.9L592.3 159.4L594.1 162.7L596.0 165.9L597.9 168.9L599.7 171.8L601.5 174.5L603.4 177.1L605.2 179.5L607.1 181.7L609.0 183.8L610.8 185.6L612.6 187.3L614.5 188.9L616.4 190.3L618.2 191.6L620.0 192.7L621.9 193.7L623.8 194.6L625.6 195.4L627.5 196.1L629.3 196.7L631.2 197.2L633.0 197.6L634.8 198.0L636.7 198.3L638.5 198.6L640.4 198.9L642.2 199.1L644.1 199.2L646.0 199.4L647.8 199.5L649.7 199.6L651.5 199.7L653.3 199.7L655.2 199.8L657.0 199.8L658.9 199.9L660.8 199.9L662.6 199.9L664.5 199.9L666.3 199.9L668.2 200.0L670.0 200.0"/>
+<path class="cb" d="M374.0 200.0L375.8 200.0L377.7 200.0L379.6 200.0L381.4 200.0L383.2 200.0L385.1 200.0L386.9 200.0L388.8 200.0L390.6 200.0L392.5 200.0L394.4 200.0L396.2 200.0L398.1 200.0L399.9 200.0L401.8 200.0L403.6 200.0L405.4 200.0L407.3 200.0L409.1 200.0L411.0 200.0L412.9 200.0L414.7 200.0L416.6 200.0L418.4 200.0L420.2 200.0L422.1 200.0L423.9 200.0L425.8 200.0L427.6 200.0L429.5 200.0L431.4 200.0L433.2 200.0L435.1 200.0L436.9 200.0L438.8 200.0L440.6 200.0L442.4 200.0L444.3 200.0L446.1 200.0L448.0 200.0L449.9 200.0L451.7 200.0L453.6 200.0L455.4 200.0L457.2 200.0L459.1 200.0L460.9 200.0L462.8 200.0L464.6 200.0L466.5 200.0L468.4 200.0L470.2 200.0L472.1 200.0L473.9 200.0L475.8 200.0L477.6 200.0L479.4 200.0L481.3 200.0L483.1 200.0L485.0 199.9L486.9 199.9L488.7 199.9L490.6 199.9L492.4 199.8L494.2 199.7L496.1 199.6L498.0 199.5L499.8 199.3L501.6 199.1L503.5 198.8L505.3 198.4L507.2 197.9L509.1 197.3L510.9 196.5L512.8 195.6L514.6 194.4L516.5 193.0L518.3 191.3L520.1 189.3L522.0 187.0L523.9 184.3L525.7 181.2L527.5 177.6L529.4 173.6L531.2 169.0L533.1 164.1L535.0 158.6L536.8 152.7L538.6 146.5L540.5 139.8L542.4 133.0L544.2 125.9L546.0 118.8L547.9 111.7L549.8 104.7L551.6 98.1L553.5 91.8L555.3 86.2L557.2 81.2L559.0 77.0L560.9 73.7L562.7 71.3L564.5 70.0L566.4 69.7L568.2 70.5L570.1 72.3L572.0 75.2L573.8 78.9L575.7 83.6L577.5 88.9L579.4 94.9L581.2 101.3L583.0 108.1L584.9 115.2L586.8 122.3L588.6 129.4L590.4 136.4L592.3 143.2L594.1 149.6L596.0 155.7L597.9 161.4L599.7 166.6L601.5 171.3L603.4 175.6L605.2 179.4L607.1 182.8L609.0 185.7L610.8 188.2L612.6 190.4L614.5 192.2L616.4 193.7L618.2 195.0L620.0 196.1L621.9 196.9L623.8 197.6L625.6 198.1L627.5 198.6L629.3 198.9L631.2 199.2L633.0 199.4L634.8 199.6L636.7 199.7L638.5 199.8L640.4 199.8L642.2 199.9L644.1 199.9L646.0 199.9L647.8 200.0L649.7 200.0L651.5 200.0L653.3 200.0L655.2 200.0L657.0 200.0L658.9 200.0L660.8 200.0L662.6 200.0L664.5 200.0L666.3 200.0L668.2 200.0L670.0 200.0"/>
+<text class="leg" x="522.0" y="220" text-anchor="middle">action a</text>
+<path class="cu" d="M360 240H386"/>
+<text class="leg" x="394" y="244">π(a | o, ℓ)  unconditional</text>
+<path class="cc" d="M360 258H386"/>
+<text class="leg" x="394" y="262">π(a | I, o, ℓ):  β = 1, the default</text>
+<path class="cb" d="M360 276H386"/>
+<text class="leg" x="394" y="280">β = 2.5  sharper, past the conditional mode</text>
+<text class="leg" x="360" y="304">Flow expert only; large β → aggressive motions.</text>
+</svg>

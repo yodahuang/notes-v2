@@ -1,0 +1,549 @@
+<svg width="100%" viewBox="0 0 680 1606" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>RECAP training pipeline</title><desc>Illustrated flowchart: pretrain a value model on success-labeled demos, grade every sample by advantage, and train the VLA with an advantage token in its prompt; then for each skill, start with SFT, deploy with human takeovers, keep all data, refit the value model and retrain the policy from pretrained checkpoints using 50-step advantages; optionally pool all data into one generalist.</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="hatch-bg"/><path d="M0 0V6" class="hatch-ln"/></pattern>
+
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}
+.s{font-size:0.72em}.b{font-weight:600}
+.box{stroke-width:1.1}.chip{stroke-width:1}.dash{stroke-dasharray:5 4}
+.arw{stroke:var(--line);stroke-width:1.5;fill:none}
+.band{fill:none;stroke:var(--band);stroke-width:1.2}
+.ax{stroke:var(--line);stroke-width:1.2;fill:none}.tk{stroke:var(--line);stroke-width:1}
+.ln{stroke:var(--line);stroke-width:1.2;fill:none}
+.cell{fill:var(--gf);stroke:var(--gs);stroke-width:0.8}
+.hatch-bg{fill:var(--pf)}.hatch-ln{stroke:var(--ps);stroke-width:1.6;opacity:0.35}
+.hatch{fill:url(#hatch);stroke:var(--ps);stroke-width:1.2}
+.cross{stroke:var(--os);stroke-width:2;fill:none}
+.r-g{fill:var(--gf);stroke:var(--gs)}.k-g{fill:var(--gt)}.f-g{fill:var(--gf)}.d-g{fill:var(--gs)}.s-g{stroke:var(--gs);fill:none}.bar-g{fill:var(--gf);stroke:var(--gs);stroke-width:0.7}
+.r-t{fill:var(--tf);stroke:var(--ts)}.k-t{fill:var(--tt)}.f-t{fill:var(--tf)}.d-t{fill:var(--ts)}.s-t{stroke:var(--ts);fill:none}.bar-t{fill:var(--tf);stroke:var(--ts);stroke-width:0.7}
+.r-p{fill:var(--pf);stroke:var(--ps)}.k-p{fill:var(--pt)}.f-p{fill:var(--pf)}.d-p{fill:var(--ps)}.s-p{stroke:var(--ps);fill:none}.bar-p{fill:var(--pf);stroke:var(--ps);stroke-width:0.7}
+.r-e{fill:var(--ef);stroke:var(--es)}.k-e{fill:var(--et)}.f-e{fill:var(--ef)}.d-e{fill:var(--es)}.s-e{stroke:var(--es);fill:none}.bar-e{fill:var(--ef);stroke:var(--es);stroke-width:0.7}
+.r-o{fill:var(--of);stroke:var(--os)}.k-o{fill:var(--ot)}.f-o{fill:var(--of)}.d-o{fill:var(--os)}.s-o{stroke:var(--os);fill:none}.bar-o{fill:var(--of);stroke:var(--os);stroke-width:0.7}
+.hd{font-size:15px;font-weight:600;fill:var(--ink)}.title{font-size:14px;font-weight:600}.sub{font-size:11.5px}.lead{font-size:13.5px;font-weight:600;fill:var(--ink)}.ex{font-size:12.5px;fill:var(--body)}.leg{font-size:12px;fill:var(--legend)}.legb{font-size:12px;font-weight:600;fill:var(--ink)}.ct{font-size:11.5px}.tiny{font-size:11px;fill:var(--legend)}.tinyb{font-size:11px;font-weight:600;fill:var(--ink)}.micro{font-size:9px;fill:var(--legend)}
+.card{fill:var(--gf);stroke:var(--gs);stroke-width:0.9}.img{fill:var(--ts);opacity:0.55}
+.mean{stroke:var(--ts);stroke-width:1.8;stroke-dasharray:4 3}
+.tickp{stroke:var(--ps);stroke-width:2.4}.gap{stroke:var(--ink);stroke-width:1.4;fill:none}
+.th{stroke:var(--ps);stroke-width:1.6;stroke-dasharray:5 3}
+.dot-o{fill:var(--os);opacity:0.75}
+.seg-auto{fill:var(--of);stroke:var(--os);stroke-width:0.9}
+.stk-o2{fill:var(--os);opacity:0.45}.stk-o3{fill:var(--os);opacity:0.2}
+.vdash{stroke:var(--ts);stroke-width:3;stroke-dasharray:2 4;fill:none}
+:root{--ink:#20201a;--body:#3d3d38;--line:#73726c;--legend:#5f5e5a;--band:#c9c7bf;--gf:#f1efe8;--gs:#888780;--gt:#2c2c2a;--tf:#e1f5ee;--ts:#0f6e56;--tt:#085041;--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;--ef:#eaf3de;--es:#3b6d11;--et:#27500a;--of:#faece7;--os:#993c1d;--ot:#712b13}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--body:#d3d1c8;--line:#a8a69d;--legend:#cbc9c0;--band:#5a5953;--gf:#2c2c2a;--gs:#b4b2a9;--gt:#e9e7e0;--tf:#0f3a30;--ts:#5dcaa5;--tt:#c9efe2;--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;--ef:#213414;--es:#8fc75a;--et:#d6ecbf;--of:#3d1f14;--os:#e8835e;--ot:#f6cfbf}}
+</style>
+</defs>
+<g transform="translate(4 4)">
+<rect class="band" x="0" y="0" width="672" height="662" rx="10"/>
+<g transform="translate(12 12)">
+<text class="hd" x="0" y="14.8">A · Pretrain: offline RL on every demonstration</text>
+<g transform="translate(0 30.7)">
+<g transform="translate(14 0)">
+<rect class="box r-g" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-g" x="0" y="13.9">D<tspan class="s" baseline-shift="sub">demo</tspan></text>
+<g transform="translate(0 21.3)">
+<text class="sub k-g" x="0" y="11.4">all the demos</text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">Lots of demos, and one human label each.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">Every episode just says success or failure. That becomes a reward: every</text>
+<text class="ex" x="0" y="29.2">step costs −1, so a fast success scores higher than a slow one.</text>
+</g>
+<g transform="translate(0 66.6)">
+<g transform="translate(-0 1)">
+<rect class="cell" x="0" y="0" width="19" height="20" rx="3"/>
+<text class="micro" x="9.5" y="14" text-anchor="middle">−1</text>
+<rect class="cell" x="21" y="0" width="19" height="20" rx="3"/>
+<text class="micro" x="30.5" y="14" text-anchor="middle">−1</text>
+<rect class="cell" x="42" y="0" width="19" height="20" rx="3"/>
+<text class="micro" x="51.5" y="14" text-anchor="middle">−1</text>
+<rect class="cell" x="63" y="0" width="19" height="20" rx="3"/>
+<text class="micro" x="72.5" y="14" text-anchor="middle">−1</text>
+<rect class="cell" x="84" y="0" width="19" height="20" rx="3"/>
+<text class="micro" x="93.5" y="14" text-anchor="middle">−1</text>
+<rect class="cell" x="105" y="0" width="19" height="20" rx="3"/>
+<text class="micro" x="114.5" y="14" text-anchor="middle">−1</text>
+<rect class="cell" x="126" y="0" width="19" height="20" rx="3"/>
+<text class="micro" x="135.5" y="14" text-anchor="middle">−1</text>
+<rect class="cell" x="147" y="0" width="19" height="20" rx="3"/>
+<text class="micro" x="156.5" y="14" text-anchor="middle">−1</text>
+<rect class="cell" x="168" y="0" width="19" height="20" rx="3"/>
+<text class="micro" x="177.5" y="14" text-anchor="middle">−1</text>
+<rect class="cell" x="189" y="0" width="19" height="20" rx="3"/>
+<text class="micro" x="198.5" y="14" text-anchor="middle">−1</text>
+<rect class="chip r-e" x="212" y="-1" width="37.1" height="22" rx="11"/>
+<text class="ct k-e" x="230.5" y="14" text-anchor="middle">0 ✓</text>
+<rect class="cell" x="0" y="28" width="19" height="20" rx="3"/>
+<text class="micro" x="9.5" y="42" text-anchor="middle">−1</text>
+<rect class="cell" x="21" y="28" width="19" height="20" rx="3"/>
+<text class="micro" x="30.5" y="42" text-anchor="middle">−1</text>
+<rect class="cell" x="42" y="28" width="19" height="20" rx="3"/>
+<text class="micro" x="51.5" y="42" text-anchor="middle">−1</text>
+<rect class="cell" x="63" y="28" width="19" height="20" rx="3"/>
+<text class="micro" x="72.5" y="42" text-anchor="middle">−1</text>
+<rect class="cell" x="84" y="28" width="19" height="20" rx="3"/>
+<text class="micro" x="93.5" y="42" text-anchor="middle">−1</text>
+<rect class="cell" x="105" y="28" width="19" height="20" rx="3"/>
+<text class="micro" x="114.5" y="42" text-anchor="middle">−1</text>
+<rect class="cell" x="126" y="28" width="19" height="20" rx="3"/>
+<text class="micro" x="135.5" y="42" text-anchor="middle">−1</text>
+<rect class="chip r-o" x="149" y="27" width="56.9" height="22" rx="11"/>
+<text class="ct k-o" x="177.5" y="42" text-anchor="middle">−C<tspan class="s" baseline-shift="sub">fail</tspan> ✗</text>
+<text class="leg" x="300" y="12">R<tspan class="s" baseline-shift="sub">t</tspan> = everything collected</text>
+<text class="leg" x="300" y="28.3">from step t to the end,</text>
+<text class="leg" x="300" y="44.6">scaled per task into (−1, 0)</text>
+</g>
+</g>
+</g>
+<g transform="translate(0 138.6)">
+<rect class="box r-t" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-t" x="0" y="13.9">① Train V<tspan class="s" baseline-shift="sub">pre</tspan></text>
+<g transform="translate(0 21.3)">
+<text class="sub k-t" x="0" y="11.4">the value model</text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">V learns to guess how much of the task is left.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">It sees the images and the task, never the action, and predicts the return</text>
+<text class="ex" x="0" y="29.2">as a histogram. V is its mean.</text>
+</g>
+<g transform="translate(0 66.6)">
+<g transform="translate(-0 2)">
+<rect class="bar-t" x="10.6" y="51.9" width="4.8" height="12.1"/>
+<rect class="bar-t" x="16.6" y="48.6" width="4.8" height="15.4"/>
+<rect class="bar-t" x="22.6" y="50.3" width="4.8" height="13.7"/>
+<rect class="bar-t" x="28.6" y="55.5" width="4.8" height="8.5"/>
+<rect class="bar-t" x="34.6" y="59.8" width="4.8" height="4.2"/>
+<rect class="bar-t" x="40.6" y="61.8" width="4.8" height="2.2"/>
+<rect class="bar-t" x="46.6" y="62.4" width="4.8" height="1.6"/>
+<rect class="bar-t" x="52.6" y="62.5" width="4.8" height="1.5"/>
+<rect class="bar-t" x="58.6" y="62.4" width="4.8" height="1.6"/>
+<rect class="bar-t" x="64.6" y="62.4" width="4.8" height="1.6"/>
+<rect class="bar-t" x="70.6" y="62.3" width="4.8" height="1.7"/>
+<rect class="bar-t" x="76.6" y="62" width="4.8" height="2"/>
+<rect class="bar-t" x="82.6" y="61.7" width="4.8" height="2.3"/>
+<rect class="bar-t" x="88.6" y="61.1" width="4.8" height="2.9"/>
+<rect class="bar-t" x="94.6" y="60.1" width="4.8" height="3.9"/>
+<rect class="bar-t" x="100.6" y="58.7" width="4.8" height="5.3"/>
+<rect class="bar-t" x="106.6" y="56.7" width="4.8" height="7.3"/>
+<rect class="bar-t" x="112.6" y="53.9" width="4.8" height="10.1"/>
+<rect class="bar-t" x="118.6" y="50.3" width="4.8" height="13.7"/>
+<rect class="bar-t" x="124.6" y="45.9" width="4.8" height="18.1"/>
+<rect class="bar-t" x="130.6" y="40.6" width="4.8" height="23.4"/>
+<rect class="bar-t" x="136.6" y="34.9" width="4.8" height="29.1"/>
+<rect class="bar-t" x="142.6" y="28.9" width="4.8" height="35.1"/>
+<rect class="bar-t" x="148.6" y="23.2" width="4.8" height="40.8"/>
+<rect class="bar-t" x="154.6" y="18.3" width="4.8" height="45.7"/>
+<rect class="bar-t" x="160.6" y="14.7" width="4.8" height="49.3"/>
+<rect class="bar-t" x="166.6" y="12.8" width="4.8" height="51.2"/>
+<rect class="bar-t" x="172.6" y="12.7" width="4.8" height="51.3"/>
+<rect class="bar-t" x="178.6" y="14.6" width="4.8" height="49.4"/>
+<rect class="bar-t" x="184.6" y="18.1" width="4.8" height="45.9"/>
+<rect class="bar-t" x="190.6" y="23" width="4.8" height="41"/>
+<rect class="bar-t" x="196.6" y="28.7" width="4.8" height="35.3"/>
+<rect class="bar-t" x="202.6" y="34.6" width="4.8" height="29.4"/>
+<rect class="bar-t" x="208.6" y="40.4" width="4.8" height="23.6"/>
+<rect class="bar-t" x="214.6" y="45.7" width="4.8" height="18.3"/>
+<rect class="bar-t" x="220.6" y="50.2" width="4.8" height="13.8"/>
+<rect class="bar-t" x="226.6" y="53.8" width="4.8" height="10.2"/>
+<rect class="bar-t" x="232.6" y="56.6" width="4.8" height="7.4"/>
+<rect class="bar-t" x="238.6" y="58.6" width="4.8" height="5.4"/>
+<rect class="bar-t" x="244.6" y="60.1" width="4.8" height="3.9"/>
+<path class="ax" d="M10 64L250 64"/>
+<text class="tiny" x="10" y="79">−1  (fail)</text>
+<text class="tiny" x="250" y="79" text-anchor="end">0  (done)</text>
+<path class="mean" d="M154 66L154 -2"/>
+<text class="legb k-t" x="158" y="8">V = mean</text>
+<text class="leg" x="276" y="20">201 bins, not one number.</text>
+<text class="leg" x="276" y="36.3">The small bump near −1</text>
+<text class="leg" x="276" y="52.6">is “this might still fail”.</text>
+</g>
+</g>
+</g>
+</g>
+<g transform="translate(0 310.9)">
+<rect class="box r-p" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-p" x="0" y="13.9">② Grade samples</text>
+<g transform="translate(0 21.3)">
+<text class="sub k-p" x="0" y="11.4">A, then I</text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">Then every sample is graded against that guess.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">If things went better from here than V expected, A &gt; 0. In pretraining we</text>
+<text class="ex" x="0" y="29.2">look all the way to the episode end (N = T). The top ~30% become I = 1.</text>
+</g>
+<g transform="translate(0 66.6)">
+<g transform="translate(-0 1.6)">
+<path class="ax" d="M0 34L200 34"/>
+<text class="tiny" x="0" y="49">−1</text>
+<text class="tiny" x="200" y="49" text-anchor="end">0</text>
+<path class="tickp" d="M90 25L90 43"/>
+<text class="tiny k-p" x="86" y="20" text-anchor="end">V(o<tspan class="s" baseline-shift="sub">t</tspan>) guessed</text>
+<circle class="d-e" cx="144" cy="34" r="5"/>
+<text class="tiny k-e" x="140" y="20">R<tspan class="s" baseline-shift="sub">t</tspan> actual</text>
+<path class="gap" d="M93 42L138 42" marker-end="url(#a)"/>
+<text class="legb" x="117" y="56" text-anchor="middle">A</text>
+<path class="ax" d="M240 34L460 34"/>
+<text class="tiny" x="240" y="49">negative</text>
+<text class="tiny" x="460" y="49" text-anchor="end">positive ≈ 30%</text>
+<circle class="dot-o" cx="257.1" cy="28" r="3.2"/>
+<circle class="dot-o" cx="264.7" cy="21" r="3.2"/>
+<circle class="dot-o" cx="281.2" cy="14" r="3.2"/>
+<circle class="dot-o" cx="286.2" cy="28" r="3.2"/>
+<circle class="dot-o" cx="289.9" cy="21" r="3.2"/>
+<circle class="dot-o" cx="293.5" cy="14" r="3.2"/>
+<circle class="dot-o" cx="293.6" cy="28" r="3.2"/>
+<circle class="dot-o" cx="308.8" cy="21" r="3.2"/>
+<circle class="dot-o" cx="310.6" cy="14" r="3.2"/>
+<circle class="dot-o" cx="314.2" cy="28" r="3.2"/>
+<circle class="dot-o" cx="328.7" cy="21" r="3.2"/>
+<circle class="dot-o" cx="331.5" cy="14" r="3.2"/>
+<circle class="dot-o" cx="333.1" cy="28" r="3.2"/>
+<circle class="dot-o" cx="334.5" cy="21" r="3.2"/>
+<circle class="dot-o" cx="336.4" cy="14" r="3.2"/>
+<circle class="dot-o" cx="338.9" cy="28" r="3.2"/>
+<circle class="dot-o" cx="339" cy="21" r="3.2"/>
+<circle class="dot-o" cx="339.9" cy="14" r="3.2"/>
+<circle class="dot-o" cx="342.7" cy="28" r="3.2"/>
+<circle class="dot-o" cx="346.6" cy="21" r="3.2"/>
+<circle class="dot-o" cx="348.2" cy="14" r="3.2"/>
+<circle class="dot-o" cx="348.7" cy="28" r="3.2"/>
+<circle class="dot-o" cx="352.9" cy="21" r="3.2"/>
+<circle class="d-e" cx="354" cy="14" r="3.2"/>
+<circle class="d-e" cx="356.7" cy="28" r="3.2"/>
+<circle class="d-e" cx="360.1" cy="21" r="3.2"/>
+<circle class="d-e" cx="374.9" cy="14" r="3.2"/>
+<circle class="d-e" cx="380.9" cy="28" r="3.2"/>
+<circle class="d-e" cx="381.8" cy="21" r="3.2"/>
+<circle class="d-e" cx="392" cy="14" r="3.2"/>
+<circle class="d-e" cx="396.6" cy="28" r="3.2"/>
+<circle class="d-e" cx="397.7" cy="21" r="3.2"/>
+<circle class="d-e" cx="402.9" cy="14" r="3.2"/>
+<circle class="d-e" cx="430.4" cy="28" r="3.2"/>
+<path class="th" d="M354 42L354 0"/>
+<text class="legb k-p" x="358" y="8">ε<tspan class="s" baseline-shift="sub">ℓ</tspan></text>
+<text class="tiny" x="350" y="64" text-anchor="middle">A of every sample</text>
+</g>
+</g>
+</g>
+</g>
+<g transform="translate(0 467.9)">
+<rect class="box r-e" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-e" x="0" y="13.9">③ Train π<tspan class="s" baseline-shift="sub">pre</tspan></text>
+<g transform="translate(0 21.3)">
+<text class="sub k-e" x="0" y="11.4">the VLA itself</text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">The VLA reads the grade as one more word in its prompt.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">Same imitation loss as always. 30% of the time the word is hidden, so one</text>
+<text class="ex" x="0" y="29.2">set of weights also learns the plain, unconditioned policy (for CFG).</text>
+</g>
+<g transform="translate(0 66.6)">
+<rect class="img" x="0" y="3" width="11" height="16" rx="2"/>
+<rect class="img" x="13" y="3" width="11" height="16" rx="2"/>
+<rect class="img" x="26" y="3" width="11" height="16" rx="2"/>
+<rect class="chip r-g" x="44" y="0" width="108.8" height="22" rx="11"/>
+<text class="ct k-g" x="98.4" y="15" text-anchor="middle">“make a doppio”</text>
+<rect class="chip r-g" x="158.8" y="0" width="55.2" height="22" rx="11"/>
+<text class="ct k-g" x="186.4" y="15" text-anchor="middle">“tamp”</text>
+<rect class="chip r-p" x="220" y="0" width="126.6" height="22" rx="11"/>
+<text class="ct k-p" x="283.3" y="15" text-anchor="middle">Advantage: positive</text>
+<path class="arw" d="M353.6 11L367.6 11" marker-end="url(#a)"/>
+<rect class="chip r-e" x="372.6" y="0" width="56.5" height="22" rx="11"/>
+<text class="ct k-e" x="400.8" y="15" text-anchor="middle">actions</text>
+<rect class="img" x="0" y="33" width="11" height="16" rx="2"/>
+<rect class="img" x="13" y="33" width="11" height="16" rx="2"/>
+<rect class="img" x="26" y="33" width="11" height="16" rx="2"/>
+<rect class="chip r-g" x="44" y="30" width="108.8" height="22" rx="11"/>
+<text class="ct k-g" x="98.4" y="45" text-anchor="middle">“make a doppio”</text>
+<rect class="chip r-g" x="158.8" y="30" width="55.2" height="22" rx="11"/>
+<text class="ct k-g" x="186.4" y="45" text-anchor="middle">“tamp”</text>
+<rect class="chip r-p dash" x="220" y="30" width="107.1" height="22" rx="11"/>
+<text class="ct k-p" x="273.6" y="45" text-anchor="middle">(token dropped)</text>
+<path class="arw" d="M334.1 41L348.1 41" marker-end="url(#a)"/>
+<rect class="chip r-e" x="353.1" y="30" width="56.5" height="22" rx="11"/>
+<text class="ct k-e" x="381.3" y="45" text-anchor="middle">actions</text>
+<text class="tiny k-p" x="273.6" y="66" text-anchor="middle">↑ 30% of samples</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform="translate(0 674)">
+<rect class="band" x="0" y="0" width="672" height="733.8" rx="10"/>
+<g transform="translate(12 12)">
+<text class="hd" x="0" y="14.8">B · Specialist: practice one skill ℓ</text>
+<g transform="translate(0 30.7)">
+<g transform="translate(14 0)">
+<rect class="box r-g" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-g" x="0" y="13.9">Start: π<tspan class="s" baseline-shift="super">0</tspan><tspan class="s" baseline-shift="sub">ℓ</tspan></text>
+<g transform="translate(0 21.3)">
+<text class="sub k-g" x="0" y="11.4">plain SFT</text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">Kick off with ordinary fine-tuning on this skill’s demos.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">ℓ is the task (“make a doppio”), so D<tspan class="s" baseline-shift="sub">ℓ</tspan> is the data for that one skill.</text>
+</g>
+<g transform="translate(0 49.6)">
+<rect class="card" x="0" y="0" width="28" height="34" rx="4"/>
+<text class="micro" x="14" y="14" text-anchor="middle">demo</text>
+<circle class="d-e" cx="14" cy="24" r="5"/>
+<rect class="card" x="34" y="0" width="28" height="34" rx="4"/>
+<text class="micro" x="48" y="14" text-anchor="middle">demo</text>
+<circle class="d-e" cx="48" cy="24" r="5"/>
+<rect class="card" x="68" y="0" width="28" height="34" rx="4"/>
+<text class="micro" x="82" y="14" text-anchor="middle">demo</text>
+<circle class="d-e" cx="82" cy="24" r="5"/>
+<rect class="card" x="102" y="0" width="28" height="34" rx="4"/>
+<text class="micro" x="116" y="14" text-anchor="middle">demo</text>
+<circle class="d-e" cx="116" cy="24" r="5"/>
+<rect class="card" x="136" y="0" width="28" height="34" rx="4"/>
+<text class="micro" x="150" y="14" text-anchor="middle">demo</text>
+<circle class="d-e" cx="150" cy="24" r="5"/>
+<rect class="card" x="170" y="0" width="28" height="34" rx="4"/>
+<text class="micro" x="184" y="14" text-anchor="middle">demo</text>
+<circle class="d-e" cx="184" cy="24" r="5"/>
+<text class="leg" x="214" y="14">every demo tagged “positive”</text>
+<text class="leg" x="214" y="30.3">→ this step is just SFT</text>
+</g>
+</g>
+<g transform="translate(0 105.6)">
+<rect class="box r-o" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-o" x="0" y="13.9">Deploy π<tspan class="s" baseline-shift="super">k−1</tspan><tspan class="s" baseline-shift="sub">ℓ</tspan></text>
+<g transform="translate(0 21.3)">
+<text class="sub k-o" x="0" y="11.4">with I = 1</text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">Let it practice, with a human ready to step in.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">The robot runs prompted with “positive”. When an expert grabs the</text>
+<text class="ex" x="0" y="29.2">controls, those steps are labeled positive no matter what V says.</text>
+</g>
+<g transform="translate(0 66.6)">
+<rect class="seg-auto" x="0" y="18" width="140" height="18" rx="3"/>
+<text class="tiny" x="70" y="12" text-anchor="middle"><tspan class="k-o">robot drives</tspan></text>
+<rect class="hatch" x="140" y="18" width="95" height="18" rx="3"/>
+<text class="tiny" x="187.5" y="12" text-anchor="middle"><tspan class="k-p">expert takes over</tspan></text>
+<text class="tinyb" x="187.5" y="31" text-anchor="middle"><tspan class="k-p">I = 1 forced</tspan></text>
+<rect class="seg-auto" x="235" y="18" width="160" height="18" rx="3"/>
+<text class="tiny" x="315" y="12" text-anchor="middle"><tspan class="k-o">robot again</tspan></text>
+<rect class="chip r-g" x="402" y="16" width="46.1" height="22" rx="11"/>
+<text class="ct k-g" x="425.1" y="31" text-anchor="middle">✓ / ✗</text>
+</g>
+</g>
+</g>
+<g transform="translate(0 232.2)">
+<rect class="box r-g" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-g" x="0" y="13.9">Grow D<tspan class="s" baseline-shift="sub">ℓ</tspan></text>
+<g transform="translate(0 21.3)">
+<text class="sub k-g" x="0" y="11.4">keep everything</text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">Nothing is thrown away, not even the failures.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">Old rounds stay too, so “the data” is humans plus every past policy.</text>
+</g>
+<g transform="translate(0 49.6)">
+<rect class="f-g" x="0" y="6" width="130" height="22"/>
+<text class="tiny" x="65" y="42" text-anchor="middle">demos</text>
+<rect class="f-o" x="130" y="6" width="110" height="22"/>
+<text class="tiny" x="185" y="42" text-anchor="middle">round 1</text>
+<rect class="stk-o2" x="240" y="6" width="110" height="22"/>
+<text class="tiny" x="295" y="42" text-anchor="middle">round 2</text>
+<rect class="stk-o3" x="350" y="6" width="70" height="22"/>
+<text class="tiny" x="385" y="42" text-anchor="middle">…</text>
+<rect class="s-g" x="0" y="6" width="420" height="22" rx="3"/>
+</g>
+</g>
+</g>
+<g transform="translate(0 348.5)">
+<rect class="box r-t" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-t" x="0" y="13.9">Refit V<tspan class="s" baseline-shift="super">k</tspan><tspan class="s" baseline-shift="sub">ℓ</tspan></text>
+<g transform="translate(0 21.3)">
+<text class="sub k-t" x="0" y="11.4">from V<tspan class="s" baseline-shift="sub">pre</tspan></text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">Re-learn the value model from the pretrained one.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">It is trained on all of D<tspan class="s" baseline-shift="sub">ℓ</tspan>, with the same 201-bin loss as before.</text>
+</g>
+<g transform="translate(0 49.6)">
+<rect class="chip r-t" x="0" y="4" width="70" height="22" rx="11"/>
+<text class="ct k-t" x="35" y="19" text-anchor="middle">V<tspan class="s" baseline-shift="sub">pre</tspan></text>
+<path class="arw" d="M74 15L114 15" marker-end="url(#a)"/>
+<rect class="chip r-t" x="118" y="4" width="48" height="22" rx="11"/>
+<text class="ct k-t" x="142" y="19" text-anchor="middle">V<tspan class="s" baseline-shift="super">k</tspan></text>
+<rect class="chip r-g dash" x="230" y="4" width="37.9" height="22" rx="11"/>
+<text class="ct k-g" x="249" y="19" text-anchor="middle">V<tspan class="s" baseline-shift="super">k−1</tspan></text>
+<path class="arw dash" d="M271.9 15L311.9 15" marker-end="url(#a)"/>
+<path class="cross" d="M283.9 7l14 14M297.9 7l-14 14"/>
+<rect class="chip r-g dash" x="315.9" y="4" width="48" height="22" rx="11"/>
+<text class="ct k-g" x="339.9" y="19" text-anchor="middle">V<tspan class="s" baseline-shift="super">k</tspan></text>
+<text class="tiny" x="375.9" y="19">not this</text>
+</g>
+</g>
+</g>
+<g transform="translate(0 446.1)">
+<rect class="box r-p" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-p" x="0" y="13.9">Re-grade D<tspan class="s" baseline-shift="sub">ℓ</tspan></text>
+<g transform="translate(0 21.3)">
+<text class="sub k-p" x="0" y="11.4">N = 50</text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">Grade again, but only trust 50 real steps.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">Count actual rewards for 50 steps, then let V guess the rest: less noisy</text>
+<text class="ex" x="0" y="29.2">than waiting for the end. Cut at ~40% positive (t-shirt: ~10%, only the</text>
+<text class="ex" x="0" y="46.2">fastest).</text>
+</g>
+<g transform="translate(0 83.6)">
+<path class="ax" d="M0 30L440 30"/>
+<path class="tk" d="M0 26L0 34"/>
+<path class="tk" d="M8 26L8 34"/>
+<path class="tk" d="M16 26L16 34"/>
+<path class="tk" d="M24 26L24 34"/>
+<path class="tk" d="M32 26L32 34"/>
+<path class="tk" d="M40 26L40 34"/>
+<path class="tk" d="M48 26L48 34"/>
+<path class="tk" d="M56 26L56 34"/>
+<path class="tk" d="M64 26L64 34"/>
+<path class="tk" d="M72 26L72 34"/>
+<path class="tk" d="M80 26L80 34"/>
+<path class="tk" d="M88 26L88 34"/>
+<path class="tk" d="M96 26L96 34"/>
+<path class="tk" d="M104 26L104 34"/>
+<path class="tk" d="M112 26L112 34"/>
+<path class="tk" d="M120 26L120 34"/>
+<path class="tk" d="M128 26L128 34"/>
+<path class="tk" d="M136 26L136 34"/>
+<path class="tk" d="M144 26L144 34"/>
+<path class="tk" d="M152 26L152 34"/>
+<path class="tk" d="M160 26L160 34"/>
+<path class="tk" d="M168 26L168 34"/>
+<path class="tk" d="M176 26L176 34"/>
+<path class="tk" d="M184 26L184 34"/>
+<path class="tk" d="M192 26L192 34"/>
+<path class="tk" d="M200 26L200 34"/>
+<text class="tiny" x="0" y="45">t</text>
+<text class="tiny" x="200" y="45" text-anchor="middle">t+50</text>
+<text class="tiny" x="440" y="45" text-anchor="end">end</text>
+<path class="s-e" d="M0 20V14H200V20"/>
+<text class="tiny k-e" x="100" y="9" text-anchor="middle">50 real steps: r<tspan class="s" baseline-shift="sub">t</tspan> + … + r<tspan class="s" baseline-shift="sub">t+49</tspan></text>
+<path class="vdash" d="M204 30L440 30"/>
+<text class="tiny k-t" x="322" y="20" text-anchor="middle">V(o<tspan class="s" baseline-shift="sub">t+50</tspan>) guesses the rest</text>
+</g>
+</g>
+</g>
+<g transform="translate(0 599.5)">
+<rect class="box r-e" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-e" x="0" y="13.9">Retrain π<tspan class="s" baseline-shift="super">k</tspan><tspan class="s" baseline-shift="sub">ℓ</tspan></text>
+<g transform="translate(0 21.3)">
+<text class="sub k-e" x="0" y="11.4">from π<tspan class="s" baseline-shift="sub">pre</tspan></text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">Retrain the policy from π<tspan class="s" baseline-shift="sub">pre</tspan> again, every round.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">Not from last round’s policy: only the data carries over, which avoids drift.</text>
+</g>
+<g transform="translate(0 49.6)">
+<rect class="chip r-e" x="0" y="4" width="70" height="22" rx="11"/>
+<text class="ct k-e" x="35" y="19" text-anchor="middle">π<tspan class="s" baseline-shift="sub">pre</tspan></text>
+<path class="arw" d="M74 15L114 15" marker-end="url(#a)"/>
+<rect class="chip r-e" x="118" y="4" width="48" height="22" rx="11"/>
+<text class="ct k-e" x="142" y="19" text-anchor="middle">π<tspan class="s" baseline-shift="super">k</tspan></text>
+<rect class="chip r-g dash" x="230" y="4" width="37.9" height="22" rx="11"/>
+<text class="ct k-g" x="248.9" y="19" text-anchor="middle">π<tspan class="s" baseline-shift="super">k−1</tspan></text>
+<path class="arw dash" d="M271.9 15L311.9 15" marker-end="url(#a)"/>
+<path class="cross" d="M283.9 7l14 14M297.9 7l-14 14"/>
+<rect class="chip r-g dash" x="315.9" y="4" width="48" height="22" rx="11"/>
+<text class="ct k-g" x="339.9" y="19" text-anchor="middle">π<tspan class="s" baseline-shift="super">k</tspan></text>
+<text class="tiny" x="375.9" y="19">not this</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform="translate(0 1419.8)">
+<rect class="band dash" x="0" y="0" width="672" height="178" rx="10"/>
+<g transform="translate(12 12)">
+<text class="hd" x="0" y="14.8">C · Maybe: one generalist at the end</text>
+<g transform="translate(0 30.7)">
+<g transform="translate(14 0)">
+<rect class="box r-g dash" x="0" y="0" width="160" height="60" rx="8"/>
+<g transform="translate(12 11.4)">
+<text class="title k-g" x="0" y="13.9">Pool it all</text>
+<g transform="translate(0 21.3)">
+<text class="sub k-g" x="0" y="11.4">not in Algorithm 1</text>
+</g>
+</g>
+<g transform="translate(182 0)">
+<text class="lead" x="0" y="13.4">The paper gives this one sentence.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">Likely reading: pool every specialist’s data and rerun ①–③ fresh, instead</text>
+<text class="ex" x="0" y="29.2">of merging specialist weights.</text>
+</g>
+<g transform="translate(0 66.6)">
+<path class="box r-g" d="M0 5V29A20 5 0 0 0 40 29V5"/>
+<ellipse class="box r-g" cx="20" cy="5" rx="20" ry="5"/>
+<text class="tiny" x="20" y="50" text-anchor="middle">D<tspan class="s" baseline-shift="sub">demo</tspan></text>
+<path class="box r-o" d="M56 5V29A20 5 0 0 0 96 29V5"/>
+<ellipse class="box r-o" cx="76" cy="5" rx="20" ry="5"/>
+<text class="tiny" x="76" y="50" text-anchor="middle">D<tspan class="s" baseline-shift="sub">ℓ1</tspan></text>
+<path class="box r-o" d="M112 5V29A20 5 0 0 0 152 29V5"/>
+<ellipse class="box r-o" cx="132" cy="5" rx="20" ry="5"/>
+<text class="tiny" x="132" y="50" text-anchor="middle">D<tspan class="s" baseline-shift="sub">ℓ2</tspan></text>
+<path class="box r-o" d="M168 5V29A20 5 0 0 0 208 29V5"/>
+<ellipse class="box r-o" cx="188" cy="5" rx="20" ry="5"/>
+<text class="tiny" x="188" y="50" text-anchor="middle">…</text>
+<path class="arw" d="M220 17L262 17" marker-end="url(#a)"/>
+<rect class="box r-p dash" x="266" y="5" width="76" height="24" rx="6"/>
+<text class="ct k-p" x="304" y="21" text-anchor="middle">①→②→③</text>
+<path class="arw" d="M346 17L372 17" marker-end="url(#a)"/>
+<rect class="chip r-e" x="376" y="6" width="70" height="22" rx="11"/>
+<text class="ct k-e" x="411" y="21" text-anchor="middle">π<tspan class="s" baseline-shift="sub">final</tspan></text>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path class="arw" d="M110 106.7L110 183.3" marker-end="url(#a)"/>
+<path class="arw" d="M110 245.3L110 355.6" marker-end="url(#a)"/>
+<path class="arw" d="M110 417.6L110 512.6" marker-end="url(#a)"/>
+<path class="arw" d="M110 780.6L110 824.2" marker-end="url(#a)"/>
+<path class="arw" d="M110 886.2L110 950.8" marker-end="url(#a)"/>
+<path class="arw" d="M110 1012.8L110 1067.2" marker-end="url(#a)"/>
+<path class="arw" d="M110 1129.2L110 1164.8" marker-end="url(#a)"/>
+<path class="arw" d="M110 1226.8L110 1318.1" marker-end="url(#a)"/>
+<path class="arw" d="M30.0 1350.1H16.0V856.2H28.0" marker-end="url(#a)"/>
+<text transform="rotate(-90 12 1103.2)" class="legb" x="12" y="1103.2" text-anchor="middle">repeat: k ← k + 1</text>
+</svg>

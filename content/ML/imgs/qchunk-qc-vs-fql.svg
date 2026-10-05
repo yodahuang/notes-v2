@@ -1,0 +1,144 @@
+<svg width="100%" viewBox="0 0 680 573" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>QC versus QC-FQL</title><desc>QC samples N action chunks from a flow-matching behavior policy, scores them with the chunked critic and executes the argmax. QC-FQL feeds the same Gaussian noise to the flow and to a one-step actor, and trains the actor with an L2 pull toward the flow&#x27;s output plus a negative Q term.</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="hatch-bg"/><path d="M0 0V6" class="hatch-ln"/></pattern>
+
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif}
+.s{font-size:0.72em}.b{font-weight:600}
+.box{stroke-width:1.1}.chip{stroke-width:1}.dash{stroke-dasharray:5 4}
+.arw{stroke:var(--line);stroke-width:1.5;fill:none}
+.band{fill:none;stroke:var(--band);stroke-width:1.2}
+.ax{stroke:var(--line);stroke-width:1.2;fill:none}.tk{stroke:var(--line);stroke-width:1}
+.ln{stroke:var(--line);stroke-width:1.2;fill:none}
+.cell{fill:var(--gf);stroke:var(--gs);stroke-width:0.8}
+.hatch-bg{fill:var(--pf)}.hatch-ln{stroke:var(--ps);stroke-width:1.6;opacity:0.35}
+.hatch{fill:url(#hatch);stroke:var(--ps);stroke-width:1.2}
+.cross{stroke:var(--os);stroke-width:2;fill:none}
+.r-g{fill:var(--gf);stroke:var(--gs)}.k-g{fill:var(--gt)}.f-g{fill:var(--gf)}.d-g{fill:var(--gs)}.s-g{stroke:var(--gs);fill:none}.bar-g{fill:var(--gf);stroke:var(--gs);stroke-width:0.7}
+.r-t{fill:var(--tf);stroke:var(--ts)}.k-t{fill:var(--tt)}.f-t{fill:var(--tf)}.d-t{fill:var(--ts)}.s-t{stroke:var(--ts);fill:none}.bar-t{fill:var(--tf);stroke:var(--ts);stroke-width:0.7}
+.r-p{fill:var(--pf);stroke:var(--ps)}.k-p{fill:var(--pt)}.f-p{fill:var(--pf)}.d-p{fill:var(--ps)}.s-p{stroke:var(--ps);fill:none}.bar-p{fill:var(--pf);stroke:var(--ps);stroke-width:0.7}
+.r-e{fill:var(--ef);stroke:var(--es)}.k-e{fill:var(--et)}.f-e{fill:var(--ef)}.d-e{fill:var(--es)}.s-e{stroke:var(--es);fill:none}.bar-e{fill:var(--ef);stroke:var(--es);stroke-width:0.7}
+.r-o{fill:var(--of);stroke:var(--os)}.k-o{fill:var(--ot)}.f-o{fill:var(--of)}.d-o{fill:var(--os)}.s-o{stroke:var(--os);fill:none}.bar-o{fill:var(--of);stroke:var(--os);stroke-width:0.7}
+.hd{font-size:15px;font-weight:600;fill:var(--ink)}.title{font-size:14px;font-weight:600}.sub{font-size:11.5px}.lead{font-size:13.5px;font-weight:600;fill:var(--ink)}.ex{font-size:12.5px;fill:var(--body)}.leg{font-size:12px;fill:var(--legend)}.legb{font-size:12px;font-weight:600;fill:var(--ink)}.ct{font-size:11.5px}.tiny{font-size:11px;fill:var(--legend)}.tinyb{font-size:11px;font-weight:600;fill:var(--ink)}.micro{font-size:9px;fill:var(--legend)}
+.b-e{stroke:var(--es);stroke-width:1.6;fill:none}.b-o{stroke:var(--os);stroke-width:1.6;fill:none}
+.ghost{fill:var(--pf);stroke:var(--ps);stroke-width:0.9;opacity:0.55}
+.lossln{stroke:var(--os);stroke-width:1.4;fill:none;stroke-dasharray:4 3}
+:root{--ink:#20201a;--body:#3d3d38;--line:#73726c;--legend:#5f5e5a;--band:#c9c7bf;--gf:#f1efe8;--gs:#888780;--gt:#2c2c2a;--tf:#e1f5ee;--ts:#0f6e56;--tt:#085041;--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;--ef:#eaf3de;--es:#3b6d11;--et:#27500a;--of:#faece7;--os:#993c1d;--ot:#712b13}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--body:#d3d1c8;--line:#a8a69d;--legend:#cbc9c0;--band:#5a5953;--gf:#2c2c2a;--gs:#b4b2a9;--gt:#e9e7e0;--tf:#0f3a30;--ts:#5dcaa5;--tt:#c9efe2;--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;--ef:#213414;--es:#8fc75a;--et:#d6ecbf;--of:#3d1f14;--os:#e8835e;--ot:#f6cfbf}}
+</style>
+</defs>
+<g transform="translate(4 4)">
+<rect class="band" x="0" y="0" width="672" height="192" rx="10"/>
+<g transform="translate(12 12)">
+<text class="hd" x="0" y="14.8">QC:  improvement happens at selection time</text>
+<g transform="translate(0 30.7)">
+<text class="lead" x="0" y="13.4">No actor. Best-of-N from the BC flow is the policy.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">The flow is trained only by flow matching on chunks from the buffer. The same sample-and-argmax picks</text>
+<text class="ex" x="0" y="29.2">A′ inside the TD target, so the critic evaluates exactly this policy.</text>
+</g>
+<g transform="translate(0 70.6)">
+<rect class="chip r-g" x="0" y="18" width="40" height="22" rx="11"/>
+<text class="ct k-g" x="20" y="33" text-anchor="middle">s<tspan class="s" baseline-shift="sub">t</tspan></text>
+<path class="arw" d="M42 29L62 29" marker-end="url(#a)"/>
+<g transform="translate(66 4.9)">
+<rect class="box r-t" x="0" y="0" width="98.6" height="48.2" rx="8"/>
+<g transform="translate(10 6)">
+<text class="title k-t" x="0" y="13.9">flow BC  f<tspan class="s" baseline-shift="sub">ξ</tspan></text>
+<g transform="translate(0 20.3)">
+<text class="sub k-t" x="0" y="11.4">10 Euler steps</text>
+</g>
+</g>
+</g>
+<path class="arw" d="M166.6 29L186.6 29" marker-end="url(#a)"/>
+<rect class="ghost" x="190.6" y="12" width="60" height="22" rx="5"/>
+<rect class="ghost" x="195.6" y="17" width="60" height="22" rx="5"/>
+<rect class="ghost" x="200.6" y="22" width="60" height="22" rx="5"/>
+<text class="ct k-p" x="230.6" y="37" text-anchor="middle">A<tspan class="s" baseline-shift="super">1</tspan> … A<tspan class="s" baseline-shift="super">N</tspan></text>
+<text class="tiny" x="230.6" y="64" text-anchor="middle">N chunks</text>
+<path class="arw" d="M268.6 29L288.6 29" marker-end="url(#a)"/>
+<g transform="translate(292.6 4.9)">
+<rect class="box r-t" x="0" y="0" width="123.1" height="48.2" rx="8"/>
+<g transform="translate(10 6)">
+<text class="title k-t" x="0" y="13.9">critic  Q<tspan class="s" baseline-shift="sub">θ</tspan>(s, A<tspan class="s" baseline-shift="super">i</tspan>)</text>
+<g transform="translate(0 20.3)">
+<text class="sub k-t" x="0" y="11.4">score each chunk</text>
+</g>
+</g>
+</g>
+<path class="arw" d="M417.7 29L437.7 29" marker-end="url(#a)"/>
+<rect class="chip r-e" x="441.7" y="18" width="91.4" height="22" rx="11"/>
+<text class="ct k-e" x="487.3" y="33" text-anchor="middle">argmax → A<tspan class="s" baseline-shift="super">★</tspan></text>
+<text class="tiny" x="441.7" y="58">run h actions open-loop</text>
+</g>
+</g>
+</g>
+<g transform="translate(0 204)">
+<rect class="band" x="0" y="0" width="672" height="360.5" rx="10"/>
+<g transform="translate(12 12)">
+<text class="hd" x="0" y="14.8">QC-FQL:  an actor absorbs the improvement</text>
+<g transform="translate(0 30.7)">
+<text class="lead" x="0" y="13.4">Same noise into both models; pull the actor toward high Q but near the flow’s output.</text>
+<g transform="translate(0 22.6)">
+<text class="ex" x="0" y="12.2">Using one z for both defines a coupling, so the squared distance upper-bounds W<tspan class="s" baseline-shift="sub">2</tspan>². Distillation and RL</text>
+<text class="ex" x="0" y="29.2">happen together, not one after the other.</text>
+</g>
+<g transform="translate(0 70.6)">
+<rect class="chip r-p" x="0" y="71" width="86" height="22" rx="11"/>
+<text class="ct k-p" x="43" y="86" text-anchor="middle">z ∼ 𝒩(0, I)</text>
+<path class="arw" d="M86 82.0C108 82.0 106 34 125 34" marker-end="url(#a)"/>
+<path class="arw" d="M86 82.0C108 82.0 106 130 125 130" marker-end="url(#a)"/>
+<g transform="translate(128 9.9)">
+<rect class="box r-t" x="0" y="0" width="176" height="48.2" rx="8"/>
+<g transform="translate(10 6)">
+<text class="title k-t" x="0" y="13.9">flow BC  f<tspan class="s" baseline-shift="sub">ξ</tspan></text>
+<g transform="translate(0 20.3)">
+<text class="sub k-t" x="0" y="11.4">10 ODE steps, no actor grad</text>
+</g>
+</g>
+</g>
+<g transform="translate(128 105.9)">
+<rect class="box r-e" x="0" y="0" width="176" height="48.2" rx="8"/>
+<g transform="translate(10 6)">
+<text class="title k-e" x="0" y="13.9">actor  μ<tspan class="s" baseline-shift="sub">ψ</tspan>(s, z)</text>
+<g transform="translate(0 20.3)">
+<text class="sub k-e" x="0" y="11.4">one forward pass</text>
+</g>
+</g>
+</g>
+<path class="arw" d="M306 34L328 34" marker-end="url(#a)"/>
+<rect class="chip r-p" x="332" y="23" width="112" height="22" rx="11"/>
+<text class="ct k-p" x="388" y="38" text-anchor="middle">z<tspan class="s" baseline-shift="super">1</tspan>  (BC chunk)</text>
+<path class="arw" d="M306 130L328 130" marker-end="url(#a)"/>
+<rect class="chip r-e" x="332" y="119" width="112" height="22" rx="11"/>
+<text class="ct k-e" x="388" y="134" text-anchor="middle">Â  (actor chunk)</text>
+<g transform="translate(470 57.9)">
+<rect class="box r-o" x="0" y="0" width="148" height="48.2" rx="8"/>
+<g transform="translate(8 6)">
+<text class="title k-o" x="0" y="13.9">α ‖Â − z<tspan class="s" baseline-shift="super">1</tspan>‖²</text>
+<g transform="translate(0 20.3)">
+<text class="sub k-o" x="0" y="11.4">≥ α · W<tspan class="s" baseline-shift="sub">2</tspan>²: stay near BC</text>
+</g>
+</g>
+</g>
+<path class="lossln" d="M444 34H544V55.9"/>
+<path class="lossln" d="M444 130H544V108.1"/>
+<path class="lossln" d="M388 141V160"/>
+<g transform="translate(332 162)">
+<rect class="box r-o" x="0" y="0" width="112" height="48.2" rx="8"/>
+<g transform="translate(8 6)">
+<text class="title k-o" x="0" y="13.9">− Q<tspan class="s" baseline-shift="sub">θ</tspan>(s, Â)</text>
+<g transform="translate(0 20.3)">
+<text class="sub k-o" x="0" y="11.4">improve</text>
+</g>
+</g>
+</g>
+<text class="leg" x="0" y="232.2">Both losses update μ<tspan class="s" baseline-shift="sub">ψ</tspan> in the same step. Acting needs only the green path.</text>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>

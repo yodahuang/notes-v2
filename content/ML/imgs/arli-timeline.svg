@@ -1,0 +1,98 @@
+<svg width="100%" viewBox="0 0 680 265" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>ARLI inference timeline</title><desc>Timeline from t−d to t. The robot keeps executing the committed tail of the old chunk while the frozen VLM backbone processes the stale observation s_{t−d}. Late, at t−d_RL, the small RL policy reads s_{t−d}, the committed actions and the fresher observation s_{t−d_RL}, outputs noise w, and the action expert turns it into the new chunk that starts executing at t.</desc>
+<defs>
+<marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="6" height="6" class="hatch-bg"/><path d="M0 0V6" class="hatch-ln"/></pattern>
+
+<style>
+text{font-family:'Anthropic Sans',-apple-system,system-ui,sans-serif;fill:var(--ink)}
+.s{font-size:0.72em}.b{font-weight:600}
+.box{stroke-width:1.1}.chip{stroke-width:1}.dash{stroke-dasharray:5 4}
+.arw{stroke:var(--line);stroke-width:1.5;fill:none}
+.band{fill:none;stroke:var(--band);stroke-width:1.2}
+.ax{stroke:var(--line);stroke-width:1.2;fill:none}.tk{stroke:var(--line);stroke-width:1}
+.ln{stroke:var(--line);stroke-width:1.2;fill:none}
+.cell{fill:var(--gf);stroke:var(--gs);stroke-width:0.8}
+.hatch-bg{fill:var(--pf)}.hatch-ln{stroke:var(--ps);stroke-width:1.6;opacity:0.35}
+.hatch{fill:url(#hatch);stroke:var(--ps);stroke-width:1.2}
+.cross{stroke:var(--os);stroke-width:2;fill:none}
+.r-g{fill:var(--gf);stroke:var(--gs)}.k-g{fill:var(--gt)}.f-g{fill:var(--gf)}.d-g{fill:var(--gs)}.s-g{stroke:var(--gs);fill:none}.bar-g{fill:var(--gf);stroke:var(--gs);stroke-width:0.7}
+.r-t{fill:var(--tf);stroke:var(--ts)}.k-t{fill:var(--tt)}.f-t{fill:var(--tf)}.d-t{fill:var(--ts)}.s-t{stroke:var(--ts);fill:none}.bar-t{fill:var(--tf);stroke:var(--ts);stroke-width:0.7}
+.r-p{fill:var(--pf);stroke:var(--ps)}.k-p{fill:var(--pt)}.f-p{fill:var(--pf)}.d-p{fill:var(--ps)}.s-p{stroke:var(--ps);fill:none}.bar-p{fill:var(--pf);stroke:var(--ps);stroke-width:0.7}
+.r-e{fill:var(--ef);stroke:var(--es)}.k-e{fill:var(--et)}.f-e{fill:var(--ef)}.d-e{fill:var(--es)}.s-e{stroke:var(--es);fill:none}.bar-e{fill:var(--ef);stroke:var(--es);stroke-width:0.7}
+.r-o{fill:var(--of);stroke:var(--os)}.k-o{fill:var(--ot)}.f-o{fill:var(--of)}.d-o{fill:var(--os)}.s-o{stroke:var(--os);fill:none}.bar-o{fill:var(--of);stroke:var(--os);stroke-width:0.7}
+.hd{font-size:15px;font-weight:600;fill:var(--ink)}.title{font-size:14px;font-weight:600}.sub{font-size:11.5px}.lead{font-size:13.5px;font-weight:600;fill:var(--ink)}.ex{font-size:12.5px;fill:var(--body)}.leg{font-size:12px;fill:var(--legend)}.legb{font-size:12px;font-weight:600;fill:var(--ink)}.ct{font-size:11.5px}.tiny{font-size:11px;fill:var(--legend)}.tinyb{font-size:11px;font-weight:600;fill:var(--ink)}.micro{font-size:9px;fill:var(--legend)}
+.past{fill:var(--gf);stroke:var(--gs);stroke-width:0.8;opacity:0.6}
+.cmt{fill:var(--pf);stroke:var(--ps);stroke-width:0.9}
+.new{fill:var(--ef);stroke:var(--es);stroke-width:0.9}
+.vg{stroke:var(--band);stroke-width:1.2;stroke-dasharray:3 4;fill:none}
+.ring{fill:none;stroke:var(--gs);stroke-width:1.4;stroke-dasharray:2 2}
+.arp{stroke:var(--ps);stroke-width:1.4;fill:none}
+.art{stroke:var(--ts);stroke-width:1.4;fill:none}
+:root{--ink:#20201a;--body:#3d3d38;--line:#73726c;--legend:#5f5e5a;--band:#c9c7bf;--gf:#f1efe8;--gs:#888780;--gt:#2c2c2a;--tf:#e1f5ee;--ts:#0f6e56;--tt:#085041;--pf:#eeedfe;--ps:#534ab7;--pt:#3c3489;--ef:#eaf3de;--es:#3b6d11;--et:#27500a;--of:#faece7;--os:#993c1d;--ot:#712b13}
+@media (prefers-color-scheme:dark){:root{--ink:#e9e7e0;--body:#d3d1c8;--line:#a8a69d;--legend:#cbc9c0;--band:#5a5953;--gf:#2c2c2a;--gs:#b4b2a9;--gt:#e9e7e0;--tf:#0f3a30;--ts:#5dcaa5;--tt:#c9efe2;--pf:#2b2552;--ps:#9387e6;--pt:#d2ccf7;--ef:#213414;--es:#8fc75a;--et:#d6ecbf;--of:#3d1f14;--os:#e8835e;--ot:#f6cfbf}}
+</style>
+</defs>
+<g transform="translate(4 4)">
+<text class="lead" x="0" y="13.4">One asynchronous inference window (d = 10, d<tspan class="s" baseline-shift="sub">RL</tspan> = 4, s<tspan class="s" baseline-shift="sub">mid</tspan> = s<tspan class="s" baseline-shift="sub">t−4</tspan>)</text>
+<g transform="translate(0 26.6)">
+<g transform="translate(-0 4.8)">
+<text class="tinyb" x="0" y="28">robot executes</text>
+<text class="tiny" x="0" y="42">one action per step</text>
+<text class="tinyb" x="0" y="80">observations</text>
+<text class="tiny" x="0" y="94">what exists so far</text>
+<text class="tinyb" x="0" y="124">π<tspan class="s" baseline-shift="super">vlm</tspan><tspan class="s" baseline-shift="sub">PT</tspan></text>
+<text class="tiny" x="0" y="138">big, frozen</text>
+<text class="tinyb" x="0" y="174">π<tspan class="s" baseline-shift="sub">RL</tspan> → π<tspan class="s" baseline-shift="super">ae</tspan><tspan class="s" baseline-shift="sub">PT</tspan></text>
+<text class="tiny" x="0" y="188">small, late-bound</text>
+<path class="vg" d="M247 4L247 206"/>
+<text class="tinyb" x="247" y="222" text-anchor="middle">t − d</text>
+<path class="vg" d="M392.4 4L392.4 206"/>
+<text class="tinyb" x="392.4" y="222" text-anchor="middle">t − d<tspan class="s" baseline-shift="sub">RL</tspan></text>
+<path class="vg" d="M489.3 4L489.3 206"/>
+<text class="tinyb" x="489.3" y="222" text-anchor="middle">t</text>
+<rect class="past" x="151" y="18" width="22.2" height="20" rx="2"/>
+<rect class="past" x="175.2" y="18" width="22.2" height="20" rx="2"/>
+<rect class="past" x="199.5" y="18" width="22.2" height="20" rx="2"/>
+<rect class="past" x="223.7" y="18" width="22.2" height="20" rx="2"/>
+<rect class="cmt" x="248" y="18" width="22.2" height="20" rx="2"/>
+<rect class="cmt" x="272.2" y="18" width="22.2" height="20" rx="2"/>
+<rect class="cmt" x="296.4" y="18" width="22.2" height="20" rx="2"/>
+<rect class="cmt" x="320.7" y="18" width="22.2" height="20" rx="2"/>
+<rect class="cmt" x="344.9" y="18" width="22.2" height="20" rx="2"/>
+<rect class="cmt" x="369.1" y="18" width="22.2" height="20" rx="2"/>
+<rect class="cmt" x="393.4" y="18" width="22.2" height="20" rx="2"/>
+<rect class="cmt" x="417.6" y="18" width="22.2" height="20" rx="2"/>
+<rect class="cmt" x="441.9" y="18" width="22.2" height="20" rx="2"/>
+<rect class="cmt" x="466.1" y="18" width="22.2" height="20" rx="2"/>
+<rect class="new" x="490.3" y="18" width="22.2" height="20" rx="2"/>
+<rect class="new" x="514.6" y="18" width="22.2" height="20" rx="2"/>
+<rect class="new" x="538.8" y="18" width="22.2" height="20" rx="2"/>
+<rect class="new" x="563" y="18" width="22.2" height="20" rx="2"/>
+<rect class="new" x="587.3" y="18" width="22.2" height="20" rx="2"/>
+<rect class="new" x="611.5" y="18" width="22.2" height="20" rx="2"/>
+<rect class="new" x="635.8" y="18" width="22.2" height="20" rx="2"/>
+<path class="s-e" d="M248 14V8H488.3V14"/>
+<text class="tiny k-p" x="368.1" y="4" text-anchor="middle">committed: a<tspan class="s" baseline-shift="sub">t−d:t−1</tspan>  (rest of old chunk)</text>
+<text class="tiny k-e" x="574.2" y="12" text-anchor="middle">new chunk A<tspan class="s" baseline-shift="sub">t</tspan></text>
+<circle class="d-g" cx="247" cy="78" r="5"/>
+<text class="tinyb" x="255" y="94">s<tspan class="s" baseline-shift="sub">t−d</tspan></text>
+<circle class="d-t" cx="392.4" cy="78" r="5"/>
+<text class="tinyb k-t" x="400.4" y="94">s<tspan class="s" baseline-shift="sub">mid</tspan></text>
+<circle class="ring" cx="489.3" cy="78" r="5"/>
+<text class="tiny" x="519.6" y="82">s<tspan class="s" baseline-shift="sub">t</tspan>: not yet seen</text>
+<rect class="box r-g" x="247" y="112" width="145.4" height="26" rx="5"/>
+<text class="ct" x="319.7" y="129" text-anchor="middle">VLM on s<tspan class="s" baseline-shift="sub">t−d</tspan> → h</text>
+<rect class="box r-t" x="392.4" y="162" width="29.1" height="26" rx="5"/>
+<text class="ct k-t" x="406.9" y="179" text-anchor="middle">π<tspan class="s" baseline-shift="sub">RL</tspan></text>
+<rect class="box r-g" x="425.5" y="162" width="63.9" height="26" rx="5"/>
+<text class="ct" x="457.4" y="179" text-anchor="middle">AE(h, w)</text>
+<text class="tiny k-t" x="519.6" y="174">π<tspan class="s" baseline-shift="sub">RL</tspan> sees s<tspan class="s" baseline-shift="sub">t−d</tspan>, a<tspan class="s" baseline-shift="sub">t−d:t−1</tspan></text>
+<text class="tiny k-t" x="519.6" y="188">and the fresher s<tspan class="s" baseline-shift="sub">mid</tspan></text>
+<path class="arw" d="M247 84L247 110" marker-end="url(#a)"/>
+<path class="art" d="M392.4 100L392.4 160" marker-end="url(#a)"/>
+<path class="arw" d="M489.3 175.0H501.5V41.0" marker-end="url(#a)"/>
+</g>
+</g>
+</g>
+</svg>

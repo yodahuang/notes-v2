@@ -82,7 +82,7 @@ Let's first review the (wrong) online actor-critic algorithm:
 \end{algorithmic}
 \end{algorithm}
 ```
-- We evaluate how good a state is based on $\pi$, and that's not our current $\pi$. What doesn't depend on $\pi$ is $Q(s_{t}, a_t)$, in the sense that the $a_t$ is picked and does not depend on a specific $\pi$, it's just later in the sequence we follow $\pi$. So... we can make step 3 "on policy", by sampling a $a'_{i}$ from current policy, *not* from replay buffer $\mathcal{R}$.  If I found myself in the situation $s_i$ and took action $a_i$ (as I did in the past), but then **switched to my current strategy** for all future steps, what would my total reward be?
+- We evaluate how good a state is based on $\pi$, and that's not our current $\pi$. What doesn't depend on $\pi$ is $Q(s_{t}, a_t)$, in the sense that the $a_t$ is picked and does not depend on a specific $\pi$, it's just later in the sequence we follow $\pi$. So... we can make step 3 "on policy", by sampling a $a'_{i}$ from current policy, *not* from replay buffer $\mathcal{R}$.  If I found myself in the situation $s_i$ and took action $a_i$ (as I did in the past), but then **switched to my current strategy** for all future steps, what would my total reward be? (Why the replayed $(r_i, s'_i)$ is still a fair sample: [[On and off policy Learning#Why one-step TD works off-policy]].)
 - Similarly, we can make step 5 "on policy", by using $a^{\pi}_i$ instead of $a_i$. We can also for convenience, just use $\hat{Q}^{\pi}$ instead of $\hat{A}^{\pi}$, higher variance but ok. So now we don't need $\hat{V}$ any more. It's okay since we can now just generate more samples.
 
 ```pseudo

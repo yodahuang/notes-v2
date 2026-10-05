@@ -2,7 +2,7 @@
 date: 2026-02-11
 pdf: "[[285-value.pdf]]"
 ---
-Coming from [[Fitted Value Iteration]], we don't have transition dynamics. $Q$ is good (we can see the same idea in [[Actor-Critic#Off-policy actor-critic]]) as the reward now does not depend on your policy, just $r(s, a)$, not $r(s, \pi(s))$.
+Coming from [[Fitted Value Iteration]], we don't have transition dynamics. $Q$ is good (we can see the same idea in [[Actor-Critic#Off-policy actor-critic]]) as the reward now does not depend on your policy, just $r(s, a)$, not $r(s, \pi(s))$. The general argument: [[On and off policy Learning#Why one-step TD works off-policy]].
 
 Recall previously we had ![[fitted_value_iteration.png]] Now it's ![[fitted_q_iteration.png]]
 
@@ -26,4 +26,4 @@ And for exploring in step one we can use [[Multi-arm bandits#Greedy and epsilon 
 
 Also see the traditional [[Q learning]]. The change are basically if we use batch / function approximation. 
 
-Now we have correlated samples, on to the [[Deep Q]].
+Now we have correlated samples, on to [[Q learning#Deep Q (DQN)|Deep Q]].
